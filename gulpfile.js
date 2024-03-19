@@ -1,7 +1,6 @@
 const browsersync = require('browser-sync').create();
 const cached = require('gulp-cached');
 const cssnano = require('gulp-cssnano');
-const del = require('del');
 const fileinclude = require('gulp-file-include');
 const gulp = require('gulp');
 const gulpif = require('gulp-if');
@@ -165,12 +164,10 @@ gulp.task('fileinclude', function(callback) {
 });
 
 gulp.task('clean:packageLock', function(callback) {
-  del.sync(paths.base.packageLock.files);
   callback();
 });
 
 gulp.task('clean:dist', function(callback) {
-  del.sync(paths.dist.base.dir);
   callback();
 });
 
