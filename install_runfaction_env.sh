@@ -236,19 +236,19 @@ echo "**************************************************************************
 echo "                          Installation de everystreet                      "
 echo "***************************************************************************"
 
-./install_everystreet.sh $user $repository
+#/install_everystreet.sh $user $repository
 
 echo "***************************************************************************"
 echo "                          Installation de la base scss                     "
 echo "***************************************************************************"
 
-./install_base_scss.sh
+#./install_base_scss.sh $rsafile $user $repository
 
 echo "***************************************************************************"
 echo "                           Test qualité code PHP                           "
 echo "***************************************************************************"
 
-./audit_php.sh
+#./audit_php.sh
 
 echo "***************************************************************************"
 echo "                            Installation complete                          "
