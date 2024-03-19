@@ -1,0 +1,13 @@
+# Configuration globale pour les fichiers texte avec des fins de ligne LF
+*.sh    text eol=lf
+*.conf    text eol=lf
+*.py    text eol=lf
+*.service    text eol=lf
+
+# Configuration spécifique pour les images en tant que fichiers binaires
+*.jpg   binary
+*.jpeg  binary
+*.png   binary
+*.gif   binary
+*.svg   binary
+*.ico   binary
