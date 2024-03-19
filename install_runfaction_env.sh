@@ -163,7 +163,7 @@ echo "**************************************************************************
 echo "                   Mettre dans le meme group user et www-data              "
 echo "***************************************************************************"
 
-echo "Qui est l'utilsisateur principal ? (daumand)"
+echo "Qui est l'utilisateur principal ? (daumand)"
 read user
 
 if [ -z "$user" ]; then
