@@ -36,6 +36,7 @@ echo "**************************************************************************
 rsafile=$1
 organisation=$2
 repository=$3
+user=$4
 
 export GIT_SSH_COMMAND="ssh -i $rsafile"
 git clone --single-branch --branch base git@github.com:$organisation/$repository.git
@@ -48,7 +49,6 @@ cd base
 
 apt-get remove curl -y
 apt-get install curl -y
-
 
 
 echo "***************************************************************************"
@@ -65,10 +65,15 @@ node -v && npm -v
 read -p "Appuyez sur Entrée pour continuer..." arg
 
 echo "***************************************************************************"
-echo "        Installation de gulp                                               "
+echo "        Installation de toutes les dependences via package.json            "
 echo "***************************************************************************"
 
 npm install
+
+echo "***************************************************************************"
+echo "        Installation de gulp                                               "
+echo "***************************************************************************"
+
 npm install --global gulp-cli
 npm install --save-dev gulp
 
@@ -81,3 +86,13 @@ echo "        Déploiement                                                      
 echo "***************************************************************************"
 
 gulp
+
+echo "***************************************************************************"
+echo "        Finalisation                                                       "
+echo "***************************************************************************"
+
+cp -R ./dist/assets/ ../assets/
+
+chown -R $user:$user /home/$user/$repository/assets
+
+read -p "Appuyez sur Entrée pour continuer..." arg
