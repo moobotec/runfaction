@@ -38,24 +38,46 @@ organisation=$2
 repository=$3
 
 export GIT_SSH_COMMAND="ssh -i $rsafile"
-git clone --single-branch --branch base git@github.com:$organisation/$repository.git:src
+git clone --single-branch --branch base git@github.com:$organisation/$repository.git
 
+mv $repository base 
+
+read -p "Appuyez sur Entrée pour continuer..." arg
+
+cd base
 
 apt-get remove curl -y
 apt-get install curl -y
 
+
+
+echo "***************************************************************************"
+echo "        Installation de node et npm                                        "
+echo "***************************************************************************"
+
 curl -fsSL https://deb.nodesource.com/setup_21.x | sudo -E bash -
 
-apt-get remove curl npm nodejs gcc g++ make -y
-apt-get install npm nodejs gcc g++ make -y
+apt-get remove nodejs gcc g++ make -y
+apt-get install nodejs gcc g++ make -y
 
 node -v && npm -v
 
+read -p "Appuyez sur Entrée pour continuer..." arg
+
+echo "***************************************************************************"
+echo "        Installation de gulp                                               "
+echo "***************************************************************************"
+
 npm install
-npm install glup-cli
+npm install --global gulp-cli
+npm install --save-dev gulp
 
 gulp --version
 
-npm install sass --save-dev
+read -p "Appuyez sur Entrée pour continuer..." arg
+
+echo "***************************************************************************"
+echo "        Déploiement                                                        "
+echo "***************************************************************************"
 
 gulp
