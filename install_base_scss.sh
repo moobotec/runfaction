@@ -39,9 +39,7 @@ repository=$3
 user=$4
 
 export GIT_SSH_COMMAND="ssh -i $rsafile"
-git clone --single-branch --branch base git@github.com:$organisation/$repository.git
-
-mv $repository base 
+git clone --single-branch --branch base git@github.com:$organisation/$repository.git base
 
 read -p "Appuyez sur Entrée pour continuer..." arg
 
@@ -65,7 +63,7 @@ node -v && npm -v
 read -p "Appuyez sur Entrée pour continuer..." arg
 
 echo "***************************************************************************"
-echo "        Installation de toutes les dependences via package.json            "
+echo "        Installation de toutes les dependances via package.json            "
 echo "***************************************************************************"
 
 npm install
@@ -91,7 +89,7 @@ echo "**************************************************************************
 echo "        Finalisation                                                       "
 echo "***************************************************************************"
 
-cp -R ./dist/assets/ ../assets/
+cp -R ./dist/assets/ /home/$user/$repository/assets/
 
 chown -R $user:$user /home/$user/$repository/assets
 

@@ -131,6 +131,8 @@ repository="runfaction"
 fi
 
 rm -rf ./$repository
+
+
 export GIT_SSH_COMMAND="ssh -i $rsafile"
 git clone --single-branch --branch develop git@github.com:$organisation/$repository.git
 
@@ -168,6 +170,13 @@ read user
 
 if [ -z "$user" ]; then
 user="daumand"
+fi
+
+echo "Quel est l'adresse mail ? (daumanddavid@hotmail.fr)"
+read email
+
+if [ -z "$email" ]; then
+email="daumanddavid@hotmail.fr"
 fi
 
 usermod -aG www-data $user
@@ -211,7 +220,7 @@ echo "**************************************************************************
 sed -i "s|ServerAdmin|#ServerAdmin|g" /etc/apache2/sites-available/000-default.conf
 sed -i "s|DocumentRoot|#DocumentRoot|g" /etc/apache2/sites-available/000-default.conf
 
-sed -i "9 a ServerAdmin david.daumand@celios.fr" /etc/apache2/sites-available/000-default.conf
+sed -i "9 a ServerAdmin $email" /etc/apache2/sites-available/000-default.conf
 sed -i "10 a DocumentRoot /home/$user/$repository" /etc/apache2/sites-available/000-default.conf
 
 read -p "Appuyez sur Entrée pour continuer..." arg
@@ -232,17 +241,19 @@ service apache2 restart
 
 read -p "Appuyez sur Entrée pour continuer..." arg
 
+cd ..
+
 echo "***************************************************************************"
 echo "                          Installation de everystreet                      "
 echo "***************************************************************************"
 
-#/install_everystreet.sh $user $repository
+#./install_everystreet.sh $user $repository
 
 echo "***************************************************************************"
 echo "                          Installation de la base scss                     "
 echo "***************************************************************************"
 
-#./install_base_scss.sh $rsafile $user $repository
+./install_base_scss.sh $rsafile $organisation $repository $user 
 
 echo "***************************************************************************"
 echo "                           Test qualité code PHP                           "
