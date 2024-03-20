@@ -134,12 +134,3 @@ systemctl restart $service_name
 systemctl status $service_name
 
 read -p "Appuyez sur Entrée pour continuer..." arg
-
-
-echo "***************************************************************************"
-echo "                                  Nettoyage                                "
-echo "***************************************************************************"
-
-rm -rf ./script
-
-read -p "Appuyez sur Entrée pour continuer..." arg

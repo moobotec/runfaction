@@ -105,7 +105,7 @@ echo "**************************************************************************
 echo "        Déploiement base assets                                            "
 echo "***************************************************************************"
 
-cp -R ./dist/assets/ /home/$user/$repository/assets/
+cp -R ./base/dist/assets/ /home/$user/$repository/assets/
 
 echo "***************************************************************************"
 echo "                   On donne les droit d'execution et autres                "
@@ -115,6 +115,15 @@ chmod -R +x ./$repository
 chmod 777 /home/$user/$repository
 
 chown -R $user:$user /home/$user/$repository
+
+read -p "Appuyez sur Entrée pour continuer..." arg
+
+
+echo "***************************************************************************"
+echo "                                  Nettoyage                                "
+echo "***************************************************************************"
+
+rm -rf ./$repository/script
 
 read -p "Appuyez sur Entrée pour continuer..." arg
 

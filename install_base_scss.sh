@@ -48,7 +48,6 @@ cd base
 apt-get remove curl -y
 apt-get install curl -y
 
-
 echo "***************************************************************************"
 echo "        Installation de node et npm                                        "
 echo "***************************************************************************"
