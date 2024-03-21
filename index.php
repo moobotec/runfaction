@@ -1,4 +1,28 @@
 <?php
+/* =========================================================================
+   =
+   =  Copyright (C) 2024 RunFaction
+   =
+   =  PROJET:  Prototype V1.0 
+   =
+   =  FICHIER: index.php
+   =
+   =  VERSION: 1.0.0
+   =
+   =  SYSTEME: Linux,windows
+   =
+   =  LANGAGE: Langage PHP
+   =
+   =  BUT: FrontEnd / Backend de suivie des performances pour les sportifs, entraineurs et associations
+   =
+   =  INTERVENTION:
+   =
+   =    * 12/12/2023 : David DAUMAND
+   =        Creation du module.
+   =    * 15/02/2024 : David DAUMAND
+   =        Test Github
+ * ========================================================================= */
+/** @file  */
 
 // Use this namespace
 use Steampixel\Route;
@@ -22,6 +46,11 @@ SessionMoobotec::initSession();
 
 include_once("controllers/user/UserController.php");
 include_once("controllers/email/EmailController.php");
+
+if ($_SERVER['HTTP_HOST'] != $param_server_principal_domaine && $param_environement != 'PROD')
+{
+    $param_server_principal_domaine = $_SERVER['HTTP_HOST'];
+}
 
 // Define a global basepath
 define('BASEPATH',$param_protocole.'://'.$param_server_principal_domaine.$param_racine);

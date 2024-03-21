@@ -1,20 +1,44 @@
 <?php
-  namespace Steampixel;
-  // Get the component props
-  $lang = $this->prop('lang', [
-    'type' => 'string',
-    'required' => true
-  ]);
 
-  $title = $this->prop('title', [
-    'type' => 'string',
-    'required' => true
-  ]);
-  $pages = $this->prop('pages', [
-    'type' => 'string',
-    'required' => true
-  ]);
+/* =========================================================================
+   =
+   =  Copyright (C) 2024 RunFaction
+   =
+   =  PROJET:  Prototype V1.0 
+   =
+   =  FICHIER: content.php
+   =
+   =  VERSION: 1.0.0
+   =
+   =  SYSTEME: Linux,windows
+   =
+   =  LANGAGE: Langage PHP
+   =
+   =  BUT: FrontEnd / Backend de suivie des performances pour les sportifs, entraineurs et associations
+   =
+   =  INTERVENTION:
+   =
+   =    * 21/03/2024 : David DAUMAND
+   =        Creation du module.
+ * ========================================================================= */
+/** @file  */
+namespace Steampixel;
+// Get the component props
+$lang = $this->prop('lang', [
+  'type' => 'string',
+  'required' => true
+]);
+
+$title = $this->prop('title', [
+  'type' => 'string',
+  'required' => true
+]);
+$pages = $this->prop('pages', [
+  'type' => 'string',
+  'required' => true
+]);
 ?>
+
 <!DOCTYPE html>
 <html lang="<?=$lang ?>">
   <head>
