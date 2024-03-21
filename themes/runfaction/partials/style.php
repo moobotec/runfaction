@@ -42,5 +42,9 @@ echo '<!-- Bootstrap Css -->
 <!-- Icons Css -->
 <link href="'.BASEPATH.'themes/runfaction/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 <!-- App Css-->
-<link href="'.BASEPATH.'themes/runfaction/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />';
+<link href="'.BASEPATH.'themes/runfaction/assets/css/app.min.css?='.time().'" id="app-style" rel="stylesheet" type="text/css" />
+<link href="'.BASEPATH.'themes/runfaction/assets/libs/toastr/build/toastr.min.css" rel="stylesheet" type="text/css" />
+';
+
+
 ?>

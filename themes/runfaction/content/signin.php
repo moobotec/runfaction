@@ -102,7 +102,7 @@
                             <form action="" method="" onsubmit="loginUser(); return false;">
 
                                 <div class="mb-3">
-                                    <label for="username" class="form-label">Email *</label>
+                                    <label for="login" class="form-label">Email *</label>
                                     <div class="input-group">
                                         <input type="email" class="form-control" id="login" name="login" placeholder="Email" value="daumanddavid@hotmail.fr">
                                         <div class="btn btn-light " type="button" ><i class="mdi mdi-email-outline"></i></div>
@@ -110,7 +110,7 @@
                                 </div>
         
                                 <div class="mb-3">
-                                    <label class="form-label">Mot de passe *</label>
+                                    <label for="password" class="form-label">Mot de passe *</label>
                                     <div class="input-group auth-pass-inputgroup">
                                         <input type="password" class="form-control" placeholder="Mot de passe" aria-label="Password" aria-describedby="password-addon" id="password" name="password" value="pi">
                                         <button class="btn btn-light " type="button" id="password-addon"><i class="mdi mdi-eye-outline"></i></button>

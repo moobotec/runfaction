@@ -27,12 +27,13 @@ $pages = $this->prop('pages', [
 'required' => true
 ]);
     
-
 echo '<script src="'.BASEPATH.'themes/runfaction/assets/libs/jquery/jquery.min.js"></script>
 <script src="'.BASEPATH.'themes/runfaction/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="'.BASEPATH.'themes/runfaction/assets/libs/metismenu/metisMenu.min.js"></script>
 <script src="'.BASEPATH.'themes/runfaction/assets/libs/simplebar/simplebar.min.js"></script>
-<script src="'.BASEPATH.'themes/runfaction/assets/libs/node-waves/waves.min.js"></script>';
+<script src="'.BASEPATH.'themes/runfaction/assets/libs/node-waves/waves.min.js"></script>
+<script src="'.BASEPATH.'themes/runfaction/assets/libs/toastr/build/toastr.min.js"></script>
+<script src="'.BASEPATH.'themes/runfaction/assets/libs/axios/js/axios.min.js"></script>';
 
 if ($pages == "guest")
 {
@@ -42,7 +43,16 @@ if ($pages == "guest")
     <script src="'.BASEPATH.'themes/runfaction/assets/js/pages/auth-2-carousel.init.js"></script>';
 }
 
+echo '<!-- Base js -->
+<script src="'.BASEPATH.'themes/runfaction/assets/js/base.js?='.time().'"></script>';
+
+if ($pages == "guest")
+{
+  echo '<!-- Base js -->
+  <script src="'.BASEPATH.'themes/runfaction/assets/js/guest.js?='.time().'"></script>';
+}
+
 echo '<!-- App js -->
-<script src="'.BASEPATH.'themes/runfaction/assets/js/app.js"></script>';
+<script src="'.BASEPATH.'themes/runfaction/assets/js/app.js?='.time().'"></script>';
 
 ?>
