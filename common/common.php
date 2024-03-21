@@ -1,32 +1,71 @@
 <?php
 /* =========================================================================
    =
-   =  Copyright (C) 2024 Moobotec
+   =  Copyright (C) 2024 RunFaction
    =
-   =  PROJET:  RunFaction
+   =  PROJET:  Prototype V1.0 
    =
    =  FICHIER: common.php
    =
    =  VERSION: 1.0.0
    =
-   =  SYSTEME: Linux
+   =  SYSTEME: Linux,windows
    =
    =  LANGAGE: Langage PHP
    =
-   =  BUT: 
+   =  BUT: FrontEnd / Backend de suivie des performances pour les sportifs, entraineurs et associations
    =
    =  INTERVENTION:
    =
-   =    * 04/03/2024 : David DAUMAND
+   =    * 18/12/2023 : David DAUMAND
    =        Creation du module.
    =
  * ========================================================================= */
 /** @file  */
 
+$db = null;
 $dom = null;
 $error = false;
+$sizeBdd = 0;
+$globaluser = null;
 
-include 'config.inc.php';
+include 'config/config.dev.inc.php';
+
+require 'thirdparty/phpmailer/src/PHPMailer.php';
+require 'thirdparty/phpmailer/src/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+
+class BaseClass {
+    protected ?string $uri;
+    protected ?array $post;
+    protected ?string $command;
+    protected ?string $postjson;
+
+    function filter_string_polyfill(string $string): string
+    {
+        $str = preg_replace('/\x00|<[^>]*>?/', '', $string);
+        return str_replace(["'", '"'], ['&#39;', '&#34;'], $str);
+    }
+
+    function __construct(?string $y = null) {
+        $this->post = $_POST;
+        $this->command = $y;
+        $this->uri = $_SERVER['REQUEST_URI'];
+        $this->postjson = null;
+        if($_SERVER['REQUEST_METHOD'] ==='POST' && empty($this->post)) {
+            $this->post = json_decode(file_get_contents('php://input'),true); 
+            $this->postjson = json_encode($this->post ?? parse_str(file_get_contents("php://input"),$this->postjson) ?? []);
+        }
+        foreach ($this->post as $key => $value) {
+            if (is_scalar($value) || is_string($value)) {
+                $this->post[$key] = filter_var($value, FILTER_CALLBACK, array('options' => array($this, 'filter_string_polyfill')));
+            }
+        }
+    }
+}
 
 class UUID {
 public static function v4() {
@@ -159,12 +198,12 @@ function validate_ip($ip) {
 
 function get_public_ip_func()
 {
-    $ip = gethostbyname('ipecho.net');
-    if ($ip != "")
-    {
-        return file_get_contents("http://ipecho.net/plain");
-    }
-    return "";
+    //$ip = gethostbyname('ipecho.net');
+    //if ($ip != "")
+    //{
+    //return file_get_contents("http://ipecho.net/plain");
+    //}
+    return "xxx.xxx.x.xxx";
 }
 
 function get_public_ip_func_2()
@@ -238,55 +277,6 @@ function get_nearest_timezone($cur_lat, $cur_long, $country_code = '') {
         return  $time_zone;
     }
     return 'unknown';
-}
-
-function my_session_destroy() 
-{
-    // On détruit les variables de notre session
-    session_unset ();
-    // On détruit notre session
-    session_destroy ();
-}
-
-// Ma fonction de session start support la gestion d'horodatage
-function my_session_start() 
-{
-    session_start();
-    // N'autorise pas l'utilisation des anciens ID de session
-    if (!empty($_SESSION['deleted_time']) && $_SESSION['deleted_time'] < time() - 3600) // 1heure
-    { 
-        my_session_destroy();
-        session_start();
-    }
-}
-
-// Ma fonction de regénération d'ID
-function my_session_regenerate_id() 
-{
-    // Appel à session_create_id() quand la session est active
-    // pour être sûr qu'il n'y a pas de colision.
-    if (session_status() != PHP_SESSION_ACTIVE) {
-        session_start();
-    }
-    // AVERTISSEMENT: N'utiliser jamais des chaînes confidentielle comme préfix !
-    $newid = session_create_id('ascook-');
-    
-    // Termine la session
-    session_commit();
-    // Assurez vous d'accepter les ID de session définit par l'utilisateur
-    // NOTE: Vous devez activer use_strict_mode pour les opérations normales.
-    ini_set('session.use_strict_mode', 0);
-    // Définir un nouvel ID de session personalisé
-    session_id($newid);
-    
-    // Démarrage avec un ID de session personalisé
-    session_start();
-    
-    // Définit l'horodatage de suppression.
-    // Les données de session ne doivent pas être supprimer immédiatement pour certaines raisons.
-    $_SESSION['deleted_time'] = time();
-    $_SESSION['authenticated'] = $newid;
-        
 }
 
 function stripAccents($stripAccents){
@@ -373,7 +363,7 @@ function send_mail($to,$from,$subject,$mailContent)
         $mail->Password   =  $param_server_client_password;       //Mot de passe de l'adresse email à utiliser
     }
 
-    $mail->From = '('.$from.')'.$param_server_client_name;       //adresse avec laquelle on envoi
+    $mail->setFrom($param_server_client_name,$from);       //adresse avec laquelle on envoi
     $mail->AddAddress($to) ;            // adresse de destination    
     $mail->isHTML(true);
     $mail->Subject = $subject;          //création du titre du mail
@@ -392,6 +382,7 @@ function send_mail($to,$from,$subject,$mailContent)
 
 function return_json_http_response($success, $data)
 {
+    global $param_environement;
     // remove any string that could create an invalid JSON
     // such as PHP Notice, Warning, logs...
     ob_clean();
@@ -406,11 +397,19 @@ function return_json_http_response($success, $data)
     // Set your HTTP response code, 2xx = SUCCESS,
     // anything else will be error, refer to HTTP documentation
     if ($success == true) {
-        http_response_code(200);
+        http_response_code(200); //Ok Request
     } else {
-        http_response_code(500);
+        http_response_code(400); //Bad Request
     }
 
+    if ($param_environement != "DEV")
+    {
+        $data["body"] = null;
+        $data["session"] = null;
+        $data["uri"] = null;
+        $data["command"] = null;
+        $data["post"] = null;
+    }
     // encode your PHP Object or Array into a JSON string.
     // stdClass or array
     echo json_encode($data);
@@ -450,37 +449,6 @@ function download_file_http_response($pathFile,$nameFile = '')
     if ($nameFile == '') $nameFile = basename($path);
     $extFile = strtolower(pathinfo($path, PATHINFO_EXTENSION));
     output_file($path, $nameFile, $extFile);
-}
-
-function array_to_csv($array, $header_row = true, $col_sep = ",", $row_sep = "\n", $qut = '"')
-{
-    if (!is_array($array) or !is_array($array[0])) return false;
-    
-    //Header row.
-    if ($header_row)
-    {
-        foreach ($array[0] as $key => $val)
-        {
-            //Escaping quotes.
-            $key = str_replace($qut, "$qut$qut", $key);
-            $output .= "$col_sep$qut$key$qut";
-        }
-        $output = substr($output, 1)."\n";
-    }
-    //Data rows.
-    foreach ($array as $key => $val)
-    {
-        $tmp = '';
-        foreach ($val as $cell_key => $cell_val)
-        {
-            //Escaping quotes.
-            $cell_val = str_replace($qut, "$qut$qut", $cell_val);
-            $tmp .= "$col_sep$qut$cell_val$qut";
-        }
-        $output .= substr($tmp, 1).$row_sep;
-    }
-    
-    return $output;
 }
 
 function output_file($file, $name, $mime_type='')
@@ -613,5 +581,21 @@ function text_truncated($text,$lenghtMax)
     return $text;
 }
 
+function encryptCookie($value, $key) {
+    $cipher = "aes-256-cbc";
+    $ivlen = openssl_cipher_iv_length($cipher);
+    $iv = openssl_random_pseudo_bytes($ivlen);
+    $ciphertext = openssl_encrypt($value, $cipher, $key, $options=0, $iv);
+    return base64_encode($iv . $ciphertext);
+}
+
+function decryptCookie($value, $key) {
+    $cipher = "aes-256-cbc";
+    $ivlen = openssl_cipher_iv_length($cipher);
+    $ciphertext_dec = base64_decode($value);
+    $iv = substr($ciphertext_dec, 0, $ivlen);
+    $ciphertext = substr($ciphertext_dec, $ivlen);
+    return openssl_decrypt($ciphertext, $cipher, $key, $options=0, $iv);
+}
 
 ?>
