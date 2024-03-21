@@ -124,7 +124,7 @@
                                     </label>
                                 </div>
                                 
-                                <div class="mt-3 d-grid">
+                                <div class="mt-4 d-grid">
                                     <button class="btn btn-primary waves-effect waves-light" type="submit">Se connecter</button>
                                 </div>
 

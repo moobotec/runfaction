@@ -206,7 +206,6 @@ hr.light {
                                         </div>
                                     </div>
                                     <hr>
-
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="user_agree_terms" name="user_agree_terms" required="required" checked>
                                         <label class="form-check-label" for="remember">
@@ -224,9 +223,15 @@ hr.light {
                                         </div>
                                     <!-- /.col -->
                                     </div>
-                                    <div class="pt-2 text-center"><small> &Eacute;tape 2/2 </small></div>
+                                    <div class="pt-4 text-center"><small> &Eacute;tape 2/2 </small></div>
                                 </div>
                             </form>
+                            <hr>
+                            <div class="text-center">
+                                <p class="mb-1">
+                                <?php echo '<a href="'.BASEPATH.'signin.php" class="fw-medium text-primary">Déjà inscrit ? Me connecter</a>' ?>
+                                </p>
+                            </div>
                         </div>
                     </div>
                     <div class="mt-4 mt-md-5 text-center">

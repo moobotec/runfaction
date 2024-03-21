@@ -52,6 +52,7 @@ $pages = $this->prop('pages', [
         <?=Component::create('partials/content') ?>
       </div>
     </div>
+    <?=Component::create('partials/variables')->render() ?>
     <?=Component::create('partials/javascript')->assign(['pages'=>$pages])->render() ?>
   </body>
 </html>
