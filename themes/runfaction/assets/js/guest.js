@@ -191,7 +191,7 @@ function createUser()
         user_lastname:  $('#user_lastname').val(),
         user_name:  $('#user_name').val(),
         user_assoc_name: $('#user_assoc_name').val(),
-        user_address:  $('#user_address').val(),
+        user_address_1:  $('#user_address').val(),
         user_telephone:  $('#user_telephone').val(),
         user_password: $('#user_password_0').val(),
         user_email: $('#user_email').val()

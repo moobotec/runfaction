@@ -1209,7 +1209,7 @@ class UserController extends BaseClass
             else if ( $user_type == "Association" )
             {
                 if ($this->post['user_assoc_name'] == null || $this->post['user_assoc_name']  == "" || strlen($this->post['user_assoc_name']) > 100 ||
-                $this->post['user_address'] == null || $this->post['user_address'] == "" || strlen($this->post['user_address']) > 255 ||
+                $this->post['user_address_1'] == null || $this->post['user_address_1'] == "" || strlen($this->post['user_address_1']) > 255 ||
                 $this->post['user_email'] == null || $this->post['user_email'] == "" ||
                 $this->post['user_telephone'] == null || $this->post['user_telephone'] == "" ||
                 $this->post['user_password']  == null || $this->post['user_password'] == "" ) 
@@ -1323,7 +1323,8 @@ class UserController extends BaseClass
                 }
                 else
                 {
-                    $user->address = null;
+                    $user->address_2 = null;
+                    $user->address_3 = null;
                     $user->telephone = null;
                 }
                 /*********************************/
@@ -1339,7 +1340,7 @@ class UserController extends BaseClass
                     $user->codereset = null;
                     $user->pseudo = null;
                     $user->description = null;
-                    $user->notification = null;
+                    $user->notification = 0;
                     $user->skills = null;
                     $user->enterprise = null;
                     $user->fonctionpro = null;
@@ -1348,7 +1349,12 @@ class UserController extends BaseClass
                     $user->rating = 3;
                     $user->insertdate = Carbon::now('UTC')->timestamp;
                     $user->lastupdatedate = $user->insertdate;
-
+                    $user->region_id = 0;
+                    $user->subregion_id = 0;
+                    $user->country_id = 0;
+                    $user->state_id = 0;
+                    $user->city_id = 0;
+                    
                     $user->save();
                     if ($error == true) array_push($errors,506);
                 }

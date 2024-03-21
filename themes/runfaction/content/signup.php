@@ -115,40 +115,44 @@ hr.light {
                     <div class="my-auto">
                         <div class="mt-4">
                             <form action="" method="" onsubmit="createUser(); return false;">
-                                <div class="text-center" id="step1" style="display:block">
+                                <div id="step1" style="display:block">
                                     <div id="boxMsg" style="display:block">
                                         <h5 class="text-primary">Je m'inscris en tant que ...</h5>
                                         <p class="text-muted">Faites votre choix parmis c'est trois propositions.</p>
                                     </div>
-                                    <button type="button"  id="btnTypeSportif" class="btn btn-block btn-light btn-lg border center">
-                                        <?php echo '<img src="'.BASEPATH.'themes/runfaction/assets/images/maillot_100_62.png" alt="Sportif" class="img-fluid" style="opacity: .8">' ?>
-                                        <span class="ml-2">Sportif</span>
-                                    </button>
-                                    <div class="d-flex p-3">
-                                        <hr class="light" />
-                                        <span>ou</span>
-                                        <hr class="light" />
+                                    <hr>
+                                    <div class="text-center">
+                                        <button type="button"  id="btnTypeSportif" class="btn btn-block btn-light btn-lg border center">
+                                            <?php echo '<img src="'.BASEPATH.'themes/runfaction/assets/images/maillot_100_62.png" alt="Sportif" class="img-fluid" style="opacity: .8">' ?>
+                                            <span class="ml-2">Sportif</span>
+                                        </button>
+                                        <div class="d-flex p-3">
+                                            <hr class="light" />
+                                            <span>ou</span>
+                                            <hr class="light" />
+                                        </div>
+                                        <button type="button"  id="btnTypeEntraineur" class="btn btn-block btn-light btn-lg border center">
+                                            <?php echo '<img src="'.BASEPATH.'themes/runfaction/assets/images/sifflet_100_80.png" alt="Entraineur" class="img-fluid" style="opacity: .8">' ?>
+                                            <span class="ml-2">Entraineur</span>
+                                        </button>
+                                        <div class="d-flex p-3">
+                                            <hr class="light" />
+                                            <span >ou</span>
+                                            <hr class="light" />
+                                        </div>
+                                        <button type="button"  id="btnTypeAssociation" class="btn btn-block btn-light btn-lg border center">
+                                            <?php echo '<img src="'.BASEPATH.'themes/runfaction/assets/images/immeuble_100_127.png" alt="Association" class="img-fluid" style="opacity: .8">' ?>
+                                            <span class="ml-2">Association</span>
+                                        </button>
+                                        <div class="pt-2"><small> &Eacute;tape 1/2 </small></div>
                                     </div>
-                                    <button type="button"  id="btnTypeEntraineur" class="btn btn-block btn-light btn-lg border center">
-                                        <?php echo '<img src="'.BASEPATH.'themes/runfaction/assets/images/sifflet_100_80.png" alt="Entraineur" class="img-fluid" style="opacity: .8">' ?>
-                                        <span class="ml-2">Entraineur</span>
-                                    </button>
-                                    <div class="d-flex p-3">
-                                        <hr class="light" />
-                                        <span >ou</span>
-                                        <hr class="light" />
-                                    </div>
-                                    <button type="button"  id="btnTypeAssociation" class="btn btn-block btn-light btn-lg border center">
-                                        <?php echo '<img src="'.BASEPATH.'themes/runfaction/assets/images/immeuble_100_127.png" alt="Association" class="img-fluid" style="opacity: .8">' ?>
-                                        <span class="ml-2">Association</span>
-                                    </button>
-                                    <div class="pt-2"><small> &Eacute;tape 1/2 </small></div>
                                 </div>
                                 <div id="step2" style="display:none">
-                                    <div class="text-center" id="boxMsg" style="display:block">
+                                    <div id="boxMsg" style="display:block">
                                         <h5 class="text-primary">Et je remplis le formulaire ...</h5>
                                         <p class="text-muted">Veuillez renseigner quelques informations pour compléter votre inscription.</p>
                                     </div>
+                                    <hr>
                                     <div id="block_name_user" style="display:none">
                                         <div class="mb-3">
                                             <div class="input-group">
@@ -194,7 +198,7 @@ hr.light {
                                             <button class="btn btn-light " type="button" id="password-addon"><i class="mdi mdi-eye-outline"></i></button>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row mb-3">
                                         <div class="col-12">
                                         <small>Il convient d’éviter les mots de passe faciles à découvrir. 
                                         <a data-toggle="tooltip" data-placement="top" title="Cliquez pour plus d'information" type="button"  name="expandContent" id="expandInfoPassword" ><i style="color: #01a3f3;" class="fas fa-info-circle"></i></a></small>
@@ -205,25 +209,28 @@ hr.light {
                                             </div>
                                         </div>
                                     </div>
-                                    <hr>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="user_agree_terms" name="user_agree_terms" required="required" checked>
-                                        <label class="form-check-label" for="remember">
-                                            J’accepte <a href="#">les conditions générales et politiques de confidentialité</a>
-                                        </label>
-                                    </div>
-                                    <hr>
-                                    <div class="text-center row pt-2">
-                                        <div class="col-6">
-                                            <button type="button" id="btnTypeRedo" class="btn btn-light waves-effect waves-light"><i class="fas fa-undo"></i> Retour</button>
+                                    <div class="row mb-3 mx-1">
+                                        <div class="form-check ">
+                                            <input class="form-check-input" type="checkbox" id="user_agree_terms" name="user_agree_terms" required="required" checked>
+                                            <label class="form-check-label" for="remember">
+                                                J’accepte <a href="#">les conditions générales et politiques de confidentialité</a>
+                                            </label>
                                         </div>
+                                    </div>
+                                    <div class="text-center mb-3">
+                                        <div class="row pt-2">
+                                            <div class="col-6">
+                                                <button type="button" id="btnTypeRedo" class="btn btn-light waves-effect waves-light"><i class="fas fa-undo"></i> Retour</button>
+                                            </div>
+                                            <!-- /.col -->
+                                            <div class="col-6">
+                                                <button type="submit" class="btn btn-primary waves-effect waves-light"><i style="color: #00f791;" class="fas fa-check-circle"></i> M'inscrire</button>
+                                            </div>
                                         <!-- /.col -->
-                                        <div class="col-6">
-                                            <button type="submit" class="btn btn-primary waves-effect waves-light"><i style="color: #00f791;" class="fas fa-check-circle"></i> M'inscrire</button>
                                         </div>
-                                    <!-- /.col -->
+                                    
+                                        <div class="pt-4 "><small> &Eacute;tape 2/2 </small></div>
                                     </div>
-                                    <div class="pt-4 text-center"><small> &Eacute;tape 2/2 </small></div>
                                 </div>
                             </form>
                             <hr>
