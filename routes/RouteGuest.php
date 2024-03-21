@@ -25,8 +25,7 @@
 
 use Steampixel\route;
 use Steampixel\Component;
-
-require_once 'thirdparty/Steampixel/route.php';
+use RunFaction\SessionMoobotec;
 
 Route::add('/', function() {
     Component::create('guest/signin')->print();
@@ -44,25 +43,10 @@ Route::add('/signup.php', function() {
     Component::create('guest/signup')->print();
 }, 'get');
 
-/*Route::add('/', function() {
-    make_page('guest/signin','views/guest/signin.php');
-});
-
-Route::add('/index.php', function() {
-    make_page('guest/signin','views/guest/signin.php');
-});
-
-Route::add('/signin.php', function() {
-    make_page('guest/signin','views/guest/signin.php');
-}, 'get');
-
 Route::add('/askresetpassword.php', function() {
-    make_page('guest/askresetpassword','views/guest/askresetpassword.php');
+    Component::create('guest/askresetpassword')->print();
 }, 'get');
 
-Route::add('/signup.php', function() {
-    make_page('guest/signup','views/guest/signup.php');
-}, 'get');
 
 Route::add('/reset.php/(.+)/(.+)', function($matches,$codereset) 
 {
@@ -75,18 +59,18 @@ Route::add('/reset.php/(.+)/(.+)', function($matches,$codereset)
         $globaluser = $return["user"];
         if ($codereset == $globaluser->codereset)
         {
-            make_page('guest/reset','views/guest/reset.php');
+            Component::create('guest/reset')->print();
         }
         else
         {
             header('HTTP/1.0 404 Not Found');
-            make_page(strtolower($level).'/404','views/'.strtolower($level).'/404.php');
+            Component::create('commun/404')->assign(['level'=>$level])->print();
         }
     }
     else
     {
         header('HTTP/1.0 404 Not Found');
-        make_page(strtolower($level).'/404','views/'.strtolower($level).'/404.php');
+        Component::create('commun/404')->assign(['level'=>$level])->print();
     }
 }, 'get');
 
@@ -101,20 +85,20 @@ Route::add('/check.php/(.+)/(.+)', function($matches,$codefirst)
         $globaluser = $return["user"];
         if ($codefirst == $globaluser->codefirst)
         {
-            make_page('guest/check','views/guest/check.php');
+            Component::create('guest/check')->print();
         }
         else
         {
             header('HTTP/1.0 404 Not Found');
-            make_page(strtolower($level).'/404','views/'.strtolower($level).'/404.php');
+            Component::create('commun/404')->assign(['level'=>$level])->print();
         }
     }
     else
     {
         header('HTTP/1.0 404 Not Found');
-        make_page(strtolower($level).'/404','views/'.strtolower($level).'/404.php');
+        Component::create('commun/404')->assign(['level'=>$level])->print();
     }
 }, 'get');
-*/
+
 
 ?>

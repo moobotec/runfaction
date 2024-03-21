@@ -184,7 +184,7 @@ hr.light {
                                     </div>
                                     <div class="mb-3">
                                         <div class="input-group">
-                                            <input type="email" class="form-control" id="user_email" name="user_email" placeholder="Entrer votre email" required="required" value="filipex790@ksyhtc.com" autocomplete="email">
+                                            <input type="email" class="form-control" id="user_email" name="user_email" placeholder="Entrer votre email" required="required" value="" autocomplete="email">
                                             <div class="btn btn-light" type="button" ><i class="mdi mdi-email-outline"></i></div>
                                         </div>
                                     </div>

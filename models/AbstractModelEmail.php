@@ -168,7 +168,7 @@ abstract class AbstractModelEmail
         <tr>
         <td valign="top" align="center"><table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
         <tbody><tr>
-        <td valign="top" align="center"><img class="em_img" alt="Pop Stride" style="display:block; font-family:Arial, sans-serif; font-size:30px; line-height:34px; color:#000000; max-width:1200px;" src="'.$this->path.'assets/dist/img/fond.png" width="1201" border="0" height="373"></td>
+        <td valign="top" align="center"><img class="em_img" alt="Run Faction" style="display:block; font-family:Arial, sans-serif; font-size:30px; line-height:34px; color:#000000; max-width:1200px;" src="'.$this->path.'assets/dist/img/fond.png" width="1201" border="0" height="373"></td>
         </tr>
         </tbody></table></td>
         </tr>
@@ -197,7 +197,7 @@ abstract class AbstractModelEmail
         <tr>
         <td style="font-family:’Open Sans’, Arial, sans-serif; font-size:11px; line-height:18px; color:#999999;" valign="top" align="center">
          <a href="'.$this->path.'declconfidentialite.php" target="_blank" style="color:#999999; text-decoration:underline;">Déclaration de confidentialité</a> | <a href="'.$this->path.'cgucgv.php" target="_blank" style="color:#999999; text-decoration:underline;">Conditions générales d\'utilisation</a> | <a href="'.$this->path.'mentionslegales.php" target="_blank" style="color:#999999; text-decoration:underline;">Mentions légales</a><br>
-        © <script>document.write(new Date().getFullYear())</script> Pop Stride <br>
+        © <script>document.write(new Date().getFullYear())</script> Run Faction <br>
         '.$this->infoMail.'</td>
         </tr>
         </tbody></table></td>

@@ -85,11 +85,14 @@ Route::add('/logout.php', function() {
 Route::pathNotFound(function($path) {
   global $level;
   header('HTTP/1.0 404 Not Found');
+  Component::create('commun/404')->assign(['level'=>$level])->print();
 });
 
 // Add a 405 method not allowed route
 Route::methodNotAllowed(function($path, $method) {
+  global $level;
   header('HTTP/1.0 405 Method Not Allowed');
+  Component::create('commun/error')->assign(['level'=>$level])->print();
 });
 
 // Run the router

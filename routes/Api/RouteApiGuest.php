@@ -23,11 +23,7 @@
  * ========================================================================= */
 /** @file  */
 
-include_once('common/session.php');
-
 use Steampixel\route;
-require_once 'thirdparty/Steampixel/route.php';
-
 use Carbon\Carbon;
 
 Route::add('/signin.php', function() 
