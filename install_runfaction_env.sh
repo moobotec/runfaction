@@ -205,11 +205,11 @@ cp ./script/apache2.conf /etc/apache2/apache2.conf
 
 sed -i "s|repo|/home/$user/$repository/|g" /etc/apache2/apache2.conf
 
-sed -i "s|param_server_principal_domaine = ''|param_server_principal_domaine='$domaine'|g" ./common/config.inc.php
-sed -i "s|param_server_principal_ip = ''|param_server_principal_ip='$domaine'|g" ./common/config.inc.php
-sed -i "s|param_server_principal_port = 0|param_server_principal_port = $port|g" ./common/config.inc.php
-sed -i "s|param_protocole = ''|param_protocole='$protocole'|g" ./common/config.inc.php
-sed -i "s|param_root = ''|param_root='/home/$user/$repository'|g" ./common/config.inc.php
+sed -i "s|param_server_principal_domaine = ''|param_server_principal_domaine='$domaine'|g" ./common/config/config.dev.inc.php
+sed -i "s|param_server_principal_ip = ''|param_server_principal_ip='$domaine'|g" ./common/config/config.dev.inc.php
+sed -i "s|param_server_principal_port = 0|param_server_principal_port = $port|g" ./common/config/config.dev.inc.php
+sed -i "s|param_protocole = ''|param_protocole='$protocole'|g" ./common/config/config.dev.inc.php
+sed -i "s|param_root = ''|param_root='/home/$user/$repository'|g" ./common/config/config.dev.inc.php
 
 read -p "Appuyez sur Entrée pour continuer..." arg
 
