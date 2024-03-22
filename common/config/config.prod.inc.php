@@ -1,11 +1,11 @@
 <?php
-$param_server_principal_domaine = 'www.runfaction.fr';
-$param_server_principal_ip = 'www.runfaction.fr';
-$param_server_principal_port = 443;
+$param_server_principal_domaine = '';
+$param_server_principal_ip = '';
+$param_server_principal_port = 0;
 $param_server_secondaire_ip = '86.254.62.178';
 $param_server_secondaire_port = 9898;
 $param_protocole = 'https';
-$param_root = '/home/daumand/runfaction/';
+$param_root = '';
 $param_racine = '/';
 $param_server_disk_total_space = 0;
 $param_server_disk_use_space = 0;
