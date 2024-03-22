@@ -38,6 +38,8 @@ organisation=$2
 repository=$3
 user=$4
 
+rm -rf base
+
 export GIT_SSH_COMMAND="ssh -i $rsafile"
 git clone --single-branch --branch base git@github.com:$organisation/$repository.git base
 
