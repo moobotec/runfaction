@@ -33,7 +33,7 @@ echo '<script src="'.BASEPATH.'themes/runfaction/assets/libs/jquery/jquery.min.j
 <script src="'.BASEPATH.'themes/runfaction/assets/libs/simplebar/simplebar.min.js"></script>
 <script src="'.BASEPATH.'themes/runfaction/assets/libs/node-waves/waves.min.js"></script>
 <script src="'.BASEPATH.'themes/runfaction/assets/libs/toastr/build/toastr.min.js"></script>
-<script src="'.BASEPATH.'themes/runfaction/assets/libs/axios/js/axios.min.js"></script>';
+<script src="'.BASEPATH.'themes/runfaction/assets/libs/axios/axios.min.js"></script>';
 
 if (str_contains($pages,"guest"))
 {
