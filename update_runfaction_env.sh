@@ -105,7 +105,7 @@ echo "**************************************************************************
 echo "        Déploiement base assets                                            "
 echo "***************************************************************************"
 
-cp -R ./base/dist/assets/ /home/$user/$repository/themes/runfaction/assets/
+cp -R ./base/dist/assets/* /home/$user/$repository/themes/runfaction/assets
 
 chown -R $user:$user /home/$user/$repository/themes/runfaction/assets
 
