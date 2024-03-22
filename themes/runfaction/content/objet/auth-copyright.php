@@ -5,7 +5,7 @@
    =
    =  PROJET:  Prototype V1.0 
    =
-   =  FICHIER: askresetpassword.php
+   =  FICHIER: auth-copyright.php
    =
    =  VERSION: 1.0.0
    =
@@ -17,24 +17,17 @@
    =
    =  INTERVENTION:
    =
-   =    * 21/03/2024 : David DAUMAND
+   =    * 22/03/2024 : David DAUMAND
    =        Creation du module.
  * ========================================================================= */
 /** @file  */
 
-namespace Steampixel;
-
-global $param_lang;
-global $param_title;
-$pages = "guest/askresetpassword";
-
-Component::create('layout/boxed')->assign([
-  'title' => $param_title,
-  'lang' =>  strtolower($param_lang),
-  'pages' =>  $pages
-])->print();
-
-//compoment create by theme
-Portal::send('contents-main',Component::create('content/page/askresetpassword') );
-
+$divclass = $this->prop('div-class', [
+    'type' => 'string',
+    'required' => true
+]);
 ?>
+
+<div class="<?=$divclass ?>">
+    <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Moobotec. Conçu avec <i class="mdi mdi-heart text-danger"></i> par Moobotec</p>
+</div>
