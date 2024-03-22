@@ -84,7 +84,7 @@ repository="runfaction"
 fi
 
 echo "***************************************************************************"
-echo "                   Mettre dans le meme group user et www-data              "
+echo "                   Information complementaire                               "
 echo "***************************************************************************"
 
 echo "Qui est l'utilisateur principal ? (daumand)"
@@ -94,12 +94,55 @@ if [ -z "$user" ]; then
 user="daumand"
 fi
 
+ip=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | awk '{print $2}' | head -n1)
+echo $ip
+
+echo "Veuillez préciser l'IP ou le domaine ($ip)"
+read domaine
+
+if [ -z "$domaine" ]; then
+domaine=$ip
+fi
+
+default=80
+echo "Veuillez entrer le port  : ($default)"
+read port
+
+if [ -z "$port" ]; then
+port=$default
+fi
+
+default="http"
+echo "Veuillez entrer le protocole  : ($default)"
+read protocole
+
+if [ -z "$protocole" ]; then
+protocole=$default
+fi
+
+
 rm -rf ./$repository
 
 export GIT_SSH_COMMAND="ssh -i $rsafile"
 git clone --single-branch --branch develop git@github.com:$organisation/$repository.git
 
 read -p "Appuyez sur Entrée pour continuer..." arg
+
+echo "***************************************************************************"
+echo "        Creation du fichier de config                                      "
+echo "***************************************************************************"
+
+sed -i "s|param_server_principal_domaine = ''|param_server_principal_domaine='$domaine'|g" ./$repository/common/config/config.dev.inc.php
+sed -i "s|param_server_principal_ip = ''|param_server_principal_ip='$domaine'|g" ./$repository/common/config/config.dev.inc.php
+sed -i "s|param_server_principal_port = 0|param_server_principal_port = $port|g" ./$repository/common/config/config.dev.inc.php
+sed -i "s|param_protocole = ''|param_protocole='$protocole'|g" ./$repository/common/config/config.dev.inc.php
+sed -i "s|param_root = ''|param_root='/home/$user/$repository'|g" ./$repository/common/config/config.dev.inc.php
+
+echo "***************************************************************************"
+echo "        Changement des droit sur la base de données                        "
+echo "***************************************************************************"
+
+chmod -R 777 ./$repository/bdd
 
 echo "***************************************************************************"
 echo "        Déploiement base assets                                            "

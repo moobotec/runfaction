@@ -214,6 +214,12 @@ sed -i "s|param_root = ''|param_root='/home/$user/$repository'|g" ./common/confi
 read -p "Appuyez sur Entrée pour continuer..." arg
 
 echo "***************************************************************************"
+echo "        Changement des droit sur la base de données                        "
+echo "***************************************************************************"
+
+chmod -R 777 ./bdd
+
+echo "***************************************************************************"
 echo "                               Activation Site                             "
 echo "***************************************************************************"
 
