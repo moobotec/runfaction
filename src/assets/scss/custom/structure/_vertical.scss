@@ -40,11 +40,8 @@
     bottom: 0;
     margin-top: 0;
     position: fixed;
-    top: calc(#{$header-height} + 4px);
+    top: $header-height;
     box-shadow: $box-shadow;
-    .simplebar-content{
-        height: 100%;
-    }
 }
 
 .main-content {
@@ -59,11 +56,7 @@
 
 
 #sidebar-menu {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-    justify-content: space-between;
+    padding: 10px 0 30px 0;
 
     .mm-active {
         >.has-arrow {
@@ -88,12 +81,12 @@
         li {
             a {
                 display: block;
-                padding: .625rem;
+                padding: .625rem 1.5rem;
                 color: $sidebar-menu-item-color;
                 position: relative;
                 font-size: 13px;
                 transition: all .4s;
-                
+
                 i {
                     display: inline-block;
                     min-width: 1.75rem;
@@ -115,14 +108,7 @@
             }
 
             .badge {
-                margin-top: -4px;
-                margin-left: 2px;
-                padding: 0.3em 0.5em 0.2em;
-                font-size: $font-size-xs;
-                display: inline-flex;
-                align-items: center;
-                transform: translateY(-5px);
-                min-width: 15px;
+                margin-top: 4px;
             }
 
             ul.sub-menu {
@@ -131,7 +117,7 @@
                 li {
 
                     a {
-                        padding: .4rem 1.5rem .4rem 2.5rem;
+                        padding: .4rem 1.5rem .4rem 3.5rem;
                         font-size: 13px;
                         color: $sidebar-menu-sub-item-color;
                         &:hover {
@@ -403,7 +389,6 @@ body[data-sidebar="dark"] {
                 }
 
                 ul.sub-menu {
-                    background-color: $sidebar-dark-bg;
                     li {
 
                         a {
@@ -413,19 +398,6 @@ body[data-sidebar="dark"] {
                                 color: $sidebar-dark-menu-item-hover-color;
                             }
                         }
-                    }
-                }
-            }
-        }
-        > ul {
-            > li {
-                &.mm-active{
-                    background-color: $as;
-                }
-                > a {
-                    > span {
-                        font-weight: $font-weight-bold;
-                        color: $sidebar-dark-menu-item-active-color;
                     }
                 }
             }

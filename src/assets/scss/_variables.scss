@@ -16,7 +16,7 @@ $sidebar-collapsed-width:  70px;
 $sidebar-width-sm:  160px;
 
 // Vertical Sidebar - Dark
-$sidebar-dark-bg: #1F1440; //2c313a
+$sidebar-dark-bg: #2a3042; //2c313a
 $sidebar-dark-menu-item-color: #a6b0cf;
 $sidebar-dark-menu-sub-item-color: #79829c;
 $sidebar-dark-menu-item-icon-color: #6a7187;
@@ -26,10 +26,6 @@ $sidebar-dark-menu-item-active-color: #ffffff;
 // Topbar - Deafult Light
 $header-height: 70px;
 $header-bg: #ffffff;
-
-$header-height-2: 50px;
-$header-bg-2: #1F1440;
-
 $header-item-color: #555b6d;
 
 // Topbar - Dark
@@ -87,9 +83,9 @@ $white:    #fff;
 $gray-100: #f8f9fa;
 $gray-200: #eff2f7;
 $gray-300: #f6f6f6;
-$gray-400: #babec3;
+$gray-400: #ced4da;
 $gray-500: #adb5bd;
-$gray-600: #625A79;
+$gray-600: #74788d;
 $gray-700: #495057;
 $gray-800: #343a40;
 $gray-900: #212529;
@@ -115,12 +111,11 @@ $indigo:  #564ab1;
 $purple:  #6f42c1;
 $pink:    #e83e8c;
 $red:     #f46a6a;
-$orange:  #EA5B2A;
+$orange:  #f1734f;
 $yellow:  #f1b44c;
 $green:   #34c38f;
-$teal:    #1F1440;
+$teal:    #050505;
 $cyan:    #50a5f1;
-$blueas:   #1EA7AC;
 
 // scss-docs-start colors-map
 $colors: (
@@ -136,21 +131,18 @@ $colors: (
     "cyan":       $cyan,
     "white":      $white,
     "gray":       $gray-600,
-    "gray-dark":  $gray-800,
-    "blueas":     $blueas,
+    "gray-dark":  $gray-800
 );
 // scss-docs-end colors-map
 
 $primary:       $blue;
-$secondary:     $gray-400;
+$secondary:     $gray-600;
 $success:       $green;
 $info:          $cyan;
 $warning:       $yellow;
 $danger:        $red;
 $light:         $gray-200;
 $dark:          $gray-800;
-$as:            $orange;
-$aswhite:       $white;
 
 // scss-docs-start theme-colors-map
 $theme-colors: (
@@ -162,14 +154,7 @@ $theme-colors: (
     "danger":     $danger,
     "pink":       $pink,
     "light":      $light,
-    "dark":       $dark,
-    "as":         $as,
-    "stars":      $yellow,
-    "gray":       $gray-600,
-    "gray4":       $gray-400,
-    "gray-dark":  $teal,
-    "aswhite": $aswhite,
-    "blueas": $blueas
+    "dark":       $dark
 );
 // scss-docs-end theme-colors-map
 
@@ -583,7 +568,6 @@ $small-font-size:             80%;
 
 $sub-sup-font-size:           .75em;
 $text-muted:                  $gray-600;
-$text-dark:                   $teal;
 
 $initialism-font-size:        $small-font-size;
 

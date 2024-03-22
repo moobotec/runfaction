@@ -2,46 +2,13 @@
 // _header.scss
 // 
 
-#page-topbar{
+#page-topbar {
     position: fixed;
     top: 0;
     right: 0;
     left: 0;
     z-index: 1002;
     background-color: $header-bg;
-    box-shadow: $box-shadow;
-    border-top: 4px solid $as;
-}
-
-#page-topbar-as {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 1002;
-    background-color: $header-bg;
-    box-shadow: $box-shadow;
-    border-top: 4px solid $as;
-}
-
-#page-topbar-aide {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 1002;
-    background-color: $header-bg;
-    box-shadow: $box-shadow;
-    border-top: 4px solid $blueas;
-}
-
-#page-topbar-guest {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 1002;
-    background-color: $header-bg-2;
     box-shadow: $box-shadow;
 }
 
@@ -59,16 +26,6 @@
             background-color: $gray-100;
         }
     }
-}
-
-.navbar-header-2 {
-    display: flex;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 auto;
-    height: $header-height-2;
-    padding: 0 calc(#{$grid-gutter-width} / 2) 0 0 /*rtl: 0 0 0 calc(#{$grid-gutter-width} / 2) */;
 }
 
 .navbar-brand-box {
@@ -227,12 +184,6 @@
 
 body[data-topbar="dark"] {
     #page-topbar { 
-        background-color: $header-dark-bg;
-    }
-    #page-topbar-as { 
-        background-color: $header-dark-bg;
-    }
-    #page-topbar-aide { 
         background-color: $header-dark-bg;
     }
     .navbar-header {
