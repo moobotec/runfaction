@@ -19,18 +19,18 @@ File: Main Js File
     function setLanguage(lang) {
         if (document.getElementById("header-lang-img")) {
             if (lang == 'en') {
-                document.getElementById("header-lang-img").src = "assets/images/flags/us.jpg";
+                document.getElementById("header-lang-img").src = "themes/runfaction/assets/images/flags/us.jpg";
             } else if (lang == 'sp') {
-                document.getElementById("header-lang-img").src = "assets/images/flags/spain.jpg";
+                document.getElementById("header-lang-img").src = "themes/runfaction/assets/images/flags/spain.jpg";
             }
             else if (lang == 'gr') {
-                document.getElementById("header-lang-img").src = "assets/images/flags/germany.jpg";
+                document.getElementById("header-lang-img").src = "themes/runfaction/assets/images/flags/germany.jpg";
             }
             else if (lang == 'it') {
-                document.getElementById("header-lang-img").src = "assets/images/flags/italy.jpg";
+                document.getElementById("header-lang-img").src = "themes/runfaction/assets/images/flags/italy.jpg";
             }
             else if (lang == 'ru') {
-                document.getElementById("header-lang-img").src = "assets/images/flags/russia.jpg";
+                document.getElementById("header-lang-img").src = "themes/runfaction/assets/images/flags/russia.jpg";
             }
             localStorage.setItem('language', lang);
             language = localStorage.getItem('language');
@@ -246,31 +246,31 @@ File: Main Js File
             $("#dark-mode-switch").prop("checked", false);
             $("#rtl-mode-switch").prop("checked", false);
             $("#dark-rtl-mode-switch").prop("checked", false);
-            $("#bootstrap-style").attr('href', 'assets/css/bootstrap.min.css');
-            $("#app-style").attr('href', 'assets/css/app.min.css');
+            $("#bootstrap-style").attr('href', 'themes/runfaction/assets/css/bootstrap.min.css');
+            $("#app-style").attr('href', 'themes/runfaction/assets/css/app.min.css');
             sessionStorage.setItem("is_visited", "light-mode-switch");
         } else if ($("#dark-mode-switch").prop("checked") == true && id === "dark-mode-switch") {
             $("html").removeAttr("dir");
             $("#light-mode-switch").prop("checked", false);
             $("#rtl-mode-switch").prop("checked", false);
             $("#dark-rtl-mode-switch").prop("checked", false);
-            $("#bootstrap-style").attr('href', 'assets/css/bootstrap-dark.min.css');
-            $("#app-style").attr('href', 'assets/css/app-dark.min.css');
+            $("#bootstrap-style").attr('href', 'themes/runfaction/assets/css/bootstrap-dark.min.css');
+            $("#app-style").attr('href', 'themes/runfaction/assets/css/app-dark.min.css');
             sessionStorage.setItem("is_visited", "dark-mode-switch");
         } else if ($("#rtl-mode-switch").prop("checked") == true && id === "rtl-mode-switch") {
             $("#light-mode-switch").prop("checked", false);
             $("#dark-mode-switch").prop("checked", false);
             $("#dark-rtl-mode-switch").prop("checked", false);
-            $("#bootstrap-style").attr('href', 'assets/css/bootstrap-rtl.min.css');
-            $("#app-style").attr('href', 'assets/css/app-rtl.min.css');
+            $("#bootstrap-style").attr('href', 'themes/runfaction/assets/css/bootstrap-rtl.min.css');
+            $("#app-style").attr('href', 'themes/runfaction/assets/css/app-rtl.min.css');
             $("html").attr("dir", 'rtl');
             sessionStorage.setItem("is_visited", "rtl-mode-switch");
         } else if ($("#dark-rtl-mode-switch").prop("checked") == true && id === "dark-rtl-mode-switch") {
             $("#light-mode-switch").prop("checked", false);
             $("#rtl-mode-switch").prop("checked", false);
             $("#dark-mode-switch").prop("checked", false);
-            $("#bootstrap-style").attr('href', 'assets/css/bootstrap-dark-rtl.min.css');
-            $("#app-style").attr('href', 'assets/css/app-dark-rtl.min.css');
+            $("#bootstrap-style").attr('href', 'themes/runfaction/assets/css/bootstrap-dark-rtl.min.css');
+            $("#app-style").attr('href', 'themes/runfaction/assets/css/app-dark-rtl.min.css');
             $("html").attr("dir", 'rtl');
             sessionStorage.setItem("is_visited", "dark-rtl-mode-switch");
         }
