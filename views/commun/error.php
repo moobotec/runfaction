@@ -5,7 +5,7 @@
    =
    =  PROJET:  Prototype V1.0 
    =
-   =  FICHIER: 404.php
+   =  FICHIER: error.php
    =
    =  VERSION: 1.0.0
    =
@@ -31,7 +31,7 @@ $level = $this->prop('level', [
 
 global $param_lang;
 global $param_title;
-$pages = "commun/404";
+$pages = "commun/error";
 
 Component::create('layout/boxed')->assign([
   'title' => $param_title,
@@ -40,6 +40,6 @@ Component::create('layout/boxed')->assign([
 ])->print();
 
 //compoment create by theme
-Portal::send('contents-main',Component::create('content/page/404') );
+Portal::send('contents-main',Component::create('content/page/error') );
 
 ?>

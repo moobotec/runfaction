@@ -68,13 +68,14 @@ hr.light {
         <div class="auth-full-page-content p-md-5 p-4">
             <div class="w-100">
                 <div class="d-flex flex-column h-100">
+                    
                     <?=Component::create('content/objet/auth-logo')->assign(['div-class' => "mb-4 mb-md-5", 'mx-auto' => false]) ?>
 
                     <div class="my-auto">
-                        <div>
-                            <h5 class="text-primary">Changement de mot de passe !</h5>
-                            <p class="text-muted">Je voudrais le changer par ...</p>
-                        </div>
+
+                        <?=Component::create('content/objet/auth-title')->assign(['title' => "Changement de mot de passe !", 
+                                                                                'subtitle' => "Je voudrais le changer par ..."]) ?>
+
                         <div class="mt-4">
                             <form action="" method="" onsubmit="resetPassword(); return false;">
             
@@ -113,7 +114,7 @@ hr.light {
                     </div>
 
                     <?=Component::create('content/objet/auth-copyright')->assign(['div-class' => "mt-4 mt-md-5 text-center"]) ?>
-                    
+
                 </div>
             </div>
         </div>

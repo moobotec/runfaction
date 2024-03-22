@@ -54,10 +54,8 @@ use Steampixel\Component;
 
                     <div class="my-auto">
                         
-                        <div>
-                            <h5 class="text-primary">Content de vous revoir !</h5>
-                            <p class="text-muted">Connectez-vous pour démarrer votre session.</p>
-                        </div>
+                        <?=Component::create('content/objet/auth-title')->assign(['title' => "Content de vous revoir !", 
+                                                                                'subtitle' => "Connectez-vous pour démarrer votre session."]) ?>
 
                         <div class="mt-4">
                             <form action="" method="" onsubmit="loginUser(); return false;">

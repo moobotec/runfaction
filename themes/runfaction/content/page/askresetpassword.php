@@ -50,10 +50,10 @@ use Steampixel\Component;
                 <div class="d-flex flex-column h-100">
                     <?=Component::create('content/objet/auth-logo')->assign(['div-class' => "mb-4 mb-md-5", 'mx-auto' => false]) ?>
                     <div class="my-auto">
-                        <div>
-                            <h5 class="text-primary">Mot de passe oublié !</h5>
-                            <p class="text-muted">Entrez votre adresse email afin que les instructions vous soient envoyées.</p>
-                        </div>
+
+                        <?=Component::create('content/objet/auth-title')->assign(['title' => "Mot de passe oublié !", 
+                                                                                'subtitle' => "Entrez votre adresse email afin que les instructions vous soient envoyées."]) ?>
+
                         <div class="mt-4">
                             <form action="" method="" onsubmit="askResetPassword(); return false;">
                                 <div class="mb-3">

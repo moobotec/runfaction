@@ -5,7 +5,7 @@
    =
    =  PROJET:  Prototype V1.0 
    =
-   =  FICHIER: 404.php
+   =  FICHIER: auth-title.php
    =
    =  VERSION: 1.0.0
    =
@@ -17,29 +17,24 @@
    =
    =  INTERVENTION:
    =
-   =    * 21/03/2024 : David DAUMAND
+   =    * 22/03/2024 : David DAUMAND
    =        Creation du module.
  * ========================================================================= */
 /** @file  */
 
-namespace Steampixel;
-// Get the component props
-$level = $this->prop('level', [
-  'type' => 'string',
-  'required' => true
+$title = $this->prop('title', [
+    'type' => 'string',
+    'required' => true
 ]);
 
-global $param_lang;
-global $param_title;
-$pages = "commun/404";
-
-Component::create('layout/boxed')->assign([
-  'title' => $param_title,
-  'lang' =>  strtolower($param_lang),
-  'pages' =>  $pages
-])->print();
-
-//compoment create by theme
-Portal::send('contents-main',Component::create('content/page/404') );
+$subtitle = $this->prop('subtitle', [
+    'type' => 'string',
+    'required' => true
+]);
 
 ?>
+
+<div>
+    <h5 class="text-primary"><?=$title ?></h5>
+    <p class="text-muted"><?=$subtitle ?></p>
+</div>

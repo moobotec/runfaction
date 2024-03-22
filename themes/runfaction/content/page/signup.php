@@ -78,8 +78,10 @@ hr.light {
                             <form action="" method="" onsubmit="createUser(); return false;">
                                 <div id="step1" style="display:block">
                                     <div id="boxMsg" style="display:block">
-                                        <h5 class="text-primary">Je m'inscris en tant que ...</h5>
-                                        <p class="text-muted">Faites votre choix parmis c'est trois propositions.</p>
+
+                                        <?=Component::create('content/objet/auth-title')->assign(['title' => "Je m'inscris en tant que ...", 
+                                                                                                    'subtitle' => "Faites votre choix parmis c'est trois propositions."]) ?>
+
                                     </div>
                                     <hr>
                                     <div class="text-center">
@@ -110,8 +112,10 @@ hr.light {
                                 </div>
                                 <div id="step2" style="display:none">
                                     <div id="boxMsg" style="display:block">
-                                        <h5 class="text-primary">Et je remplis le formulaire ...</h5>
-                                        <p class="text-muted">Veuillez renseigner quelques informations pour compléter votre inscription.</p>
+
+                                        <?=Component::create('content/objet/auth-title')->assign(['title' => "Et je remplis le formulaire ...", 
+                                                                                                    'subtitle' => "Veuillez renseigner quelques informations pour compléter votre inscription."]) ?>
+
                                     </div>
                                     <hr>
                                     <div id="block_name_user" style="display:none">
