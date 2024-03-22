@@ -26,7 +26,7 @@ namespace Steampixel;
 
 global $param_lang;
 global $param_title;
-$pages = "guest";
+$pages = "guest/askresetpassword";
 
 Component::create('layout/boxed')->assign([
   'title' => $param_title,

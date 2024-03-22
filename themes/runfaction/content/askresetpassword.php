@@ -1,4 +1,3 @@
-
 <?php
 /* =========================================================================
    =
@@ -6,7 +5,7 @@
    =
    =  PROJET:  Prototype V1.0 
    =
-   =  FICHIER: signin.php
+   =  FICHIER: askresetpassword.php
    =
    =  VERSION: 1.0.0
    =
@@ -22,6 +21,9 @@
    =        Creation du module.
  * ========================================================================= */
 /** @file  */
+
+use Steampixel\Component;
+
 ?>
 
 <style>
@@ -85,12 +87,7 @@
         <div class="auth-full-page-content p-md-5 p-4">
             <div class="w-100">
                 <div class="d-flex flex-column h-100">
-                    <div class="mb-4 mb-md-5">
-                        <a href="#" class="d-block auth-logo">
-                        <?php echo '<img src="'.BASEPATH.'themes/runfaction/assets/images/logo-dark.png" alt="" height="32" class="auth-logo-dark">' ?>
-                        <?php echo '<img src="'.BASEPATH.'themes/runfaction/assets/images/logo-light.png" alt="" height="18" class="auth-logo-light">' ?>
-                        </a>
-                    </div>
+                    <?=Component::create('content/auth-logo')->assign(['div-class' => "mb-4 mb-md-5", 'mx-auto' => false]) ?>
                     <div class="my-auto">
                         <div>
                             <h5 class="text-primary">Mot de passe oublié !</h5>

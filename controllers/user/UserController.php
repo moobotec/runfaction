@@ -1614,17 +1614,17 @@ class UserController extends BaseClass
                 'lastname' => $user->lastname,
                 'insertdate' => Carbon::createFromTimestamp($user->insertdate, 'UTC')->locale('fr_FR')->setTimezone('Europe/Paris')->format('d/m/Y H:i:s'));
 
-            $liste = array(
+            /*$liste = array(
                 "Grimpe sur le podium de la plateforme qui te propulse vers le succès, champion !",
                 "Prépare-toi à faire un sprint vers le succès sur cette piste qui te soutient à fond !",
                 "Enfile tes baskets et rejoins la course vers la plateforme qui te booste vers le sommet !",
                 "Surf sur la vague de la plateforme qui te donne l'impulsion pour atteindre tes objectifs !"
-            );
+            );*/
 
             $response["redirection"] = array( 
                 'url' => BASEPATH,
                 'type' => 'none',
-                'msg' => $liste[array_rand($liste)]);
+                'msg' => ''/*$liste[array_rand($liste)]*/);
         }
 
         return_json_http_response(true,$response);

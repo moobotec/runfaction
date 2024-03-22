@@ -35,7 +35,7 @@ echo '<script src="'.BASEPATH.'themes/runfaction/assets/libs/jquery/jquery.min.j
 <script src="'.BASEPATH.'themes/runfaction/assets/libs/toastr/build/toastr.min.js"></script>
 <script src="'.BASEPATH.'themes/runfaction/assets/libs/axios/js/axios.min.js"></script>';
 
-if ($pages == "guest")
+if (str_contains($pages,"guest"))
 {
     echo '<!-- owl.carousel js -->
     <script src="'.BASEPATH.'themes/runfaction/assets/libs/owl.carousel/owl.carousel.min.js"></script>
@@ -46,7 +46,7 @@ if ($pages == "guest")
 echo '<!-- Base js -->
 <script src="'.BASEPATH.'themes/runfaction/assets/js/base.js?='.time().'"></script>';
 
-if ($pages == "guest")
+if (str_contains($pages,"guest"))
 {
   echo '<!-- Base js -->
   <script src="'.BASEPATH.'themes/runfaction/assets/js/guest.js?='.time().'"></script>';

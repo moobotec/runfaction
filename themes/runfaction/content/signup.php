@@ -22,6 +22,8 @@
    =        Creation du module.
  * ========================================================================= */
 /** @file  */
+use Steampixel\Component;
+
 ?>
 
 <style>
@@ -101,17 +103,15 @@ hr.light {
         </div>
     </div>
     <!-- end col -->
-
+    
     <div class="col-xl-3">
         <div class="auth-full-page-content p-md-5 p-4">
             <div class="w-100">
                 <div class="d-flex flex-column h-100">
-                    <div class="mb-4 mb-md-5">
-                        <a href="#" class="d-block auth-logo">
-                        <?php echo '<img src="'.BASEPATH.'themes/runfaction/assets/images/logo-dark.png" alt="" height="32" class="auth-logo-dark">' ?>
-                        <?php echo '<img src="'.BASEPATH.'themes/runfaction/assets/images/logo-light.png" alt="" height="18" class="auth-logo-light">' ?>
-                        </a>
-                    </div>
+
+                    <?=Component::create('content/auth-logo')->assign(['div-class' => "mb-4 mb-md-5", 'mx-auto' => false]) ?>
+
+                    
                     <div class="my-auto">
                         <div class="mt-4">
                             <form action="" method="" onsubmit="createUser(); return false;">
@@ -220,11 +220,11 @@ hr.light {
                                     <div class="text-center mb-3">
                                         <div class="row pt-2">
                                             <div class="col-6">
-                                                <button type="button" id="btnTypeRedo" class="btn btn-light waves-effect waves-light"><i class="fas fa-undo"></i> Retour</button>
+                                                <button type="button" id="btnTypeRedo" class="btn btn-light btn-sm waves-effect waves-light"><i class="fas fa-undo"></i> Retour</button>
                                             </div>
                                             <!-- /.col -->
                                             <div class="col-6">
-                                                <button type="submit" class="btn btn-primary waves-effect waves-light"><i style="color: #00f791;" class="fas fa-check-circle"></i> M'inscrire</button>
+                                                <button type="submit" class="btn btn-primary btn-sm waves-effect waves-light"><i style="color: #00f791;" class="fas fa-check-circle"></i> M'inscrire</button>
                                             </div>
                                         <!-- /.col -->
                                         </div>

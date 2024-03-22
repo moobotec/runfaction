@@ -46,7 +46,15 @@ $pages = $this->prop('pages', [
     <?=Component::create('partials/meta')->render() ?>
     <?=Component::create('partials/style')->assign(['pages'=>$pages])->render() ?>
   </head>
-  <?php if( $pages == "guest") { echo '<body class="auth-body-bg">'; } else { echo '<body>'; } ?>
+  <?php 
+   if ($pages == "guest/signin" 
+   || $pages == "guest/askresetpassword" 
+   || $pages == "guest/signup" 
+   || $pages == "guest/reset" )
+   {
+      echo '<body class="auth-body-bg">';
+   }
+   else { echo '<body>'; }  ?>
     <div>
       <div class="container-fluid p-0">
         <?=Component::create('partials/content') ?>
@@ -54,5 +62,6 @@ $pages = $this->prop('pages', [
     </div>
     <?=Component::create('partials/variables')->render() ?>
     <?=Component::create('partials/javascript')->assign(['pages'=>$pages])->render() ?>
+    <?=Component::create('partials/execution')->assign(['pages'=>$pages])->render() ?>
   </body>
 </html>

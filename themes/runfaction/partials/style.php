@@ -30,7 +30,7 @@ $pages = $this->prop('pages', [
 echo '<!-- App favicon -->
 <link rel="icon" sizes="any" type="image/x-icon" href="'.BASEPATH.'themes/runfaction/assets/images/favicon.ico">';
 
-if ($pages == "guest")
+if (str_contains($pages,"guest"))
 {
     echo '<!-- owl.carousel css -->
     <link rel="stylesheet" href="'.BASEPATH.'themes/runfaction/assets/libs/owl.carousel/assets/owl.carousel.min.css">
