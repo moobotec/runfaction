@@ -42,6 +42,28 @@ if (str_contains($pages,"guest"))
     <!-- auth-2-carousel init -->
     <script src="'.BASEPATH.'themes/runfaction/assets/js/pages/auth-2-carousel.init.js"></script>';
 }
+else
+{
+    echo '<!-- jquery-validation -->
+    <script src="'.BASEPATH.'themes/runfaction/assets/libs/jquery-validation/jquery.validate.min.js"></script>
+    <script src="'.BASEPATH.'themes/runfaction/assets/libs/jquery-validation/additional-methods.min.js"></script>';
+
+    echo '<script src="'.BASEPATH.'themes/runfaction/assets/libs/datatables.net/js/dataTables.min.js"></script>
+    <script src="'.BASEPATH.'themes/runfaction/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="'.BASEPATH.'themes/runfaction/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="'.BASEPATH.'themes/runfaction/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="'.BASEPATH.'themes/runfaction/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="'.BASEPATH.'themes/runfaction/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="'.BASEPATH.'themes/runfaction/assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="'.BASEPATH.'themes/runfaction/assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+    <script src="'.BASEPATH.'themes/runfaction/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>';
+
+    echo '<script src="'.BASEPATH.'themes/runfaction/assets/libs/moment/moment.js"></script>';
+
+    echo '<!-- Select2 -->
+    <script src="'.BASEPATH.'themes/runfaction/assets/libs/select2/js/select2.full.min.js"></script>';
+
+}
 
 echo '<!-- Base js -->
 <script src="'.BASEPATH.'themes/runfaction/assets/js/base.js?='.time().'"></script>';
@@ -53,6 +75,13 @@ if (str_contains($pages,"guest"))
 }
 else
 {
+
+  if (str_contains($pages,"admin"))
+  {
+    echo '<!-- Base js -->
+    <script src="'.BASEPATH.'themes/runfaction/assets/js/admin.js?='.time().'"></script>';
+  }
+
   echo '<!-- Base js -->
   <script src="'.BASEPATH.'themes/runfaction/assets/js/moobotec.js?='.time().'"></script>';
 }
