@@ -21,4 +21,21 @@
    =        Creation du module.
  * ========================================================================= */
 /** @file  */
+
+namespace Steampixel;
+
+global $param_lang;
+global $param_title;
+$pages = "admin/main";
+
+Component::create('layout/sidebar')->assign([
+  'title' => $param_title,
+  'lang' =>  strtolower($param_lang),
+  'pages' =>  $pages,
+  'data-sidebar' =>  "dark"
+])->print();
+
+//compoment create by theme
+Portal::send('contents-main',Component::create('content/page/'.$pages.'') );
+
 ?>

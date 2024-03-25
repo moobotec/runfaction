@@ -5,7 +5,7 @@
    =
    =  PROJET:  Prototype V1.0 
    =
-   =  FICHIER: reset.php
+   =  FICHIER: settings.php
    =
    =  VERSION: 1.0.0
    =
@@ -21,17 +21,17 @@
    =        Creation du module.
  * ========================================================================= */
 /** @file  */
-
 namespace Steampixel;
 
 global $param_lang;
 global $param_title;
-$pages = "guest/reset";
+$pages = "commun/settings";
 
-Component::create('layout/boxed')->assign([
+Component::create('layout/sidebar')->assign([
   'title' => $param_title,
   'lang' =>  strtolower($param_lang),
-  'pages' =>  $pages
+  'pages' =>  $pages,
+  'data-sidebar' =>  "dark"
 ])->print();
 
 //compoment create by theme

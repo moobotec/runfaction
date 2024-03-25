@@ -39,6 +39,15 @@ Route::add('/profil.php', function() {
     Component::create('commun/user/profil')->print();
 });
 
+Route::add('/runs.php', function() {
+    Component::create('commun/runs')->print();
+});
+
+Route::add('/events.php', function() {
+    Component::create('commun/events')->print();
+});
+
+
 Route::add('/admin/main.php', function() {
     Component::create('admin/main')->print();
 });

@@ -40,6 +40,6 @@ Component::create('layout/boxed')->assign([
 ])->print();
 
 //compoment create by theme
-Portal::send('contents-main',Component::create('content/page/404') );
+Portal::send('contents-main',Component::create('content/page/'.$pages.'') );
 
 ?>

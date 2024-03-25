@@ -35,6 +35,6 @@ Component::create('layout/boxed')->assign([
 ])->print();
 
 //compoment create by theme
-Portal::send('contents-main',Component::create('content/page/askresetpassword') );
+Portal::send('contents-main',Component::create('content/page/'.$pages.'') );
 
 ?>

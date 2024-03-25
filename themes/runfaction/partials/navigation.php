@@ -43,15 +43,17 @@ $pages = $this->prop('pages', [
 
                 <?=Component::create('content/objet/menu-link')->assign(['title' => "Tableau de bord" , 'icon' => "bx-home-circle" , 'page' => "" , 'active' => ($pages == "commun/index")  ]) ?>
 
-                <?=Component::create('content/objet/menu-link')->assign(['title' => "Evènements sportif" , 'icon' => "bx-layout" , 'page' => "events.php" ]) ?>
+                <?=Component::create('content/objet/menu-link')->assign(['title' => "Evènements sportif" , 'icon' => "bx-news" , 'page' => "events.php" ]) ?>
 
-                <?=Component::create('content/objet/menu-link')->assign(['title' => "Courses" , 'icon' => "bx-layout" , 'page' => "runs.php" ]) ?>
+                <?=Component::create('content/objet/menu-link')->assign(['title' => "Mes courses" , 'icon' => "bx-run" , 'page' => "runs.php" ]) ?>
 
                 <?=Component::create('content/objet/menu-title')->assign(['title' => "Administration"]) ?>
 
                 <?=Component::create('content/objet/menu-link')->assign(['title' => "Tableau de bord" , 'icon' => "bx-home-circle" , 'page' => "admin/main.php" , 'active' => ($pages == "admin/main")  ]) ?>
 
-                <?=Component::create('content/objet/menu-link')->assign(['title' => "Utilisateurs" , 'icon' => "bx-layout" , 'page' => "admin/users.php" , 'active' => ($pages == "admin/users")  ]) ?>
+                <?=Component::create('content/objet/menu-link')->assign(['title' => "Utilisateurs" , 'icon' => "bx-group" , 'page' => "admin/users.php" , 'active' => ($pages == "admin/users")  ]) ?>
+
+                <?=Component::create('content/objet/menu-link')->assign(['title' => "Paramètres" , 'icon' => "bx-wrench" , 'page' => "admin/settings.php" , 'active' => ($pages == "admin/settings")  ]) ?>
 
             </ul>
         </div>
