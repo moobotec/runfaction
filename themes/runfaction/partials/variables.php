@@ -5,7 +5,7 @@
    =
    =  PROJET:  Prototype V1.0 
    =
-   =  FICHIER: title.php
+   =  FICHIER: variables.php
    =
    =  VERSION: 1.0.0
    =
