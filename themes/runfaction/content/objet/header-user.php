@@ -39,14 +39,14 @@ $firstname = $this->prop('firstname', [
     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <img class="rounded-circle header-profile-user" src="<?php echo ''.BASEPATH.'themes/runfaction/assets/images/users/avatar-1.jpg';?>"
             alt="Header Avatar">
-        <span class="d-none d-xl-inline-block ms-1" key="t-henry"><?=$firstname ?> <?=$name ?></span>
+        <span class="d-none d-xl-inline-block ms-1" key="t-name"><?=$firstname ?> <?=$name ?></span>
         <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
     </button>
     <div class="dropdown-menu dropdown-menu-end">
         <!-- item-->
-        <a class="dropdown-item" href="<?php echo ''.BASEPATH.'profil.php';?>"><i class="bx bx-user font-size-16 align-middle me-1"></i> <span key="t-profile">Profil</span></a>
+        <a class="dropdown-item" href="#" onclick="javascipt:show_user_profil()"><i class="bx bx-user font-size-16 align-middle me-1"></i> <span key="t-profile">Gestion du compte</span></a>
         <a class="dropdown-item d-block" href="<?php echo ''.BASEPATH.'settings.php';?>"><span class="badge bg-success float-end mx-1">11</span><i class="bx bx-wrench font-size-16 align-middle me-1"></i> <span key="t-settings">Paramètres</span></a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item text-danger" href="<?php echo ''.BASEPATH.'logout.php';?>"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span key="t-logout">Déconnexion</span></a>
+        <a class="dropdown-item text-danger" href="#" onclick="javascipt:deconnexion_user()"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span key="t-logout">Déconnexion</span></a>
     </div>
 </div>

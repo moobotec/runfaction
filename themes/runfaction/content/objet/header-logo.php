@@ -29,7 +29,7 @@
             <img src="<?php echo ''.BASEPATH.'themes/runfaction/assets/images/logo.svg';?>" alt="" height="22">
         </span>
         <span class="logo-lg">
-            <img src="<?php echo ''.BASEPATH.'themes/runfaction/assets/images/logo-dark.png';?>" alt="" height="17">
+            <img src="<?php echo ''.BASEPATH.'themes/runfaction/assets/images/logo-dark.png';?>" alt="" height="32">
         </span>
     </a>
 

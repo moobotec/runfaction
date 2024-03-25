@@ -51,6 +51,11 @@ if (str_contains($pages,"guest"))
   echo '<!-- Base js -->
   <script src="'.BASEPATH.'themes/runfaction/assets/js/guest.js?='.time().'"></script>';
 }
+else
+{
+  echo '<!-- Base js -->
+  <script src="'.BASEPATH.'themes/runfaction/assets/js/moobotec.js?='.time().'"></script>';
+}
 
 echo '<!-- App js -->
 <script src="'.BASEPATH.'themes/runfaction/assets/js/app.js?='.time().'"></script>';
