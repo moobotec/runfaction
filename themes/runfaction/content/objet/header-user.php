@@ -37,8 +37,18 @@ $firstname = $this->prop('firstname', [
 <div class="dropdown d-inline-block">
     <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <img class="rounded-circle header-profile-user" src="<?php echo ''.BASEPATH.'themes/runfaction/assets/images/users/avatar-1.jpg';?>"
-            alt="Header Avatar">
+        
+    <?php
+        if ( $firstname != null &&  $name != null )
+        {         
+            echo '<div class="d-inline-block avatar-xs"><span class="avatar-title rounded-circle">'.strtoupper($firstname)[0].strtoupper($name)[0].'</span></div>'; 
+        }
+        else
+        {
+            echo '<img class="rounded-circle header-profile-user" src="'.BASEPATH.'themes/runfaction/assets/images/users/avatar-1.jpg" alt="Header Avatar">';
+        }
+    ?>
+    
         <span class="d-none d-xl-inline-block ms-1" key="t-name"><?=$firstname ?> <?=$name ?></span>
         <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
     </button>
