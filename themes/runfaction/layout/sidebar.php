@@ -71,7 +71,7 @@ $name = SessionMoobotec::getValueUserSession('name');
     <div id="layout-wrapper">
 
       <?=Component::create('partials/header')->assign(['name' => $name,'firstname' => $firstname , 'has-fullsceen' => true]) ?>
-      <?=Component::create('partials/navigation') ?>
+      <?=Component::create('partials/navigation')->assign(['pages'=>$pages]) ?>
 
       <div class="main-content">
           <div class="page-content">
