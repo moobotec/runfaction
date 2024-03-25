@@ -32,7 +32,7 @@ Component::create('layout/sidebar')->assign([
   'title' => $param_title,
   'lang' =>  strtolower($param_lang),
   'pages' =>  $pages,
-  'data-sidebar' =>  "light"
+  'data-sidebar' =>  "dark"
 ])->print();
 
 //compoment create by theme
