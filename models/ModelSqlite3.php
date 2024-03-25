@@ -207,7 +207,7 @@ abstract class ModelSqlite3 {
 
     /* Exemple
     array ( "value" => array ( 'name' => 'Daumand',
-        *       'lastname' => 'David'),
+        *       'firstname' => 'David'),
         *     "type" => array ( 'text', 'text'),
         */
     protected static function searchBy($arrayFieldValue,$limit, $orderBy) {

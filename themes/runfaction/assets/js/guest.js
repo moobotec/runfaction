@@ -21,7 +21,7 @@ $(document).ready(function () {
             $('#block_address').css("display","none");
             $('#block_mobile').css("display","none");
 
-            $('#user_lastname').attr("required","required");
+            $('#user_firstname').attr("required","required");
             $('#user_name').attr("required","required");
             $('#user_assoc_name').removeAttr("required");
             $('#user_address').removeAttr("required");
@@ -37,7 +37,7 @@ $(document).ready(function () {
             $('#block_address').css("display","none");
             $('#block_mobile').css("display","block");
 
-            $('#user_lastname').attr("required","required");
+            $('#user_firstname').attr("required","required");
             $('#user_name').attr("required","required");
             $('#user_assoc_name').removeAttr("required");
             $('#user_address').removeAttr("required");
@@ -53,7 +53,7 @@ $(document).ready(function () {
             $('#block_address').css("display","block");
             $('#block_mobile').css("display","block");
 
-            $('#user_lastname').removeAttr("required");
+            $('#user_firstname').removeAttr("required");
             $('#user_name').removeAttr("required");
             $('#user_assoc_name').attr("required","required");
             $('#user_address').attr("required","required");
@@ -188,7 +188,7 @@ function createUser()
 {   
     let dataPost = {
         user_type: select_user_type,
-        user_lastname:  $('#user_lastname').val(),
+        user_firstname:  $('#user_firstname').val(),
         user_name:  $('#user_name').val(),
         user_assoc_name: $('#user_assoc_name').val(),
         user_address_1:  $('#user_address').val(),

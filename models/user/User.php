@@ -45,7 +45,7 @@ class User extends ModelSqlite3
             'iduuid'     => SQLITE3_TEXT,
             'number'     => SQLITE3_TEXT,
             'name'    => SQLITE3_TEXT,
-            'lastname' => SQLITE3_TEXT,
+            'firstname' => SQLITE3_TEXT,
             'email' => SQLITE3_TEXT,
             'pseudo' => SQLITE3_TEXT,
             'password' => SQLITE3_TEXT,

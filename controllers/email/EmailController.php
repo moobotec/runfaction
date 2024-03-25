@@ -32,11 +32,11 @@ include_once("models/AbstractModelEmail.php");
  */
 class EmailController extends AbstractModelEmail
 {
-    public function sendSignupByEmail($email,$lastname,$iduuid,$codefirst,$password = "")
+    public function sendSignupByEmail($email,$firstname,$iduuid,$codefirst,$password = "")
     {
         $this->title = 'Bienvenue sur Run Faction !';
         $url = $this->path.'check.php/'. $iduuid.'/'. $codefirst;
-        $this->body = '<h5>Bonjour '.$lastname.' voici votre mail de validation. </h5><br> F&#233;licitations, votre compte a &#233;t&#233; cr&#233;&#233; 
+        $this->body = '<h5>Bonjour '.$firstname.' voici votre mail de validation. </h5><br> F&#233;licitations, votre compte a &#233;t&#233; cr&#233;&#233; 
         avec succ&#232;s ! Vous pouvez maintenant y acc&#233;der.<br> Pour cela, vous aurez besoin des informations suivantes : <br>
         <br><label>- Votre identifiant de connexion : <b>'.$email.'</b>  </label>
         <br>Vous pouvez changer les informations relatives &#224; votre compte ainsi que votre mot de passe dans la section "Compte".<br><br>

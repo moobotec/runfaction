@@ -940,7 +940,7 @@ class UserController extends BaseClass
         try {
             // ajouter un filtrage en fonction des parametres d'entree , pour cela utiliser $this->post;
             $arrayFieldValue = array("value" => array('name'=>$this->post['rc_searchName'],
-                                                        'lastname'=>$this->post['rc_searchLastName'],
+                                                        'firstname'=>$this->post['rc_searchFirstname'],
                                                         'idcategoryrole'=>$this->post['rc_searchRole'],
                                                         'idcategorystatus'=>$this->post['rc_searchState'],
                                                         'insertdate'=> array ( 'searchType'=>$this->post['rc_searchType'],
@@ -972,7 +972,7 @@ class UserController extends BaseClass
      *       'id' => 'M000001', 
      *       'uuid' => 'fa426a14-9e4c-11ee-8c90-0242ac120002',
      *       'name' => 'Daumand',
-     *       'lastname' => 'David',
+     *       'firstname' => 'David',
      *       'insertdate' => '19-12-2023 10:43:50',
      *       'hasModify' => true,
      *       'hasBanne' => true,
@@ -991,7 +991,7 @@ class UserController extends BaseClass
                 'number' => $user->number, 
                 'uuid' => $user->iduuid,
                 'name' => $user->name,
-                'lastname' => $user->lastname,
+                'firstname' => $user->firstname,
                 'insertdate' => Carbon::createFromTimestamp($user->insertdate, 'UTC')->locale('fr_FR')->setTimezone('Europe/Paris')->format('d/m/Y H:i:s'),
                 'hasModify' => User::HasModifyProcess($user->idcategorystatus),
                 'hasCancel' => User::HasCancelProcess($user->idcategorystatus),
@@ -1075,7 +1075,7 @@ class UserController extends BaseClass
                         {
                             SessionMoobotec::setConnectedUserSession($user->number);
                             SessionMoobotec::setValueUserSession('name',$user->name);
-                            SessionMoobotec::setValueUserSession('lastname',$user->lastname);
+                            SessionMoobotec::setValueUserSession('firstname',$user->firstname);
                             SessionMoobotec::setValueUserSession('iduuid',$user->iduuid);
                             SessionMoobotec::setValueUserSession('email',$user->email);
                             SessionMoobotec::setValueUserSession('level',$user->idcategoryrole);
@@ -1115,7 +1115,7 @@ class UserController extends BaseClass
                 'number' => $user->number, 
                 'uuid' => $user->iduuid,
                 'name' => $user->name,
-                'lastname' => $user->lastname,
+                'firstname' => $user->firstname,
                 'insertdate' => Carbon::createFromTimestamp($user->insertdate, 'UTC')->locale('fr_FR')->setTimezone('Europe/Paris')->format('d/m/Y H:i:s'),
                 'hasModify' => User::HasModifyProcess($user->idcategorystatus),
                 'hasCancel' => User::HasCancelProcess($user->idcategorystatus),
@@ -1188,7 +1188,7 @@ class UserController extends BaseClass
             if ( $user_type == "Sportif" )
             {
                 if ($this->post['user_name'] == null || $this->post['user_name']  == "" || strlen($this->post['user_name']) > 50 ||
-                $this->post['user_lastname'] == null || $this->post['user_lastname'] == "" || strlen($this->post['user_lastname']) > 50 ||
+                $this->post['user_firstname'] == null || $this->post['user_firstname'] == "" || strlen($this->post['user_firstname']) > 50 ||
                 $this->post['user_email'] == null || $this->post['user_email'] == "" ||
                 $this->post['user_password']  == null || $this->post['user_password'] == "" ) 
                 {
@@ -1198,7 +1198,7 @@ class UserController extends BaseClass
             else if ( $user_type == "Entraineur" )
             {
                 if ($this->post['user_name'] == null || $this->post['user_name']  == "" || strlen($this->post['user_name']) > 50 ||
-                $this->post['user_lastname'] == null || $this->post['user_lastname'] == "" || strlen($this->post['user_lastname']) > 50 ||
+                $this->post['user_firstname'] == null || $this->post['user_firstname'] == "" || strlen($this->post['user_firstname']) > 50 ||
                 $this->post['user_email'] == null || $this->post['user_email'] == "" ||
                 $this->post['user_telephone'] == null || $this->post['user_telephone'] == "" ||
                 $this->post['user_password']  == null || $this->post['user_password'] == "" ) 
@@ -1234,7 +1234,7 @@ class UserController extends BaseClass
                     /***************************************/
                     /* Ajout du nom de l'association dans le champs name de user */
                     /***************************************/
-                    $this->post["user_lastname"] = null;
+                    $this->post["user_firstname"] = null;
                     $this->post["user_name"] = $user_assoc_name;
                     /***************************************/
                 }
@@ -1382,12 +1382,12 @@ class UserController extends BaseClass
                 'number' => $user->number, 
                 'uuid' => $user->iduuid,
                 'name' => $user->name,
-                'lastname' => $user->lastname,
+                'firstname' => $user->firstname,
                 'insertdate' => Carbon::createFromTimestamp($user->insertdate, 'UTC')->locale('fr_FR')->setTimezone('Europe/Paris')->format('d/m/Y H:i:s'));
         
             $controllerMail = new EmailController();
 
-            $nameEmail = (!isset($user->lastname) && !empty($user->lastname)? $user->lastname:$user->name) ;
+            $nameEmail = (!isset($user->firstname) && !empty($user->firstname)? $user->firstname:$user->name) ;
 
             $controllerMail->sendSignupByEmail($user->email,$nameEmail,$user->iduuid,$user->codefirst);
 
@@ -1508,10 +1508,10 @@ class UserController extends BaseClass
                 'number' => $user->number, 
                 'uuid' => $user->iduuid,
                 'name' => $user->name,
-                'lastname' => $user->lastname,
+                'firstname' => $user->firstname,
                 'insertdate' => Carbon::createFromTimestamp($user->insertdate, 'UTC')->locale('fr_FR')->setTimezone('Europe/Paris')->format('d/m/Y H:i:s'));
 
-            $nameEmail = (!isset($user->lastname) && !empty($user->lastname)? $user->lastname:$user->name) ;
+            $nameEmail = (!isset($user->firstname) && !empty($user->firstname)? $user->firstname:$user->name) ;
 
             $controllerMail = new EmailController();
             $controllerMail->sendSignupByEmail($user->email,$nameEmail,$user->iduuid,$user->codefirst);
@@ -1564,7 +1564,7 @@ class UserController extends BaseClass
                                 {
                                     SessionMoobotec::setConnectedUserSession($user->number);
                                     SessionMoobotec::setValueUserSession('name',$user->name);
-                                    SessionMoobotec::setValueUserSession('lastname',$user->lastname);
+                                    SessionMoobotec::setValueUserSession('firstname',$user->firstname);
                                     SessionMoobotec::setValueUserSession('iduuid',$user->iduuid);
                                     SessionMoobotec::setValueUserSession('email',$user->email);
                                     SessionMoobotec::setValueUserSession('level',$user->idcategoryrole);
@@ -1611,7 +1611,7 @@ class UserController extends BaseClass
                 'number' => $user->number, 
                 'uuid' => $user->iduuid,
                 'name' => $user->name,
-                'lastname' => $user->lastname,
+                'firstname' => $user->firstname,
                 'insertdate' => Carbon::createFromTimestamp($user->insertdate, 'UTC')->locale('fr_FR')->setTimezone('Europe/Paris')->format('d/m/Y H:i:s'));
 
             /*$liste = array(

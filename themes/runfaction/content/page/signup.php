@@ -121,7 +121,7 @@ hr.light {
                                     <div id="block_name_user" style="display:none">
                                         <div class="mb-3">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" id="user_lastname" name="user_lastname" placeholder="Prénom" value="Henri" maxlength="50" autocomplete="given-name">
+                                                <input type="text" class="form-control" id="user_firstname" name="user_firstname" placeholder="Prénom" value="Henri" maxlength="50" autocomplete="given-name">
                                                 <input type="text" class="form-control" id="user_name" name="user_name" placeholder="Nom" value="LaTuche" maxlength="50" autocomplete="family-name">
                                                 <div class="btn btn-light" type="button" ><i class="mdi mdi-account-outline"></i></div>
                                             </div>

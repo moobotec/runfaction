@@ -23,6 +23,14 @@
  * ========================================================================= */
 /** @file  */
 namespace Steampixel;
+use RunFaction\SessionMoobotec;
+
+if ( empty($_SESSION['authenticated']) || $_SESSION['authenticated'] == "" )
+{
+    header("Location: /404.php");
+    exit();
+}
+
 // Get the component props
 $lang = $this->prop('lang', [
   'type' => 'string',
@@ -44,11 +52,9 @@ $dataSidebar = $this->prop('data-sidebar', [
   'required' => true
 ]);
 
-if ( empty($_SESSION['authenticated']) || $_SESSION['authenticated'] == "" )
-{
-    header("Location: /404.php");
-    exit();
-}
+
+$firstname = SessionMoobotec::getValueUserSession('firstname');
+$name = SessionMoobotec::getValueUserSession('name');
 
 ?>
 
@@ -64,7 +70,7 @@ if ( empty($_SESSION['authenticated']) || $_SESSION['authenticated'] == "" )
 
     <div id="layout-wrapper">
 
-      <?=Component::create('partials/header') ?>
+      <?=Component::create('partials/header')->assign(['name' => $name,'firstname' => $firstname , 'has-fullsceen' => true]) ?>
       <?=Component::create('partials/navigation') ?>
 
       <div class="main-content">
@@ -76,9 +82,9 @@ if ( empty($_SESSION['authenticated']) || $_SESSION['authenticated'] == "" )
       </div>
 
     </div>
-    <?=Component::create('partials/rightbar')->render() ?>
-    <?=Component::create('partials/variables')->render() ?>
-    <?=Component::create('partials/javascript')->assign(['pages'=>$pages])->render() ?>
-    <?=Component::create('partials/execution')->assign(['pages'=>$pages])->render() ?>
+    <?=Component::create('partials/rightbar') ?>
+    <?=Component::create('partials/variables') ?>
+    <?=Component::create('partials/javascript')->assign(['pages'=>$pages]) ?>
+    <?=Component::create('partials/execution')->assign(['pages'=>$pages]) ?>
   </body>
 </html>

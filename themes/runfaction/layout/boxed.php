@@ -60,8 +60,8 @@ $pages = $this->prop('pages', [
         <?=Component::create('partials/content') ?>
       </div>
     </div>
-    <?=Component::create('partials/variables')->render() ?>
-    <?=Component::create('partials/javascript')->assign(['pages'=>$pages])->render() ?>
-    <?=Component::create('partials/execution')->assign(['pages'=>$pages])->render() ?>
+    <?=Component::create('partials/variables') ?>
+    <?=Component::create('partials/javascript')->assign(['pages'=>$pages])?>
+    <?=Component::create('partials/execution')->assign(['pages'=>$pages]) ?>
   </body>
 </html>
