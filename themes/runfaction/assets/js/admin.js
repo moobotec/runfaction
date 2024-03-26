@@ -15,20 +15,6 @@ $(document).ready(function () {
     $('#accordion1').on('hidden.bs.collapse', toggleChevron);
     $('#accordion1').on('shown.bs.collapse', toggleChevron);
 
-    // Initialise les widgets de sélection de dates avec les options spécifiées
-    /*$('#datetimepicker1').datetimepicker({
-        locale: 'fr',
-        format: 'L',
-        viewMode: 'years',
-        format: 'MM/YYYY',
-    });
-    $('#datetimepicker2').datetimepicker({
-        locale: 'fr',
-        format: 'L',
-        viewMode: 'years',
-        format: 'MM/YYYY',
-    });*/
-
     let data = getRecherche();
     if (data != "") {
         let decodeData = JSON.parse(data);
@@ -209,9 +195,11 @@ function config_table_users() {
                 "next": "Suivante",
                 "previous": "Précédente"
             },
-            "zeroRecords": "Aucune entrée correspondante trouvée"
+            "zeroRecords": "Aucune entrée correspondante trouvée",
+            "emptyTable": "Aucune donnée disponible"
         }
     }).buttons().container().appendTo('#table_users_wrapper .col-md-6:eq(0)');
+    
 }
 
 function update_users(data) 
@@ -339,3 +327,4 @@ $('#critariaSearchForm').validate({
 
     }
 });
+

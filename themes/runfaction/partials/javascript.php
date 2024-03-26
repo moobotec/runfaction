@@ -58,6 +58,13 @@ else
     <script src="'.BASEPATH.'themes/runfaction/assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
     <script src="'.BASEPATH.'themes/runfaction/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>';
 
+    echo '<script src="'.BASEPATH.'themes/runfaction/assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="'.BASEPATH.'themes/runfaction/assets/libs/bootstrap-datepicker/locales/bootstrap-datepicker.fr.min.js"></script>
+    <script src="'.BASEPATH.'themes/runfaction/assets/libs/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+    <script src="'.BASEPATH.'themes/runfaction/assets/libs/@chenfengyuan/datepicker/datepicker.min.js"></script>';
+
+    
+
     echo '<script src="'.BASEPATH.'themes/runfaction/assets/libs/moment/moment.js"></script>';
 
     echo '<!-- Select2 -->

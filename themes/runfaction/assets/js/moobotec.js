@@ -52,7 +52,7 @@
  * La fonction jQuery.extend() est utilisée pour étendre la fonction de tri de la bibliothèque DataTables avec une nouvelle fonction de tri appelée "date-euro".
  * Cette fonction de tri permet de trier les colonnes contenant des dates au format "JJ/MM/AAAA HH:mm:ss" de manière ascendante ou descendante.
  */
-/*jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+jQuery.extend(jQuery.fn.dataTableExt.oSort, {
   "date-euro-pre": function (a) {
       var x;
       if (a.trim() !== '') {
@@ -74,7 +74,7 @@
   "date-euro-desc": function (a, b) {
       return b - a;
   }
-});*/
+});
 
 function readUrl(input,idInput) {
   var url = input.value;

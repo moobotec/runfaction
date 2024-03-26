@@ -39,11 +39,16 @@ if (str_contains($pages,"guest"))
 else
 {
 
+  echo '<link rel="stylesheet" href="'.BASEPATH.'themes/runfaction/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" >';
+
+  echo '<link href="'.BASEPATH.'themes/runfaction/assets/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css">
+  <link href="'.BASEPATH.'themes/runfaction/assets/libs/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="'.BASEPATH.'themes/runfaction/assets/libs/@chenfengyuan/datepicker/datepicker.min.css">';
+
   echo '<link rel="stylesheet" href="'.BASEPATH.'themes/runfaction/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
-      <link rel="stylesheet" href="'.BASEPATH.'themes/runfaction/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css">
-      <link rel="stylesheet" href="'.BASEPATH.'themes/runfaction/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css">';
+      <link rel="stylesheet" href="'.BASEPATH.'themes/runfaction/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css">
+      <link rel="stylesheet" href="'.BASEPATH.'themes/runfaction/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css">';
   
-  echo '<link rel="stylesheet" href="'.BASEPATH.'themes/runfaction/assets/libs/select2/css/select2.min.css">';
 
 }
 
@@ -53,6 +58,7 @@ echo '<!-- Bootstrap Css -->
 <link href="'.BASEPATH.'themes/runfaction/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 <!-- App Css-->
 <link href="'.BASEPATH.'themes/runfaction/assets/css/app.min.css?='.time().'" id="app-style" rel="stylesheet" type="text/css" />
+<!-- toastr Css-->
 <link href="'.BASEPATH.'themes/runfaction/assets/libs/toastr/build/toastr.min.css" rel="stylesheet" type="text/css" />
 ';
 
