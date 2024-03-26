@@ -91,7 +91,7 @@
     "owl.carousel": "^2.3.4",
     "parsleyjs": "^2.9.2",
     "pdfmake": "^0.2.10",
-    "select2": "^4.1.0-rc.0",
+    "select2": "^4.0.10",
     "simplebar": "^6.2.5",
     "spectrum-colorpicker2": "^2.0.10",
     "sweetalert2": "^11.10.6",
