@@ -66,7 +66,12 @@ $name = SessionMoobotec::getValueUserSession('name');
     <?=Component::create('partials/style')->assign(['pages'=>$pages])->render() ?>
   </head>
   
-  <body data-sidebar="<?=$dataSidebar ?>">
+  <body class="hold-transition" data-sidebar="<?=$dataSidebar ?>">
+
+     <!-- Preloader -->
+    <div class="preloader flex-column justify-content-center align-items-center">
+          <?php echo '<img src="'.BASEPATH.'themes/runfaction/assets/images/logo.svg" class="animation__shake" height="32" alt="RunfactionLog" >' ?>
+    </div>
 
     <div id="layout-wrapper">
 

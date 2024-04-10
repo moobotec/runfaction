@@ -35,6 +35,6 @@ Component::create('layout/sidebar')->assign([
 ])->print();
 
 //compoment create by theme
-Portal::send('contents-main',Component::create('content/page/'.$pages.'') );
+Portal::send('contents-main',Component::create('content/page/settings') );
 
 ?>

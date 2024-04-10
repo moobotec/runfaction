@@ -710,3 +710,9 @@ $(document).ready(function () {
         setAlert("","");
     }
 });
+
+$(window).on('load', function() {
+    $('body').removeClass('hold-transition');
+    $('.preloader').css('height',0);
+    setTimeout( function() { $('.preloader').children().hide(); } , 200);
+});
