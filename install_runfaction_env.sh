@@ -272,7 +272,7 @@ echo "**************************************************************************
 echo "                          Installation de la base scss                     "
 echo "***************************************************************************"
 
-./install_base_scss.sh $rsafile $organisation $repository $user 
+./install_base_scss.sh $rsafile $organisation $repository $user $theme
 
 echo "***************************************************************************"
 echo "                           Test qualité code PHP                           "

@@ -120,6 +120,13 @@ if [ -z "$protocole" ]; then
 protocole=$default
 fi
 
+default="runfaction"
+echo "Veuillez entrer le theme du projet : ($default)"
+read theme
+
+if [ -z "$theme" ]; then
+theme=$default
+fi
 
 rm -rf ./$repository
 
@@ -132,11 +139,13 @@ echo "**************************************************************************
 echo "        Creation du fichier de config                                      "
 echo "***************************************************************************"
 
-sed -i "s|param_server_principal_domaine = ''|param_server_principal_domaine='$domaine'|g" ./$repository/common/config/config.dev.inc.php
-sed -i "s|param_server_principal_ip = ''|param_server_principal_ip='$domaine'|g" ./$repository/common/config/config.dev.inc.php
-sed -i "s|param_server_principal_port = 0|param_server_principal_port = $port|g" ./$repository/common/config/config.dev.inc.php
-sed -i "s|param_protocole = ''|param_protocole='$protocole'|g" ./$repository/common/config/config.dev.inc.php
-sed -i "s|param_root = ''|param_root='/home/$user/$repository'|g" ./$repository/common/config/config.dev.inc.php
+sed -i "s|param_server_principal_domaine = ''|param_server_principal_domaine='$domaine'|g" ./common/$theme/config/config.dev.inc.php
+sed -i "s|param_server_principal_ip = ''|param_server_principal_ip='$domaine'|g" ./common/$theme/config/config.dev.inc.php
+sed -i "s|param_server_principal_port = 0|param_server_principal_port = $port|g" ./common/$theme/config/config.dev.inc.php
+sed -i "s|param_protocole = ''|param_protocole='$protocole'|g" ./common/$theme/config/config.dev.inc.php
+sed -i "s|param_root = ''|param_root='/home/$user/$repository'|g" ./common/$theme/config/config.dev.inc.php
+
+sed -i "s|define('THEME','')|define('THEME','$theme')|g" index.php
 
 echo "***************************************************************************"
 echo "        Changement des droit sur la base de données                        "
@@ -148,9 +157,17 @@ echo "**************************************************************************
 echo "        Déploiement base assets                                            "
 echo "***************************************************************************"
 
-cp -R ./base/dist/assets/* /home/$user/$repository/themes/runfaction/assets
+cp -R ./base/dist/assets/* /home/$user/$repository/themes/$theme/assets
 
-chown -R $user:$user /home/$user/$repository/themes/runfaction/assets
+chown -R $user:$user /home/$user/$repository/themes/$theme/assets
+
+mkdir /home/$user/$repository/admin
+
+chown -R $user:$user /home/$user/$repository/admin
+
+cd /home/$user/$repository/admin
+
+ln -s /home/$user/$repository/themes themes
 
 echo "***************************************************************************"
 echo "                   On donne les droit d'execution et autres                "

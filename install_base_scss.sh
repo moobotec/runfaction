@@ -37,6 +37,7 @@ rsafile=$1
 organisation=$2
 repository=$3
 user=$4
+theme=$5
 
 rm -rf base
 
@@ -90,9 +91,9 @@ echo "**************************************************************************
 echo "        Finalisation                                                       "
 echo "***************************************************************************"
 
-cp -R ./dist/assets/* /home/$user/$repository/themes/runfaction/assets
+cp -R ./dist/assets/* /home/$user/$repository/themes/$theme/assets
 
-chown -R $user:$user /home/$user/$repository/themes/runfaction/assets
+chown -R $user:$user /home/$user/$repository/themes/$theme/assets
 
 mkdir /home/$user/$repository/admin
 
