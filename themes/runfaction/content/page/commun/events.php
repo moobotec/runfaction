@@ -2,7 +2,7 @@
 <?php
 /* =========================================================================
    =
-   =  Copyright (C) 2024 RunFaction
+   =  Copyright (C) 2024 Moobotec
    =
    =  PROJET:  Prototype V1.0 
    =
