@@ -23,7 +23,7 @@
  * ========================================================================= */
 /** @file  */
 
-include_once("models/user/NotificationUser.php");
+include_once('models/'.THEME.'/user/NotificationUser.php');
 
 /**
  * User Class

@@ -29,7 +29,7 @@ $error = false;
 $sizeBdd = 0;
 $globaluser = null;
 
-include 'config/config.dev.inc.php';
+include THEME.'/config/config.dev.inc.php';
 
 require 'thirdparty/phpmailer/src/PHPMailer.php';
 require 'thirdparty/phpmailer/src/SMTP.php';

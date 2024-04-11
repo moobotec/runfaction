@@ -35,6 +35,9 @@ require 'thirdparty/Steampixel/component.php';
 require 'thirdparty/Steampixel/portal.php';
 require 'thirdparty/Carbon/autoload.php';
 
+// Define our theme
+define('THEME','runfaction');
+
 include_once("common/session.php");
 
 SessionMoobotec::errorReportingSession();
@@ -44,8 +47,8 @@ include_once("common/common.php");
 
 SessionMoobotec::initSession();
 
-include_once("controllers/user/UserController.php");
-include_once("controllers/email/EmailController.php");
+include_once('controllers/'.THEME.'/user/UserController.php');
+include_once('controllers/'.THEME.'/email/EmailController.php');
 
 if ($_SERVER['HTTP_HOST'] != $param_server_principal_domaine && $param_environement != 'PROD')
 {
@@ -56,14 +59,11 @@ if ($_SERVER['HTTP_HOST'] != $param_server_principal_domaine && $param_environem
 define('BASEPATH',$param_protocole.'://'.$param_server_principal_domaine.$param_racine);
 define('BASE',$param_racine);
 
-// Define our theme
-define('THEME','runfaction');
-
 // Add the folders where the components live
 Component::addFolder('themes/'.THEME);
 
 // Add the contents folder
-Component::addFolder('views');
+Component::addFolder('views/'.THEME);
 
 // Start up the magic portal engine
 Portal::init();
@@ -71,8 +71,8 @@ Portal::init();
 $level = SessionMoobotec::getLevel();
 if ($level != "None" && !empty($level))
 {
-    include 'routes/Route'.$level.'.php';
-    include 'routes/Api/RouteApi'.$level.'.php';
+    include 'routes/'.THEME.'/Route'.$level.'.php';
+    include 'routes/'.THEME.'/Api/RouteApi'.$level.'.php';
 }
 
 Route::add('/logout.php', function() {

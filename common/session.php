@@ -24,7 +24,7 @@
 /** @file  */
 namespace RunFaction;
 
-include 'config/config.dev.inc.php';
+include THEME.'/config/config.dev.inc.php';
 
 /**
  * Simple singleton that we will extend
