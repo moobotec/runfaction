@@ -162,7 +162,7 @@ sed -i 's/;extension=sqlite3/extension=sqlite3/g' /etc/php/$version/apache2/php.
 read -p "Appuyez sur Entrée pour continuer..." arg
 
 echo "***************************************************************************"
-echo "                   Mettre dans le meme group user et www-data              "
+echo "                  Spécifier le propietaire du site                "
 echo "***************************************************************************"
 
 echo "Qui est l'utilisateur principal ? (daumand)"
@@ -177,6 +177,17 @@ read email
 
 if [ -z "$email" ]; then
 email="daumanddavid@hotmail.fr"
+fi
+
+echo "***************************************************************************"
+echo "                  Spécifier le nom du theme                 "
+echo "***************************************************************************"
+
+echo "Veuillez entrer le theme du projet : (runfaction)"
+read theme
+
+if [ -z "$theme" ]; then
+theme="runfaction"
 fi
 
 usermod -aG www-data $user
@@ -205,11 +216,13 @@ cp ./script/apache2.conf /etc/apache2/apache2.conf
 
 sed -i "s|repo|/home/$user/$repository/|g" /etc/apache2/apache2.conf
 
-sed -i "s|param_server_principal_domaine = ''|param_server_principal_domaine='$domaine'|g" ./common/config/config.dev.inc.php
-sed -i "s|param_server_principal_ip = ''|param_server_principal_ip='$domaine'|g" ./common/config/config.dev.inc.php
-sed -i "s|param_server_principal_port = 0|param_server_principal_port = $port|g" ./common/config/config.dev.inc.php
-sed -i "s|param_protocole = ''|param_protocole='$protocole'|g" ./common/config/config.dev.inc.php
-sed -i "s|param_root = ''|param_root='/home/$user/$repository'|g" ./common/config/config.dev.inc.php
+sed -i "s|param_server_principal_domaine = ''|param_server_principal_domaine='$domaine'|g" ./common/$theme/config/config.dev.inc.php
+sed -i "s|param_server_principal_ip = ''|param_server_principal_ip='$domaine'|g" ./common/$theme/config/config.dev.inc.php
+sed -i "s|param_server_principal_port = 0|param_server_principal_port = $port|g" ./common/$theme/config/config.dev.inc.php
+sed -i "s|param_protocole = ''|param_protocole='$protocole'|g" ./common/$theme/config/config.dev.inc.php
+sed -i "s|param_root = ''|param_root='/home/$user/$repository'|g" ./common/$theme/config/config.dev.inc.php
+
+sed -i "s|define('THEME','')|define('THEME','$theme')|g" index.php
 
 read -p "Appuyez sur Entrée pour continuer..." arg
 
