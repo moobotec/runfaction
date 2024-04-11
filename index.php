@@ -35,8 +35,8 @@ require 'thirdparty/Steampixel/component.php';
 require 'thirdparty/Steampixel/portal.php';
 require 'thirdparty/Carbon/autoload.php';
 
-// Define our theme
-define('THEME','runfaction');
+// attention le theme est rempli par le script d'install
+define('THEME','');
 
 include_once("common/session.php");
 
