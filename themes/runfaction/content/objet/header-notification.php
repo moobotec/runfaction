@@ -60,7 +60,7 @@
             </a>
             <a href="javascript: void(0);" class="text-reset notification-item">
                 <div class="d-flex">
-                    <img src="<?php echo ''.BASEPATH.'themes/runfaction/assets/images/users/avatar-3.jpg';?>"
+                    <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/users/avatar-3.jpg';?>"
                         class="me-3 rounded-circle avatar-xs" alt="user-pic">
                     <div class="flex-grow-1">
                         <h6 class="mb-1">James Lemire</h6>
@@ -90,7 +90,7 @@
 
             <a href="javascript: void(0);" class="text-reset notification-item">
                 <div class="d-flex">
-                    <img src="<?php echo ''.BASEPATH.'themes/runfaction/assets/images/users/avatar-4.jpg';?>"
+                    <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/users/avatar-4.jpg';?>"
                         class="me-3 rounded-circle avatar-xs" alt="user-pic">
                     <div class="flex-grow-1">
                         <h6 class="mb-1">Salena Layfield</h6>

@@ -86,7 +86,7 @@ hr.light {
                                     <hr>
                                     <div class="text-center">
                                         <button type="button"  id="btnTypeSportif" class="btn btn-block btn-light btn-lg border center">
-                                            <?php echo '<img src="'.BASEPATH.'themes/runfaction/assets/images/maillot_100_62.png" alt="Sportif" class="img-fluid" style="opacity: .8">' ?>
+                                            <?php echo '<img src="'.BASEPATH.'themes/'.THEME.'/assets/images/maillot_100_62.png" alt="Sportif" class="img-fluid" style="opacity: .8">' ?>
                                             <span class="ml-2">Sportif</span>
                                         </button>
                                         <div class="d-flex p-3">
@@ -95,7 +95,7 @@ hr.light {
                                             <hr class="light" />
                                         </div>
                                         <button type="button"  id="btnTypeEntraineur" class="btn btn-block btn-light btn-lg border center">
-                                            <?php echo '<img src="'.BASEPATH.'themes/runfaction/assets/images/sifflet_100_80.png" alt="Entraineur" class="img-fluid" style="opacity: .8">' ?>
+                                            <?php echo '<img src="'.BASEPATH.'themes/'.THEME.'/assets/images/sifflet_100_80.png" alt="Entraineur" class="img-fluid" style="opacity: .8">' ?>
                                             <span class="ml-2">Entraineur</span>
                                         </button>
                                         <div class="d-flex p-3">
@@ -104,7 +104,7 @@ hr.light {
                                             <hr class="light" />
                                         </div>
                                         <button type="button"  id="btnTypeAssociation" class="btn btn-block btn-light btn-lg border center">
-                                            <?php echo '<img src="'.BASEPATH.'themes/runfaction/assets/images/immeuble_100_127.png" alt="Association" class="img-fluid" style="opacity: .8">' ?>
+                                            <?php echo '<img src="'.BASEPATH.'themes/'.THEME.'/assets/images/immeuble_100_127.png" alt="Association" class="img-fluid" style="opacity: .8">' ?>
                                             <span class="ml-2">Association</span>
                                         </button>
                                         <div class="pt-2"><small> &Eacute;tape 1/2 </small></div>

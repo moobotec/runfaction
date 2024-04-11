@@ -34,19 +34,19 @@ data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <div class="row g-0">
             <div class="col">
                 <a class="dropdown-icon-item" href="#">
-                    <img src="<?php echo ''.BASEPATH.'themes/runfaction/assets/images/brands/github.png';?>" alt="Github">
+                    <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/brands/github.png';?>" alt="Github">
                     <span>GitHub</span>
                 </a>
             </div>
             <div class="col">
                 <a class="dropdown-icon-item" href="#">
-                    <img src="<?php echo ''.BASEPATH.'themes/runfaction/assets/images/brands/bitbucket.png';?>" alt="bitbucket">
+                    <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/brands/bitbucket.png';?>" alt="bitbucket">
                     <span>Bitbucket</span>
                 </a>
             </div>
             <div class="col">
                 <a class="dropdown-icon-item" href="#">
-                    <img src="<?php echo ''.BASEPATH.'themes/runfaction/assets/images/brands/dribbble.png';?>" alt="dribbble">
+                    <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/brands/dribbble.png';?>" alt="dribbble">
                     <span>Dribbble</span>
                 </a>
             </div>
@@ -55,19 +55,19 @@ data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <div class="row g-0">
             <div class="col">
                 <a class="dropdown-icon-item" href="#">
-                    <img src="<?php echo ''.BASEPATH.'themes/runfaction/assets/images/brands/dropbox.png';?>" alt="dropbox">
+                    <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/brands/dropbox.png';?>" alt="dropbox">
                     <span>Dropbox</span>
                 </a>
             </div>
             <div class="col">
                 <a class="dropdown-icon-item" href="#">
-                    <img src="<?php echo ''.BASEPATH.'themes/runfaction/assets/images/brands/mail_chimp.png';?>" alt="mail_chimp">
+                    <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/brands/mail_chimp.png';?>" alt="mail_chimp">
                     <span>Mail Chimp</span>
                 </a>
             </div>
             <div class="col">
                 <a class="dropdown-icon-item" href="#">
-                    <img src="<?php echo ''.BASEPATH.'themes/runfaction/assets/images/brands/slack.png';?>" alt="slack">
+                    <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/brands/slack.png';?>" alt="slack">
                     <span>Slack</span>
                 </a>
             </div>

@@ -42,7 +42,7 @@ if ($mxauto == true)
 
 <div class="<?=$divclass ?>">
     <?php echo '<a href="'.BASEPATH.'" class="d-block auth-logo">' ?>
-    <?php echo '<img src="'.BASEPATH.'themes/runfaction/assets/images/logo-dark.png" alt="" height="32" class="auth-logo-dark '.$classImg.'">' ?>
-    <?php echo '<img src="'.BASEPATH.'themes/runfaction/assets/images/logo-light.png" alt="" height="18" class="auth-logo-light '.$classImg.'">' ?>
+    <?php echo '<img src="'.BASEPATH.'themes/'.THEME.'/assets/images/logo-dark.png" alt="" height="32" class="auth-logo-dark '.$classImg.'">' ?>
+    <?php echo '<img src="'.BASEPATH.'themes/'.THEME.'/assets/images/logo-light.png" alt="" height="18" class="auth-logo-light '.$classImg.'">' ?>
     </a>
 </div>

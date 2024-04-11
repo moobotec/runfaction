@@ -26,19 +26,19 @@
 <div class="navbar-brand-box">
     <a href="<?php echo ''.BASEPATH.'';?>" class="logo logo-dark">
         <span class="logo-sm">
-            <img src="<?php echo ''.BASEPATH.'themes/runfaction/assets/images/logo.svg';?>" alt="" height="22">
+            <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/logo.svg';?>" alt="" height="22">
         </span>
         <span class="logo-lg">
-            <img src="<?php echo ''.BASEPATH.'themes/runfaction/assets/images/logo-dark.png';?>" alt="" height="32">
+            <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/logo-dark.png';?>" alt="" height="32">
         </span>
     </a>
 
     <a href="<?php echo ''.BASEPATH.'';?>" class="logo logo-light">
         <span class="logo-sm">
-            <img src="<?php echo ''.BASEPATH.'themes/runfaction/assets/images/logo-light.svg';?>" alt="" height="22">
+            <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/logo-light.svg';?>" alt="" height="22">
         </span>
         <span class="logo-lg">
-            <img src="<?php echo ''.BASEPATH.'themes/runfaction/assets/images/logo-light.png';?>" alt="" height="32">
+            <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/logo-light.png';?>" alt="" height="32">
         </span>
     </a>
 </div>

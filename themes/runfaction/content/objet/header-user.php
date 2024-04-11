@@ -45,7 +45,7 @@ $firstname = $this->prop('firstname', [
         }
         else
         {
-            echo '<img class="rounded-circle header-profile-user" src="'.BASEPATH.'themes/runfaction/assets/images/users/avatar-1.jpg" alt="Header Avatar">';
+            echo '<img class="rounded-circle header-profile-user" src="'.BASEPATH.'themes/'.THEME.'/assets/images/users/avatar-1.jpg" alt="Header Avatar">';
         }
     ?>
     

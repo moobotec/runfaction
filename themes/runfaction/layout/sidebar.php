@@ -70,7 +70,7 @@ $name = SessionMoobotec::getValueUserSession('name');
 
      <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-          <?php echo '<img src="'.BASEPATH.'themes/runfaction/assets/images/logo.svg" class="animation__shake" height="32" alt="RunfactionLog" >' ?>
+          <?php echo '<img src="'.BASEPATH.'themes/'.THEME.'/assets/images/logo.svg" class="animation__shake" height="32" alt="RunfactionLog" >' ?>
     </div>
 
     <div id="layout-wrapper">

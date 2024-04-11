@@ -50,7 +50,7 @@ if ($globaluser != null)
 
 <?php 
  echo 'body {
-    background-image: url(\''.BASEPATH.'themes/runfaction/assets/images/bg-auth-overlay.png\');
+    background-image: url(\''.BASEPATH.'themes/'.THEME.'/assets/images/bg-auth-overlay.png\');
     background-size: cover;
     background-position: center;
   }';
