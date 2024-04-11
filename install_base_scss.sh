@@ -90,8 +90,16 @@ echo "**************************************************************************
 echo "        Finalisation                                                       "
 echo "***************************************************************************"
 
-cp -R ./dist/assets/ /home/$user/$repository/themes/runfaction/assets/
+cp -R ./dist/assets/* /home/$user/$repository/themes/runfaction/assets
 
 chown -R $user:$user /home/$user/$repository/themes/runfaction/assets
+
+mkdir /home/$user/$repository/admin
+
+chown -R $user:$user /home/$user/$repository/admin
+
+cd /home/$user/$repository/admin
+
+ln -s /home/$user/$repository/themes themes
 
 read -p "Appuyez sur Entrée pour continuer..." arg
