@@ -25,7 +25,7 @@
 
 use Steampixel\route;
 use Steampixel\Component;
-use RunFaction\SessionMoobotec;
+use Moobotec\SessionMoobotec;
 
 Route::add('/', function() {
     Component::create('guest/signin')->print();

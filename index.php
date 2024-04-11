@@ -28,7 +28,7 @@
 use Steampixel\Route;
 use Steampixel\Component;
 use Steampixel\Portal;
-use RunFaction\SessionMoobotec;
+use Moobotec\SessionMoobotec;
 
 require 'thirdparty/Steampixel/route.php';
 require 'thirdparty/Steampixel/component.php';

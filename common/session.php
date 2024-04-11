@@ -1,7 +1,7 @@
 <?php
 /* =========================================================================
    =
-   =  Copyright (C) RunFaction
+   =  Copyright (C) 2024 Moobotec
    =
    =  PROJET:  Prototype V1.0 
    =
@@ -22,7 +22,7 @@
    =
  * ========================================================================= */
 /** @file  */
-namespace RunFaction;
+namespace Moobotec;
 
 include THEME.'/config/config.dev.inc.php';
 

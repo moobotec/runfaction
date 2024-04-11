@@ -21,7 +21,7 @@
    =        Creation du module.
  * ========================================================================= */
 /** @file  */
-use RunFaction\SessionMoobotec;
+use Moobotec\SessionMoobotec;
 
 global $param_racine;
 global $param_environement;

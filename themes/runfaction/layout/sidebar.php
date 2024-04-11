@@ -23,7 +23,7 @@
  * ========================================================================= */
 /** @file  */
 namespace Steampixel;
-use RunFaction\SessionMoobotec;
+use Moobotec\SessionMoobotec;
 
 if ( empty($_SESSION['authenticated']) || $_SESSION['authenticated'] == "" )
 {

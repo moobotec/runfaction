@@ -22,7 +22,7 @@
    =
  * ========================================================================= */
 /** @file  */
-use RunFaction\SessionMoobotec;
+use Moobotec\SessionMoobotec;
 use Carbon\Carbon;
 
 include_once("models/ModelSqlite3.php"); 
