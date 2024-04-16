@@ -19,18 +19,18 @@ var theme = '';
     function setLanguage(lang) {
         if (document.getElementById("header-lang-img")) {
             if (lang == 'en') {
-                document.getElementById("header-lang-img").src = "themes/runfaction/assets/images/flags/us.jpg";
+                document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/us.jpg";
             } else if (lang == 'sp') {
-                document.getElementById("header-lang-img").src = "themes/runfaction/assets/images/flags/spain.jpg";
+                document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/spain.jpg";
             }
             else if (lang == 'gr') {
-                document.getElementById("header-lang-img").src = "themes/runfaction/assets/images/flags/germany.jpg";
+                document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/germany.jpg";
             }
             else if (lang == 'it') {
-                document.getElementById("header-lang-img").src = "themes/runfaction/assets/images/flags/italy.jpg";
+                document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/italy.jpg";
             }
             else if (lang == 'ru') {
-                document.getElementById("header-lang-img").src = "themes/runfaction/assets/images/flags/russia.jpg";
+                document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/russia.jpg";
             }
             localStorage.setItem('language', lang);
             language = localStorage.getItem('language');
