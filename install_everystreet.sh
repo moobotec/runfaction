@@ -30,7 +30,7 @@ echo " * \\_/ * "
 echo " *     * "
 echo "  *****  "
 echo "***************************************************************************"
-echo "        Installeur de l'environement de production du projet $theme        "
+echo "        Installeur de l'environement de production du projet         "
 echo "***************************************************************************"
 
 user=$1

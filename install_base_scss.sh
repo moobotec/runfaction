@@ -30,7 +30,7 @@ echo " * \\_/ * "
 echo " *     * "
 echo "  *****  "
 echo "***************************************************************************"
-echo "        Installeur de l'environement de production du RunFaction        "
+echo "        Installeur de l'environement de production du projet        "
 echo "***************************************************************************"
 
 rsafile=$1
