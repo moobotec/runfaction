@@ -38,6 +38,7 @@ require 'thirdparty/Carbon/autoload.php';
 // attention le theme est rempli par le script d'install
 //define('THEME','terratis');
 //define('THEME','runfaction');
+//define('THEME','timecapsule');
 define('THEME','');
 
 include_once("common/session.php");
