@@ -3,9 +3,9 @@
 #   =
 #   =  Copyright (C) 2024 Moobotec
 #   =
-#   =  PROJET:  RunFaction
+#   =  PROJET:  installeur générique
 #   =
-#   =  FICHIER: update_runfaction_env.php
+#   =  FICHIER: update_site_env.php
 #   =
 #   =  VERSION: 1.0.0
 #   =
@@ -13,7 +13,7 @@
 #   =
 #   =  LANGAGE: PHP,Python,JS,HTML,SCSS
 #   =
-#   =  BUT: Backend/Frontend de gestion des clubs de sport
+#   =  BUT: Script d'installation des sites
 #   =
 #   =  INTERVENTION:
 #   =
@@ -30,7 +30,7 @@ echo " * \\_/ * "
 echo " *     * "
 echo "  *****  "
 echo "***************************************************************************"
-echo "        Installeur de l'environement de production du RunFaction        "
+echo "        Installeur de l'environement de production du projet        "
 echo "***************************************************************************"
 pass=0
 echo "Est-ce que vous savez ce que vous faites - Yes/No"

@@ -3,9 +3,9 @@
 #   =
 #   =  Copyright (C) 2024 Moobotec
 #   =
-#   =  PROJET:  RunFaction
+#   =  PROJET:  installeur générique
 #   =
-#   =  FICHIER: install_runfaction.php
+#   =  FICHIER: install_site_env.php
 #   =
 #   =  VERSION: 1.0.0
 #   =
@@ -13,7 +13,7 @@
 #   =
 #   =  LANGAGE: PHP,Python,JS,HTML,SCSS
 #   =
-#   =  BUT: Backend/Frontend de gestion des clubs de sport
+#   =  BUT: Script d'installation des sites
 #   =
 #   =  INTERVENTION:
 #   =
@@ -30,7 +30,7 @@ echo " * \\_/ * "
 echo " *     * "
 echo "  *****  "
 echo "***************************************************************************"
-echo "        Installeur de l'environement de production du RunFaction        "
+echo "        Installeur de l'environement de production du projet        "
 echo "***************************************************************************"
 pass=0
 echo "Est-ce que vous savez ce que vous faites - Yes/No"
@@ -266,20 +266,46 @@ echo "**************************************************************************
 echo "                          Installation de everystreet                      "
 echo "***************************************************************************"
 
-#./install_everystreet.sh $user $repository
+echo "Voulez vous installer everystreet au projet : (No)"
+read response
+
+if [ -z "$response" ]; then
+response="No"
+fi
+
+if [ $response = "Yes" ]; then
+./install_everystreet.sh $user $repository $theme
+fi
 
 echo "***************************************************************************"
 echo "                          Installation de la base scss                     "
 echo "***************************************************************************"
 
+echo "Voulez vous installer la base scss au projet : (No)"
+read response
+
+if [ -z "$response" ]; then
+response="No"
+fi
+
+if [ $response = "Yes" ]; then
 ./install_base_scss.sh $rsafile $organisation $repository $user $theme
+fi
 
 echo "***************************************************************************"
 echo "                           Test qualité code PHP                           "
 echo "***************************************************************************"
 
-#./audit_php.sh
+echo "Voulez vous auditer le projet : (No)"
+read response
 
+if [ -z "$response" ]; then
+response="No"
+fi
+
+if [ $response = "Yes" ]; then
+./audit_php.sh
+fi
 
 echo "***************************************************************************"
 echo "                                  Nettoyage                                "

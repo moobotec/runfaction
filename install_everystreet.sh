@@ -30,11 +30,12 @@ echo " * \\_/ * "
 echo " *     * "
 echo "  *****  "
 echo "***************************************************************************"
-echo "        Installeur de l'environement de production du RunFaction        "
+echo "        Installeur de l'environement de production du projet $theme        "
 echo "***************************************************************************"
 
 user=$1
 repository=$2
+theme=$3
 
 echo "***************************************************************************"
 echo "                     Installation des dépendances à python                 "
@@ -80,8 +81,8 @@ pip install geopy
 
 pip install -e ./network/
 
-sed -i "s|directoryOUT = ''|directoryOUT='/home/$user/$repository/$algo_source/OUT'|g" ../process/calcul_trajet.php
-sed -i "s|directoryIN = ''|directoryIN='/home/$user/$repository/$algo_source/IN'|g" ../process/calcul_trajet.php
+sed -i "s|directoryOUT = ''|directoryOUT='/home/$user/$repository/$algo_source/OUT'|g" ../process/$theme/calcul_trajet.php
+sed -i "s|directoryIN = ''|directoryIN='/home/$user/$repository/$algo_source/IN'|g" ../process/$theme/calcul_trajet.php
 
 read -p "Appuyez sur Entrée pour continuer..." arg
 
@@ -89,8 +90,8 @@ echo "**************************************************************************
 echo "                       Copie des scripts de traitement                     "
 echo "***************************************************************************"
 
-mv ../script/calcul_trajet.py ./calcul_trajet.py
-mv ../script/process_algo_routing.sh ./process_algo_routing.sh
+mv ../script/$theme/calcul_trajet.py ./calcul_trajet.py
+mv ../script/$theme/process_algo_routing.sh ./process_algo_routing.sh
 
 sed -i "s|cd work|cd /home/$user/$repository/$algo_source/|g" process_algo_routing.sh
 
@@ -100,37 +101,34 @@ echo "**************************************************************************
 echo "                 Creation du service de traitement des demandes            "
 echo "***************************************************************************"
 
-service_name="runfaction"  
-
 # Vérifie si le service existe
-if systemctl status "$service_name" >/dev/null 2>&1; then
+if systemctl status "$theme" >/dev/null 2>&1; then
     # Si le service existe, le désactive et l'arrête
-    systemctl stop "$service_name"
-    systemctl disable "$service_name"
+    systemctl stop "$theme"
+    systemctl disable "$theme"
     
     # Supprime le fichier de service
-    rm "/etc/systemd/system/$service_name.service"
+    rm "/etc/systemd/system/$theme.service"
     
     # Recharge systemd
     systemctl daemon-reload
     
-    echo "Le service $service_name a été désactivé et supprimé."
+    echo "Le service $theme a été désactivé et supprimé."
 else
     # Si le service n'existe pas, affiche un message
-    echo "Le service $service_name n'existe pas. Aucune action nécessaire."
+    echo "Le service $theme n'existe pas. Aucune action nécessaire."
 fi
 
 
-sed -i "s|WorkingDirectory=|WorkingDirectory=/home/$user/$repository/$algo_source/|g" ../script/$service_name.service
-sed -i "s|ExecStart=|ExecStart=/home/$user/$repository/$algo_source/process_algo_routing.sh|g" ../script/$service_name.service
+sed -i "s|WorkingDirectory=|WorkingDirectory=/home/$user/$repository/$algo_source/|g" ../script/$theme/$theme.service
+sed -i "s|ExecStart=|ExecStart=/home/$user/$repository/$algo_source/process_algo_routing.sh|g" ../script/$theme/$theme.service
 
-mv ../script/$service_name.service /etc/systemd/system/$service_name.service
+mv ../script/$theme/$theme.service /etc/systemd/system/$theme.service
 
-
-systemctl start $service_name
-systemctl status $service_name
-systemctl stop $service_name
-systemctl restart $service_name
-systemctl status $service_name
+systemctl start $theme
+systemctl status $theme
+systemctl stop $theme
+systemctl restart $theme
+systemctl status $theme
 
 read -p "Appuyez sur Entrée pour continuer..." arg
