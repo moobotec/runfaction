@@ -110,25 +110,28 @@ if systemctl status "$theme" >/dev/null 2>&1; then
     # Supprime le fichier de service
     rm "/etc/systemd/system/$theme.service"
     
-    # Recharge systemd
-    systemctl daemon-reload
-    
     echo "Le service $theme a été désactivé et supprimé."
 else
+
+    # Supprime le fichier de service
+    rm "/etc/systemd/system/$theme.service"
+
     # Si le service n'existe pas, affiche un message
-    echo "Le service $theme n'existe pas. Aucune action nécessaire."
+    echo "Le service $theme n'existe pas ou plus. Aucune action nécessaire."
 fi
 
+# Recharge systemd
+systemctl daemon-reload
 
-sed -i "s|WorkingDirectory=|WorkingDirectory=/home/$user/$repository/$algo_source/|g" ../$repository/script/$theme/$theme.service
-sed -i "s|ExecStart=|ExecStart=/home/$user/$repository/$algo_source/process_algo_routing.sh|g" ../$repository/script/$theme/$theme.service
+sed -i "s|WorkingDirectory=|WorkingDirectory=/home/$user/$algo_source/|g" ../$repository/script/$theme/$theme.service
+sed -i "s|ExecStart=|ExecStart=/home/$user/$algo_source/process_algo_routing.sh|g" ../$repository/script/$theme/$theme.service
 
 mv ../$repository/script/$theme/$theme.service /etc/systemd/system/$theme.service
 
 systemctl start $theme
 systemctl status $theme
 systemctl stop $theme
-sleep 30
+
 systemctl restart $theme
 systemctl status $theme
 
