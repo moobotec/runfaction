@@ -81,8 +81,8 @@ pip install geopy
 
 pip install -e ./network/
 
-sed -i "s|directoryOUT = ''|directoryOUT='/home/$user/$repository/$algo_source/OUT'|g" ../$repository/process/$theme/calcul_trajet.php
-sed -i "s|directoryIN = ''|directoryIN='/home/$user/$repository/$algo_source/IN'|g" ../$repository/process/$theme/calcul_trajet.php
+sed -i "s|directoryOUT = ''|directoryOUT='/home/$user/$algo_source/OUT'|g" ../$repository/process/$theme/calcul_trajet.php
+sed -i "s|directoryIN = ''|directoryIN='/home/$user/$algo_source/IN'|g" ../$repository/process/$theme/calcul_trajet.php
 
 read -p "Appuyez sur Entrée pour continuer..." arg
 
