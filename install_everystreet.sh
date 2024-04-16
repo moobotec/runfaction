@@ -81,8 +81,8 @@ pip install geopy
 
 pip install -e ./network/
 
-sed -i "s|directoryOUT = ''|directoryOUT='/home/$user/$repository/$algo_source/OUT'|g" ../process/$theme/calcul_trajet.php
-sed -i "s|directoryIN = ''|directoryIN='/home/$user/$repository/$algo_source/IN'|g" ../process/$theme/calcul_trajet.php
+sed -i "s|directoryOUT = ''|directoryOUT='/home/$user/$repository/$algo_source/OUT'|g" ../$repository/process/$theme/calcul_trajet.php
+sed -i "s|directoryIN = ''|directoryIN='/home/$user/$repository/$algo_source/IN'|g" ../$repository/process/$theme/calcul_trajet.php
 
 read -p "Appuyez sur Entrée pour continuer..." arg
 
@@ -90,8 +90,8 @@ echo "**************************************************************************
 echo "                       Copie des scripts de traitement                     "
 echo "***************************************************************************"
 
-mv ../script/$theme/calcul_trajet.py ./calcul_trajet.py
-mv ../script/$theme/process_algo_routing.sh ./process_algo_routing.sh
+mv ../$repository/script/$theme/calcul_trajet.py ./calcul_trajet.py
+mv ../$repository/script/$theme/process_algo_routing.sh ./process_algo_routing.sh
 
 sed -i "s|cd work|cd /home/$user/$repository/$algo_source/|g" process_algo_routing.sh
 
@@ -120,10 +120,10 @@ else
 fi
 
 
-sed -i "s|WorkingDirectory=|WorkingDirectory=/home/$user/$repository/$algo_source/|g" ../script/$theme/$theme.service
-sed -i "s|ExecStart=|ExecStart=/home/$user/$repository/$algo_source/process_algo_routing.sh|g" ../script/$theme/$theme.service
+sed -i "s|WorkingDirectory=|WorkingDirectory=/home/$user/$repository/$algo_source/|g" ../$repository/script/$theme/$theme.service
+sed -i "s|ExecStart=|ExecStart=/home/$user/$repository/$algo_source/process_algo_routing.sh|g" ../$repository/script/$theme/$theme.service
 
-mv ../script/$theme/$theme.service /etc/systemd/system/$theme.service
+mv ../$repository/script/$theme/$theme.service /etc/systemd/system/$theme.service
 
 systemctl start $theme
 systemctl status $theme
