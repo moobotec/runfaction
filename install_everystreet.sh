@@ -128,6 +128,7 @@ mv ../$repository/script/$theme/$theme.service /etc/systemd/system/$theme.servic
 systemctl start $theme
 systemctl status $theme
 systemctl stop $theme
+sleep 30
 systemctl restart $theme
 systemctl status $theme
 
