@@ -43,8 +43,8 @@ echo'<meta charset="UTF-8">
 <meta name="abstract" content="'.$param_description.'" />
 <meta name="keywords" content="'.$param_keyword.'" />
 <meta name="author" content="'.$param_auteur.'" />
-<meta name="generator" content="Celios" />
-<meta name="publisher" content="Celios" />
+<meta name="generator" content="Moobotec" />
+<meta name="publisher" content="Moobotec" />
 ';
 
 if ($param_cache == true)

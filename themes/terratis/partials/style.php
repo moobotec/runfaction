@@ -60,7 +60,7 @@ echo '<!-- Bootstrap Css -->
 <!-- toastr Css-->
 <link href="'.BASEPATH.'themes/'.THEME.'/assets/libs/toastr/build/toastr.min.css" rel="stylesheet" type="text/css" />
 
-<link href="'.BASEPATH.'themes/'.THEME.'/assets/css/celios.css?='.time().'" rel="stylesheet" type="text/css" />
+<link href="'.BASEPATH.'themes/'.THEME.'/assets/css/moobotec.css?='.time().'" rel="stylesheet" type="text/css" />
 
 ';
 

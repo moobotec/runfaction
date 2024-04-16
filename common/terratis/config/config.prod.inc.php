@@ -17,7 +17,7 @@ $param_title = 'Terratis';
 $param_auteur = 'Daumand David';
 $param_description = '';
 $param_keyword = '';
-$param_copyright = '© 2024 Celios';
+$param_copyright = '© 2024 Moobotec';
 $param_lang = 'FR';
 $param_revisit = 15;
 $param_indexation = 'none,noodp,noarchive,nosnippet,noindex,nofollow,noimageindex,noydir,nocache';
@@ -40,5 +40,5 @@ $param_stripe_token_api_publishable_prod= 'undefined';
 $param_pourcent_commission_local = 2.50;
 $param_pourcent_commission_stripe = 2.50;
 $encryption_key = "aab24f2e-47fd-49d3-a364-350faaad04d5";
-$cookie_name = "celios";
+$cookie_name = "moobotec";
 ?>

@@ -16,10 +16,10 @@
   <h6>Identifiant de session : </h6> <div class="d-flex"><span class="mb-3">'+session_id+'</span></div>\
   <h6>Date de connexion :</h6> <div class="d-flex"><span class="mb-3">'+timeConverter(deleted_time)+'</span></div>\
   <h6>Persistance connexion :</h6> <div class="d-flex"><span class="mb-3">'+((is_cookie == 1)? 'Oui':'Non')+'</span></div>\
-  <h6>Environnement :</h6> <div class="d-flex"><span class="mb-3">'+environnementCelios+'</span></div>\
+  <h6>Environnement :</h6> <div class="d-flex"><span class="mb-3">'+environnementMoobotec+'</span></div>\
   <h6>Error Reporting :</h6> <div class="d-flex"><span class="mb-3">'+error_reporting+'</span></div>\
-  <h6>Base BDD :</h6> <div class="d-flex"><span class="mb-3">'+baseCelios+'</span></div>\
-  <h6>Version :</h6> <div class="d-flex"><span class="mb-3">'+versionCelios+'</span></div>\
+  <h6>Base BDD :</h6> <div class="d-flex"><span class="mb-3">'+baseMoobotec+'</span></div>\
+  <h6>Version :</h6> <div class="d-flex"><span class="mb-3">'+versionMoobotec+'</span></div>\
   <h6>Chargée en :</h6> <div class="d-flex"><span id="execution-time" class="mb-3"> 0s </span></div>' )
 
   const allstars = document.querySelectorAll('.fa-star')

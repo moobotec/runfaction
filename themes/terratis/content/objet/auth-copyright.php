@@ -29,5 +29,5 @@ $divclass = $this->prop('div-class', [
 ?>
 
 <div class="<?=$divclass ?>">
-    <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Celios. Conçu par Celios</p>
+    <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Moobotec. Conçu par Moobotec</p>
 </div>

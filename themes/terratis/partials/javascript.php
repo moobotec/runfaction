@@ -90,7 +90,7 @@ else
   }
 
   echo '<!-- Base js -->
-  <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/celios.js?='.time().'"></script>';
+  <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/moobotec.js?='.time().'"></script>';
 }
 
 echo '<!-- App js -->

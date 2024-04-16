@@ -151,7 +151,7 @@ function $axios_post_timed(url, data, functionCallbackInit, functionCallbackSucc
     // Si une fonction de callback "avant envoi de la requête" a été spécifiée, la exécute
     if (functionCallbackInit != null) functionCallbackInit();
     
-    var path = window.location.origin + pathnameCelios + url;
+    var path = window.location.origin + pathnameMoobotec + url;
     // Envoi de la requête HTTP POST avec les données spécifiées
     axios.post(path, data).then((response) => {
 
@@ -192,7 +192,7 @@ function $axios_getpost_timed(url, data, functionCallbackInit, functionCallbackS
     // Si une fonction de callback "avant envoi de la requête" a été spécifiée, la exécute
     if (functionCallbackInit != null) functionCallbackInit();
     
-    var path = window.location.origin + pathnameCelios + url;
+    var path = window.location.origin + pathnameMoobotec + url;
     // Envoi de la requête HTTP POST avec les données spécifiées
     axios.post(path, data).then((response) => {
         // Si la requête a retourné une erreur
@@ -238,7 +238,7 @@ function $axios_getpost(url, data, functionCallbackInit, functionCallbackSuccess
     
     if (functionCallbackInit != null) functionCallbackInit();
 
-    var path = window.location.origin + pathnameCelios + url;
+    var path = window.location.origin + pathnameMoobotec + url;
     // Envoi de la requête HTTP POST avec les données spécifiées
     axios.post(path, data).then((response) => {
 
@@ -280,7 +280,7 @@ function $axios_getpost(url, data, functionCallbackInit, functionCallbackSuccess
 function $axios_get(url, functionCallbackInit, functionCallbackSuccess, functionCallbackFinally) {
     
     if (functionCallbackInit != null) functionCallbackInit();
-    var path = window.location.origin + pathnameCelios + url;
+    var path = window.location.origin + pathnameMoobotec + url;
     // Envoi de la requête HTTP GET avec les données spécifiées
     axios.get(path).then((response) => {
         // Si la requête a retourné une erreur
@@ -319,7 +319,7 @@ function $axios_get(url, functionCallbackInit, functionCallbackSuccess, function
  */
 function $axios_get_timed(url, functionCallbackInit, functionCallbackSuccess, functionCallbackFinally, functionCallbackError = null) {
     // Envoi de la requête HTTP GET avec les données spécifiées
-    var path = window.location.origin + pathnameCelios + url;
+    var path = window.location.origin + pathnameMoobotec + url;
     axios.get(path).then((response) => {
         // Si la requête a retourné une erreur
         if (response.data.error) {
@@ -355,7 +355,7 @@ function $axios_get_timed(url, functionCallbackInit, functionCallbackSuccess, fu
  */
 function $axios_delete_timed(url, functionCallbackInit, functionCallbackSuccess, functionCallbackFinally) {
     // Envoi de la requête HTTP GET avec les données spécifiées
-    var path = window.location.origin + pathnameCelios + url;
+    var path = window.location.origin + pathnameMoobotec + url;
     axios.delete(path).then((response) => {
         // Si la requête a retourné une erreur
         if (response.data.error) {
