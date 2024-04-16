@@ -36,7 +36,11 @@ $pages = $this->prop('pages', [
   'type' => 'string',
   'required' => true
 ]);
+
+$firstname = "";
+$name = "";
 ?>
+
 
 <!DOCTYPE html>
 <html lang="<?=$lang ?>">
