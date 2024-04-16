@@ -26,7 +26,7 @@ use Moobotec\SessionMoobotec;
 use Carbon\Carbon;
 
 include_once("models/ModelSqlite3.php"); 
-include_once("models/user/User.php");
+include_once('models/'.THEME.'/user/User.php');
 
 /**
  * UserController
