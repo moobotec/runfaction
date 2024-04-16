@@ -33,8 +33,8 @@ class MyDB extends SQLite3
     {
         global $param_root;
         global $sizeBdd;
-        $sizeBdd = filesize($param_root.'/bdd/'.THEME.'/dbRunFaction.db3');
-        $this->open($param_root.'/bdd/'.THEME.'/dbRunFaction.db3',SQLITE3_OPEN_READWRITE);
+        $sizeBdd = filesize($param_root.'/bdd/'.THEME.'/db'.THEME.'.db3');
+        $this->open($param_root.'/bdd/'.THEME.'/db'.THEME.'.db3',SQLITE3_OPEN_READWRITE);
     }
 
     // Méthode pour fermer explicitement la connexion à la base de données

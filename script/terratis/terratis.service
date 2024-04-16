@@ -1,0 +1,13 @@
+[Unit]
+Description=Mon service de traitement des parcours
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=
+ExecStart=
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

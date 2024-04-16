@@ -36,9 +36,20 @@ require 'thirdparty/Steampixel/portal.php';
 require 'thirdparty/Carbon/autoload.php';
 
 // attention le theme est rempli par le script d'install
+//define('THEME','terratis');
+//define('THEME','runfaction');
 define('THEME','');
 
 include_once("common/session.php");
+
+if ($_SERVER['HTTP_HOST'] != $param_server_principal_domaine && $param_environement != 'PROD')
+{
+    $param_server_principal_domaine = $_SERVER['HTTP_HOST'];
+}
+
+// Define a global basepath
+define('BASEPATH',$param_protocole.'://'.$param_server_principal_domaine.$param_racine);
+define('BASE',$param_racine);
 
 SessionMoobotec::errorReportingSession();
 SessionMoobotec::strictModeSession(1);
@@ -49,15 +60,6 @@ SessionMoobotec::initSession();
 
 include_once('controllers/'.THEME.'/user/UserController.php');
 include_once('controllers/'.THEME.'/email/EmailController.php');
-
-if ($_SERVER['HTTP_HOST'] != $param_server_principal_domaine && $param_environement != 'PROD')
-{
-    $param_server_principal_domaine = $_SERVER['HTTP_HOST'];
-}
-
-// Define a global basepath
-define('BASEPATH',$param_protocole.'://'.$param_server_principal_domaine.$param_racine);
-define('BASE',$param_racine);
 
 // Add the folders where the components live
 Component::addFolder('themes/'.THEME);
