@@ -33,7 +33,7 @@ Route::add('/admin/users/(.+)', function($command) {
 }, 'post');
 
 Route::add('/calcul_trajet.php', function() {
-  include 'process/calcul_trajet.php'; 
+  include 'process/'.THEME.'/calcul_trajet.php'; 
 }, 'post');
 
 Route::add('/phpinfo', function() {
