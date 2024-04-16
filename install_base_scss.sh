@@ -95,6 +95,8 @@ cp -R ./dist/assets/* /home/$user/$repository/themes/$theme/assets
 
 chown -R $user:$user /home/$user/$repository/themes/$theme/assets
 
+sed -i "s|var theme = ''|var theme = '$theme'|g" /home/$user/$repository/themes/$theme/assets/js/app.js
+
 mkdir /home/$user/$repository/admin
 
 chown -R $user:$user /home/$user/$repository/admin
