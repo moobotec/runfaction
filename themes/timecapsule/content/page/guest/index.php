@@ -145,7 +145,6 @@ h1,h2
     font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
 }
 
-.vh-100 { height: 100vh; } /* Assurez-vous que le conteneur principal occupe toute la hauteur de la fenêtre */
 .col-6 { height: 38vh; } /* Définit une hauteur de 40% de la hauteur de la fenêtre pour chaque zone */
 .col-12 { height: 75vh; } /* Définit une hauteur de 40% de la hauteur de la fenêtre pour chaque zone */
 
@@ -164,8 +163,8 @@ h1,h2
     position: absolute;
     top: 10px;
     right: 10px;
-    border: none;
-    background: none;
+
+
     color: black; /* Change as needed */
     font-size: 24px;
     cursor: pointer;
@@ -180,6 +179,11 @@ h1,h2
     opacity: 0; /* Fully transparent */
 }
 
+.modal-content {
+    border: 2px solid black; /* Ajoute une bordure noire de 10px */
+    border-radius: 0; /* Supprime les bordures arrondies */
+}
+
 </style>
 
 <div class="d-flex justify-content-between">
@@ -191,19 +195,19 @@ h1,h2
     <div class="col-lg-6 ">
         <div class="w-100">
             <div class="row">
-            <button type="button" class="buttons-date btn header-item waves-effect">
+            <button type="button" class="buttons-date btn header-item waves-effect" data-bs-toggle="modal" data-bs-target="#datetimeModal">
             <h1 class="pt-3"> <i class="bx bx-time-five"></i></h1><h1 class="p-1 my-2" id="clock"> [ xxx ][ xx xxxx ][ xx : xx : xx ]</h1>
             </button>
             </div>
             <div class="row">
-            <button type="button" class="buttons-position btn header-item waves-effect">
-            <h1 class="p-1 my-2"><i class="bx bx-street-view"></i> Limoges, France, Terre</h1>
+            <button type="button" class="buttons-position btn header-item waves-effect" data-bs-toggle="modal" data-bs-target="#positionModal">
+            <h3 class="pt-3"><i class="bx bx-street-view"></i></h3><h3 class="p-1 my-2 "id="position" ></i>x, x, x, x</h3>
             </button>
             </div>
         </div>
     </div>
 </div>
-<div class="p-0  vh-100">
+<div class="p-0  vh-80">
     <div class="row g-0 ">
         <div id="zone1" class="zone-top-left col-6 d-flex" style="background-color: lightblue;" onclick="expandZone('zone1')">
             <button class="close-btn" onclick="closeZone(event, 'zone1')">✖</button>
@@ -223,79 +227,3 @@ h1,h2
         </div>
     </div>
 </div>
-
-<script>
-     function expandZone(selectedZoneId) {
-        const zoneTitle = document.getElementById('zoneTitle');
-        const zones = ['zone1', 'zone2', 'zone3', 'zone4'];
-        zones.forEach(zone => {
-            const element = document.getElementById(zone);
-            const closeButton = element.querySelector('.close-btn');
-            const content = element.querySelector('.content-zone-text');
-            const h2 = element.querySelector('h2');
-            if (zone === selectedZoneId) {
-                element.style.flex = "1 1 100%";
-                element.classList.add('col-12');
-                element.classList.remove('col-6');
-                element.style.height = "75vh";
-                closeButton.style.display = 'block'; // Show close button
-                content.classList.add('hidden-content-zone-text');
-                zoneTitle.innerHTML = "Une bouteille " + h2.innerHTML.toLowerCase();
-            } else {
-                element.style.width = "0";
-                element.style.height = "0";
-                element.style.opacity = "0";
-                closeButton.style.display = 'none'; // Hide close button
-                content.classList.add('hidden-content-zone-text');
-            }
-        });
-    }
-
-    function closeZone(event, zoneId) {
-
-        const zones = ['zone1', 'zone2', 'zone3', 'zone4'];
-        const zoneTitle = document.getElementById('zoneTitle');
-        
-        zoneTitle.innerHTML = "Une bouteille ...";
-       
-        zones.forEach(zone => {
-            const element = document.getElementById(zone);
-            const closeButton = element.querySelector('.close-btn');
-            const content = element.querySelector('.content-zone-text');
-            if (zone === zoneId) {
-                element.classList.remove('col-12');
-                element.classList.add('col-6');
-                element.style.flex = "0 0 50%";
-                element.style.height = "38vh";
-                closeButton.style.display = 'none'; // Hide close button
-                content.classList.remove('hidden-content-zone-text');
-            } else {
-                element.style.width = "50%";
-                element.style.height = "38vh";
-                element.style.opacity = "1";
-                content.classList.remove('hidden-content-zone-text');
-            }
-        });
-
-        event.stopPropagation(); // Prevent the expandZone event
-
-    }
-
-    function updateClock() {
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = now.toLocaleString('fr-FR', { month: 'long' });
-        const day = now.getDate();
-        const hours = now.getHours().toString().padStart(2, '0');
-        const minutes = now.getMinutes().toString().padStart(2, '0');
-        const seconds = now.getSeconds().toString().padStart(2, '0');
-        
-        document.getElementById('clock').textContent = `[ ${year} ][ ${day} ${month} ][ ${hours} : ${minutes} : ${seconds} ]`;
-    }
-
-    // Mise à jour de l'horloge chaque seconde
-    setInterval(updateClock, 1000);
-
-    // Initialiser l'horloge immédiatement au chargement de la page
-    updateClock();
-</script>

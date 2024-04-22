@@ -41,4 +41,7 @@ echo '<!-- Base js -->
 echo '<!-- App js -->
 <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/app.js"></script>';
 
+echo '<!-- Timecapsule js -->
+<script src="'.BASEPATH.'themes/'.THEME.'/assets/js/timecapsule.js?='.time().'"></script>';
+
 ?>
