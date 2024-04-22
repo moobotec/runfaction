@@ -50,7 +50,7 @@ $name = "";
     <?=Component::create('partials/style')->assign(['pages'=>$pages])->render() ?>
   </head>
   
-  <body data-topbar="dark" data-layout="horizontal">
+  <body data-topbar="dark" data-layout="horizontal" data-layout-scrollable="true">
 
     <!-- Loader -->
     <div id="preloader">

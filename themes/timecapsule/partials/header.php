@@ -82,11 +82,10 @@ use Steampixel\Component;
     flex-grow: 1;
     height: 100%; /* Assurez-vous que le conteneur prend toute la hauteur nécessaire */
     color: hsl(0deg, 100%, 100%);
-    text-decoration: underline #88ff88;
     text-shadow: 2px 2px 3px black;
 }
 
-.center-buttons .buttons-propos, .buttons-jeter, .buttons-trouver  {
+.buttons-propos, .buttons-jeter, .buttons-trouver  {
     display: flex; /* Permet l'alignement interne du texte */
     align-items: center; /* Centre le texte verticalement */
     justify-content: center; /* Centre le texte horizontalement */
@@ -101,9 +100,22 @@ use Steampixel\Component;
     font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
 }
 
-.center-buttons .buttons-propos:hover,.buttons-jeter:hover,.buttons-trouver:hover {
+.buttons-propos:hover,.buttons-jeter:hover,.buttons-trouver:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Ombre plus prononcée au survol */
     transform: translateY(-2px); /* Léger effet de soulèvement au survol */
+}
+
+.buttons-selected {
+    text-decoration: underline #88ff88;
+}
+
+.buttons-selected:hover {
+    text-decoration: underline #88ff88;
+}
+
+
+.center-buttons:active {
+    text-decoration: underline #88ff88;
 }
 
 .right-controls {
@@ -156,7 +168,7 @@ use Steampixel\Component;
         </div>
 
         <div class="center-buttons">
-            <button type="button" class="buttons-jeter text-uppercase btn header-item waves-effect">
+            <button type="button" class="buttons-selected buttons-jeter text-uppercase btn header-item waves-effect ">
                 Jeter
             </button>
         </div>
