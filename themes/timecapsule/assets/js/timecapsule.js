@@ -54,6 +54,16 @@ function closeZone(event, zoneId) {
 
 }
 
+function displayTimezoneOffset() {
+    const now = new Date();
+    const timezoneOffset = now.getTimezoneOffset(); // Récupère le décalage en minutes
+    const offsetHours = timezoneOffset / 60; // Convertit le décalage en heures
+    const sign = offsetHours > 0 ? "-" : "+"; // Déterminer le signe (inverse car getTimezoneOffset est inversé)
+    const displayOffset = ` GMT [${sign}${Math.abs(offsetHours).toFixed(0)}]`; // Formate l'affichage
+
+    return displayOffset;
+}
+
 function updateClock() {
     const now = new Date();
     const year = now.getFullYear();
@@ -64,7 +74,21 @@ function updateClock() {
     const seconds = now.getSeconds().toString().padStart(2, '0');
     
     document.getElementById('clock').textContent = `[ ${year} ][ ${day} ${month} ][ ${hours} : ${minutes} : ${seconds} ]`;
+    document.getElementById('clockGmt').textContent = `[ ${year} ][ ${day} ${month} ][ ${hours} : ${minutes} : ${seconds} ]` + displayTimezoneOffset();
 }
+
+function updateClockUtcGmt() {
+    const nowUtc = new Date();
+    const year = nowUtc.getUTCFullYear()
+    const month = nowUtc.toLocaleString('fr-FR', { month: 'long' , timeZone: 'UTC'  });
+    const day = nowUtc.getUTCDate()
+    const hours = nowUtc.getUTCHours().toString().padStart(2, '0');
+    const minutes = nowUtc.getUTCMinutes().toString().padStart(2, '0');
+    const seconds = nowUtc.getUTCSeconds().toString().padStart(2, '0');
+    
+    document.getElementById('clockUtc').textContent = `[ ${year} ][ ${day} ${month} ][ ${hours} : ${minutes} : ${seconds} ]`;
+}
+
 
 function getLocation() {
     if (navigator.geolocation) {
@@ -87,8 +111,44 @@ $(function() {
     // Mise à jour de l'horloge chaque seconde
     setInterval(updateClock, 1000);
 
+    setInterval(updateClockUtcGmt, 1000);
+
     // Initialiser l'horloge immédiatement au chargement de la page
     updateClock();
 
     getLocation();
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const sliders = ['customRange2', 'customRange3'];  // IDs de vos sliders
+
+    sliders.forEach(function(sliderId) {
+        const slider = document.getElementById(sliderId);
+        const rangeValueId = `rangeValue${sliderId.slice(-1)}`;  // Construit l'ID basé sur le slider
+
+        // Initialisation des valeurs
+        updateValue(rangeValueId, slider.value, slider.max);
+
+        // Écouteur d'événement
+        slider.addEventListener('input', function() {
+            updateValue(rangeValueId, slider.value, slider.max);
+        });
+    });
+});
+
+function updateValue(id,value,max)
+{
+    const rangeValue = document.getElementById(id);
+
+    // Calculez le pourcentage de positionnement par rapport au slider
+    const percentage = (value / max) * 100;
+
+    // Mettez à jour la position left de l'étiquette pour qu'elle suive le curseur
+    rangeValue.style.left = `${percentage}%`;
+
+    // Mettez à jour le contenu de l'étiquette pour afficher la valeur actuelle
+    rangeValue.textContent = value;
+
+    // Appliquez un translateX négatif basé sur la moitié de la largeur de l'étiquette pour centrer le texte sur le curseur
+    rangeValue.style.transform = `translateX(-${percentage}%)`;
+}
