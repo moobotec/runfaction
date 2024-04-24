@@ -74,7 +74,6 @@ function updateClock() {
     const seconds = now.getSeconds().toString().padStart(2, '0');
     
     document.getElementById('clock').textContent = `[ ${year} ][ ${day} ${month} ][ ${hours} : ${minutes} : ${seconds} ]`;
-    document.getElementById('clockGmt').textContent = `[ ${year} ][ ${day} ${month} ][ ${hours} : ${minutes} : ${seconds} ]` + displayTimezoneOffset();
 }
 
 function updateClockUtcGmt() {
@@ -86,7 +85,7 @@ function updateClockUtcGmt() {
     const minutes = nowUtc.getUTCMinutes().toString().padStart(2, '0');
     const seconds = nowUtc.getUTCSeconds().toString().padStart(2, '0');
     
-    document.getElementById('clockUtc').textContent = `[ ${year} ][ ${day} ${month} ][ ${hours} : ${minutes} : ${seconds} ]`;
+    document.getElementById('clockUtcGmt').textContent = `[ ${year} ][ ${day} ${month} ][ ${hours} : ${minutes} : ${seconds} ]` + displayTimezoneOffset();
 }
 
 
@@ -117,38 +116,31 @@ $(function() {
     updateClock();
 
     getLocation();
-});
 
-document.addEventListener('DOMContentLoaded', function() {
-    const sliders = ['customRange2', 'customRange3'];  // IDs de vos sliders
-
-    sliders.forEach(function(sliderId) {
-        const slider = document.getElementById(sliderId);
-        const rangeValueId = `rangeValue${sliderId.slice(-1)}`;  // Construit l'ID basé sur le slider
-
-        // Initialisation des valeurs
-        updateValue(rangeValueId, slider.value, slider.max);
-
-        // Écouteur d'événement
-        slider.addEventListener('input', function() {
-            updateValue(rangeValueId, slider.value, slider.max);
-        });
+    $('#datetimeModal').on('show.bs.modal', function(event) {
+        // Fonction pour préparer le contenu de la modal
+        prepareModalContent();
     });
+
+    $('button[id^="btClock"]').click(function() {
+        $('h2[id^="clock"]').removeClass('active');
+        $('div[id^="modif"]').css("display", "none");
+        $('#clock'+ $(this).attr('id').replace('btClock', '')).addClass('active');
+        $('#modif'+ $(this).attr('id').replace('btClock', '')).css("display", "block");
+    });
+
 });
 
-function updateValue(id,value,max)
-{
-    const rangeValue = document.getElementById(id);
-
-    // Calculez le pourcentage de positionnement par rapport au slider
-    const percentage = (value / max) * 100;
-
-    // Mettez à jour la position left de l'étiquette pour qu'elle suive le curseur
-    rangeValue.style.left = `${percentage}%`;
-
-    // Mettez à jour le contenu de l'étiquette pour afficher la valeur actuelle
-    rangeValue.textContent = value;
-
-    // Appliquez un translateX négatif basé sur la moitié de la largeur de l'étiquette pour centrer le texte sur le curseur
-    rangeValue.style.transform = `translateX(-${percentage}%)`;
+function prepareModalContent() {
+    // Mettre à jour les éléments de la modal ou effectuer des opérations ici
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.toLocaleString('fr-FR', { month: 'long' });
+    const day = now.getDate();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    
+    document.getElementById('clockYear').textContent = `[ ${year} ]`;
+    document.getElementById('clockMonthDay').textContent = `[ ${day} ${month} ]`;
+    document.getElementById('clockTime').textContent = `[ ${hours} : ${minutes} ]`;
 }

@@ -80,6 +80,21 @@ $name = "";
         white-space: nowrap;
         color: black; /* Assurez-vous que le texte est visible, adaptez selon votre design */
     }
+
+    .buttons-change:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Ombre plus prononcée au survol */
+        transform: translateY(-2px); /* Léger effet de soulèvement au survol */
+    }
+
+    .buttons-change:hover > h2 {
+    text-decoration: underline #88ff88;
+    }
+
+    .active {
+    text-decoration: underline #88ff88;
+    }
+
+
     </style>
 
   </head>
@@ -123,68 +138,221 @@ $name = "";
                     <button type="button" class="close-btn-pre" data-bs-dismiss="modal" >✖</button>
                 </div>
                 <div class="modal-body">
-
-                <div class="row">
-                    <div class="col-auto">
-                        <h2 class="pt-2"><i class="bx bx-time-five"></i></h2>
+                <p class="card-title-desc">Ceci est la date courante</p>
+                <div class="my-3 row">
+                <div class="d-flex justify-content-center">
+                    <div class="">
+                        <h2 class="pt-3"><i class="bx bx-time-five"></i></h2>
                     </div>
-                    <div class="col-10">
-                        <h2 class="my-1" id="clockUtc">[ xxx ][ xx xxxx ][ xx : xx : xx ]</h2>
+                    <div class="">
+                        <h2 class="my-1" id="clockUtcGmt">[ xxx ][ xx xxxx ][ xx : xx : xx ]</h2>
+                    </div>
+                </div>
+                </div>
+
+
+                <p class="card-title-desc">Vous pouvez changer la date courante en selectionnant <code>Année</code> ou <code>Jour - Mois</code> ou <code>Heure - Minute</code>.</p>
+                <div class="my-3 row">
+                <div class="d-flex justify-content-around text-center">
+                    <button type="button" id="btClockYear" class="buttons-change p-2 btn header-item waves-effect">
+                        <h4 class="my-1">Année</h4>
+                        <h2 class="my-1" id="clockYear">[ xxx ]</h2>
+                    </button>
+                    <button type="button" id="btClockMonthDay" class="buttons-change p-2 btn header-item waves-effect">
+                        <h4 class="my-1">Jour - Mois</h4>
+                        <h2 class="my-1" id="clockMonthDay">[ xx xxxx ]</h2>
+                    </button>
+                    <button type="button" id="btClockTime" class="buttons-change p-2 btn header-item waves-effect">
+                        <h4 class="my-1">Heure - Minute</h4>
+                        <h2 class="my-1" id="clockTime">[ xx : xx ]</h2>
+                    </button>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-auto">
-                        <h2 class="pt-2"><i class="bx bx-time-five"></i></h2>
-                    </div>
-                    <div class="col-10">
-                        <h2 class="my-1" id="clockGmt">[ xxx ][ xx xxxx ][ xx : xx : xx ] GMT [x]</h2>
-                    </div>
+                <div id="modifYear" style="display:none">
+                    <form action="" method="" onsubmit="modifMoisJour(); return false;">
+                        <p class="card-title-desc">Vous pouvez changer <code>Année</code>.</p>
+
+                        <div class="row  text-center">
+                            <div class="d-flex justify-content-around">
+                            <div class="col-1">
+                                <div class="border">
+                                    <h2 class="my-1" id=""> [ </h2>
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <div class="border">
+                                    <h2 class="my-1" id=""> +/- </h2>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class=" text-center">
+                                    <input type="text"
+                                        class="form-control form-control-lg text-center"
+                                        onkeyup="touchCode(this, 2,event)" maxLength="1"
+                                        id="code_input_1" name="code1" autocomplete="off" value="0" >
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="text-center">
+                                    <input type="text"
+                                        class="form-control form-control-lg text-center"
+                                        onkeyup="touchCode(this, 3,event)" maxLength="1"
+                                        id="code_input_2" name="code2" autocomplete="off" value="0">
+                                </div>
+                            </div>
+
+                            <div class="">
+                                <div class="text-center">
+                                    <input type="text"
+                                        class="form-control form-control-lg text-center"
+                                        onkeyup="touchCode(this, 3,event)" maxLength="1"
+                                        id="code_input_2" name="code2" autocomplete="off" value="0">
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="text-center">
+                                    <input type="text"
+                                        class="form-control form-control-lg text-center"
+                                        onkeyup="touchCode(this, 4,event)" maxLength="1"
+                                        id="code_input_3" name="code3" autocomplete="off" value="0">
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="text-center">
+                                    <input type="text"
+                                        class="form-control form-control-lg text-center"
+                                        onkeyup="touchCode(this, 5,event)" maxLength="1"
+                                        id="code_input_4" name="code4" autocomplete="off" value="0">
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="text-center">
+                                    <input type="text"
+                                        class="form-control form-control-lg text-center"
+                                        onkeyup="touchCode(this, 5,event)" maxLength="1"
+                                        id="code_input_4" name="code4" autocomplete="off" value="0">
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="text-center">
+                                    <input type="text"
+                                        class="form-control form-control-lg text-center"
+                                        onkeyup="touchCode(this, 5,event)" maxLength="1"
+                                        id="code_input_4" name="code4" autocomplete="off" value="0">
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <div class="border">
+                                    <h2 class="my-1" id=""> ] </h2>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+
+                    </form>
                 </div>
 
-                <div class="row mt-2">
-                    <div class="col-lg-4">
-                        <div class="mt-4">
-                            <h5 class="font-size-14 pb-4">Année</h5>
-                            <input type="select" class="form-select" min="-10000" max="10000" id="customNumber1">
+                <div id="modifMonthDay" style="display:none">
+                    <form action="" method="" onsubmit="modifMoisJour(); return false;">
+                        <p class="card-title-desc">Vous pouvez changer <code>Jour - Mois</code>.</p>
+
+
+                        <div class="row justify-content-center text-center">
+                            <div class="col-1">
+                                <div class="border">
+                                    <h2 class="my-1" id=""> [ </h2>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="mb-3 text-center">
+                                    <input type="text"
+                                        class="form-control form-control-lg text-center"
+                                        onkeyup="touchCode(this, 2,event)" maxLength="1"
+                                        id="code_input_1" name="code1" autocomplete="off" value="0" >
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="mb-3 text-center">
+                                    <input type="text"
+                                        class="form-control form-control-lg text-center"
+                                        onkeyup="touchCode(this, 3,event)" maxLength="1"
+                                        id="code_input_2" name="code2" autocomplete="off" value="0">
+                                </div>
+                            </div>
+
+                            <div class="col-4">
+                                <div class="mb-3 text-center">
+                                    <h2 class="my-1" id="clockTime">janvier</h2>
+                                </div>
+                            </div>
+                          
+                            <div class="col-1">
+                                <div class="border">
+                                    <h2 class="my-1" id=""> ] </h2>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="mt-4">
-                            <h5 class="font-size-14 pb-4">Mois</h5>
-                            <span id="rangeValue2" style="position: absolute; margin-top: -30px; margin-left: -7px;"></span>
-                            <input type="range" class="form-range" min="1" max="12" id="customRange2">
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="mt-4">
-                            <h5 class="font-size-14 pb-4">Jour</h5>
-                            <span id="rangeValue3" style="position: absolute; margin-top: -30px; margin-left: -1px;"></span>
-                            <input type="range" class="form-range" min="1" max="31" id="customRange3">
-                        </div>
-                    </div>
+
+
+                    </form>
                 </div>
 
-                <div class="row mt-2">
-                    <div class="col-lg-6">
-                        <div class="mt-4">
-                            <h5 class="font-size-14">Heure</h5>
-                            <p class="card-title-desc">Range inputs have implicit values for min and
-                                max—0 and 100, respectively.</p>
-                            <input type="range" class="form-range" min="1" max="24" id="customRange4">
+                <div id="modifTime" style="display:none">
+                    <form action="" method="" onsubmit="modifHeureMinute(); return false;">
+                        <p class="card-title-desc">Vous pouvez changer <code>Heure - Minute</code>.</p>
+                        <div class="row justify-content-center text-center">
+                            <div class="col-1">
+                                <div class="border">
+                                    <h2 class="my-1" id=""> [ </h2>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="mb-3 text-center">
+                                    <input type="text"
+                                        class="form-control form-control-lg text-center"
+                                        onkeyup="touchCode(this, 2,event)" maxLength="1"
+                                        id="code_input_1" name="code1" autocomplete="off" value="0" >
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="mb-3 text-center">
+                                    <input type="text"
+                                        class="form-control form-control-lg text-center"
+                                        onkeyup="touchCode(this, 3,event)" maxLength="1"
+                                        id="code_input_2" name="code2" autocomplete="off" value="0">
+                                </div>
+                            </div>
+
+                            <div class="col-1">
+                                <div class="border">
+                                    <h2 class="my-1" id="clockMonthDay"> : </h2>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="mb-3 text-center">
+                                    <input type="text"
+                                        class="form-control form-control-lg text-center"
+                                        onkeyup="touchCode(this, 4,event)" maxLength="1"
+                                        id="code_input_3" name="code3" autocomplete="off" value="0">
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="mb-3 text-center">
+                                    <input type="text"
+                                        class="form-control form-control-lg text-center"
+                                        onkeyup="touchCode(this, 5,event)" maxLength="1"
+                                        id="code_input_4" name="code4" autocomplete="off" value="0">
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <div class="border">
+                                    <h2 class="my-1" id=""> ] </h2>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="mt-4">
-                            <h5 class="font-size-14">Minute</h5>
-                            <p class="card-title-desc">By default, range inputs “snap” to integer
-                                values. To change this, you can specify a <code>step</code> value.</p>
-                            <input type="range" class="form-range" min="1" max="60" id="customRange5">
-                        </div>
-                    </div>
-                   
+                    </form>
                 </div>
-                  
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="buttons-position btn btn-light header-item btn waves-effect waves-light"><h4>Appliquer les changements</h4></button>

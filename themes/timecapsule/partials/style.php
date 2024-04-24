@@ -38,5 +38,4 @@ echo '<!-- Bootstrap Css -->
 <link href="'.BASEPATH.'themes/'.THEME.'/assets/css/app.min.css?='.time().'" id="app-style" rel="stylesheet" type="text/css" />
 <!-- toastr Css-->
 <link href="'.BASEPATH.'themes/'.THEME.'/assets/libs/toastr/build/toastr.min.css" rel="stylesheet" type="text/css" />
-<link href="'.BASEPATH.'themes/'.THEME.'/assets/css/moobotec.css?='.time().'" rel="stylesheet" type="text/css" />
 ';

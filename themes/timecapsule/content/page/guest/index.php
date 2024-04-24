@@ -163,8 +163,6 @@ h1,h2
     position: absolute;
     top: 10px;
     right: 10px;
-
-
     color: black; /* Change as needed */
     font-size: 24px;
     cursor: pointer;
