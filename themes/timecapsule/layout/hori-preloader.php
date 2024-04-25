@@ -91,9 +91,82 @@ $name = "";
     }
 
     .active {
-    text-decoration: underline #88ff88;
+        text-decoration: underline #88ff88;
     }
 
+    .h2-like {
+        font-size: 1.5rem; /* Taille de police similaire à celle de <h2> dans Bootstrap */
+        font-weight: bold; /* Gras comme un titre <h2> */
+        /* Ajouter d'autres styles de <h2> si nécessaire */
+    }
+
+    .hover-text {
+        font-size: 1.3rem; /* Taille de police similaire à celle de <h2> dans Bootstrap */
+        color: lightgrey; /* Gris */
+        font-weight: bold; /* Gras comme un titre <h2> */
+        /* Ajouter d'autres styles de <h2> si nécessaire */
+        pointer-events: none; /* Empêche le texte d'interférer avec les événements de la souris */
+    }
+
+    .sign-text-top
+    {
+        width: 100%; 
+        text-align: center; 
+        display: block;
+        bottom: 100%; /* Position par rapport au haut de l'input */
+        transform: translateY(-10px); /* Ajustez cette valeur pour décaler le texte vers le haut */
+        transition: visibility 0.2s, opacity 0.2s ease-in-out; /* Ajout d'une transition pour le changement visuel */
+        opacity: 0; /* Rend le texte transparent initialement */
+        visibility: hidden; /* Rend le texte non visible initialement */
+    }
+    
+    .sign-text-bottom
+    {
+        width: 100%; 
+        text-align: center; 
+        display: block;
+        top: 100%; /* Position par rapport au bas de l'input */
+        transform: translateY(10px); /* Ajustez cette valeur pour décaler le texte vers le bas */
+        transition: visibility 0.2s, opacity 0.2s ease-in-out; /* Ajout d'une transition pour le changement visuel */
+        opacity: 0; /* Rend le texte transparent initialement */
+        visibility: hidden; /* Rend le texte non visible initialement */
+    }
+
+    [class*="top-text"]
+    {
+        width: 100%; 
+        text-align: center; 
+        display: block;
+        bottom: 100%; /* Position par rapport au haut de l'input */
+        transform: translateY(-10px); /* Ajustez cette valeur pour décaler le texte vers le haut */
+        transition: visibility 0.2s, opacity 0.2s ease-in-out; /* Ajout d'une transition pour le changement visuel */
+        opacity: 0; /* Rend le texte transparent initialement */
+        visibility: hidden; /* Rend le texte non visible initialement */
+    }
+
+    [class*="bottom-text"]
+    {
+        width: 100%; 
+        text-align: center; 
+        display: block;
+        top: 100%; /* Position par rapport au bas de l'input */
+        transform: translateY(10px); /* Ajustez cette valeur pour décaler le texte vers le bas */
+        transition: visibility 0.2s, opacity 0.2s ease-in-out; /* Ajout d'une transition pour le changement visuel */
+        opacity: 0; /* Rend le texte transparent initialement */
+        visibility: hidden; /* Rend le texte non visible initialement */
+    }
+
+    .input-wrapper
+    {
+        position: relative;
+        padding-top: 10px; /* Ajuster selon besoin pour plus d'espace au-dessus */
+        padding-bottom: 10px; /* Ajuster selon besoin pour plus d'espace en dessous */
+        display: inline-block; /* Assurez-vous que le wrapper ne prend que l'espace nécessaire */
+    }
+
+    .form-control.form-control-lg {
+        height: 60px; /* Hauteur plus grande de l'input pour augmenter la zone cliquable */
+    }
 
     </style>
 
@@ -138,7 +211,7 @@ $name = "";
                     <button type="button" class="close-btn-pre" data-bs-dismiss="modal" >✖</button>
                 </div>
                 <div class="modal-body">
-                <p class="card-title-desc">Ceci est la date courante</p>
+                <p class="card-title-desc">Ceci est la date courante en UTC, mise à jour en temps réel.</p>
                 <div class="my-3 row">
                 <div class="d-flex justify-content-center">
                     <div class="">
@@ -149,115 +222,117 @@ $name = "";
                     </div>
                 </div>
                 </div>
-
-
-                <p class="card-title-desc">Vous pouvez changer la date courante en selectionnant <code>Année</code> ou <code>Jour - Mois</code> ou <code>Heure - Minute</code>.</p>
+                <p class="card-title-desc">Modifiez la date et l'heure actuelles en choisissant parmi les options suivantes : <code>Année</code>, <code>Jour - Mois</code>, ou <code>Heure - Minute</code>.</p>
                 <div class="my-3 row">
                 <div class="d-flex justify-content-around text-center">
                     <button type="button" id="btClockYear" class="buttons-change p-2 btn header-item waves-effect">
-                        <h4 class="my-1">Année</h4>
+                        
                         <h2 class="my-1" id="clockYear">[ xxx ]</h2>
                     </button>
                     <button type="button" id="btClockMonthDay" class="buttons-change p-2 btn header-item waves-effect">
-                        <h4 class="my-1">Jour - Mois</h4>
+                        
                         <h2 class="my-1" id="clockMonthDay">[ xx xxxx ]</h2>
                     </button>
                     <button type="button" id="btClockTime" class="buttons-change p-2 btn header-item waves-effect">
-                        <h4 class="my-1">Heure - Minute</h4>
+                        
                         <h2 class="my-1" id="clockTime">[ xx : xx ]</h2>
                     </button>
                     </div>
                 </div>
 
-                <div id="modifYear" style="display:none">
-                    <form action="" method="" onsubmit="modifMoisJour(); return false;">
-                        <p class="card-title-desc">Vous pouvez changer <code>Année</code>.</p>
-
-                        <div class="row  text-center">
+                <div id="modifYear" class="my-3" style="display:none">
+                    <form action="" method="" onsubmit="modifYear(); return false;">
+                        <p class="card-title-desc">Vous pouvez ajuster l'<code>Année</code> selon vos besoins.</p>
+                        <div class="row text-center">
                             <div class="d-flex justify-content-around">
-                            <div class="col-1">
-                                <div class="border">
-                                    <h2 class="my-1" id=""> [ </h2>
-                                </div>
-                            </div>
-                            <div class="col-1">
-                                <div class="border">
-                                    <h2 class="my-1" id=""> +/- </h2>
-                                </div>
-                            </div>
-                            <div class="">
-                                <div class=" text-center">
+                                <div class="text-center input-wrapper" style="position: relative;"> 
+                                    <div class="hover-text sign-text-top"> + </div>
                                     <input type="text"
-                                        class="form-control form-control-lg text-center"
-                                        onkeyup="touchCode(this, 2,event)" maxLength="1"
-                                        id="code_input_1" name="code1" autocomplete="off" value="0" >
+                                        class="form-control form-control-lg text-center h2-like"
+                                        onkeyup="touchSign(this,event)" 
+                                        onwheel="adjustSignOnScroll(event, this)"
+                                        maxLength="1"
+                                        id="sign_year_input" name="sign" autocomplete="off" value="+">
+                                    <div class="hover-text sign-text-bottom"> - </div>
                                 </div>
-                            </div>
-                            <div class="">
-                                <div class="text-center">
+                                <div class="text-center input-wrapper" style="position: relative;"> 
+                                    <div class="hover-text top-text-1"> 0 </div>
                                     <input type="text"
-                                        class="form-control form-control-lg text-center"
-                                        onkeyup="touchCode(this, 3,event)" maxLength="1"
-                                        id="code_input_2" name="code2" autocomplete="off" value="0">
+                                        class="form-control form-control-lg text-center h2-like"
+                                        onkeyup="touchCode(this, 2, event, 'code_year_input_', 7)" 
+                                        onwheel="adjustValueOnScroll(event, this)"
+                                        maxLength="1"
+                                        id="code_year_input_1" name="code1" autocomplete="off" value="0">
+                                    <div class="hover-text bottom-text-1"> 0 </div>
                                 </div>
-                            </div>
-
-                            <div class="">
-                                <div class="text-center">
+                                <div class="text-center input-wrapper" style="position: relative;">
+                                    <div class="hover-text top-text-2"> 0 </div>
                                     <input type="text"
-                                        class="form-control form-control-lg text-center"
-                                        onkeyup="touchCode(this, 3,event)" maxLength="1"
-                                        id="code_input_2" name="code2" autocomplete="off" value="0">
+                                        class="form-control form-control-lg text-center h2-like"
+                                        onkeyup="touchCode(this, 3,event,'code_year_input_',7)"
+                                        onwheel="adjustValueOnScroll(event, this)"
+                                        maxLength="1"
+                                        id="code_year_input_2" name="code2" autocomplete="off" value="0">
+                                    <div class="hover-text bottom-text-2"> 0 </div>
                                 </div>
-                            </div>
-                            <div class="">
-                                <div class="text-center">
+                                <div class="text-center input-wrapper" style="position: relative;">
+                                    <div class="hover-text top-text-3"> 0 </div>
                                     <input type="text"
-                                        class="form-control form-control-lg text-center"
-                                        onkeyup="touchCode(this, 4,event)" maxLength="1"
-                                        id="code_input_3" name="code3" autocomplete="off" value="0">
+                                        class="form-control form-control-lg text-center h2-like"
+                                        onkeyup="touchCode(this, 4,event,'code_year_input_',7)"
+                                        onwheel="adjustValueOnScroll(event, this)"
+                                        maxLength="1"
+                                        id="code_year_input_3" name="code3" autocomplete="off" value="0">
+                                    <div class="hover-text bottom-text-3"> 0 </div>
                                 </div>
-                            </div>
-                            <div class="">
-                                <div class="text-center">
+                                <div class="text-center input-wrapper" style="position: relative;">
+                                    <div class="hover-text top-text-4"> 0 </div>
                                     <input type="text"
-                                        class="form-control form-control-lg text-center"
-                                        onkeyup="touchCode(this, 5,event)" maxLength="1"
-                                        id="code_input_4" name="code4" autocomplete="off" value="0">
+                                        class="form-control form-control-lg text-center h2-like"
+                                        onkeyup="touchCode(this, 5,event,'code_year_input_',7)"
+                                        onwheel="adjustValueOnScroll(event, this)"
+                                        maxLength="1"
+                                        id="code_year_input_4" name="code4" autocomplete="off" value="0">
+                                    <div class="hover-text bottom-text-4"> 0 </div>
                                 </div>
-                            </div>
-                            <div class="">
-                                <div class="text-center">
+                                <div class="text-center input-wrapper" style="position: relative;">
+                                    <div class="hover-text top-text-5"> 0 </div>
                                     <input type="text"
-                                        class="form-control form-control-lg text-center"
-                                        onkeyup="touchCode(this, 5,event)" maxLength="1"
-                                        id="code_input_4" name="code4" autocomplete="off" value="0">
+                                        class="form-control form-control-lg text-center h2-like"
+                                        onkeyup="touchCode(this, 6,event,'code_year_input_',7)"
+                                        onwheel="adjustValueOnScroll(event, this)"
+                                        maxLength="1"
+                                        id="code_year_input_5" name="code5" autocomplete="off" value="0">
+                                    <div class="hover-text bottom-text-5"> 0 </div>
                                 </div>
-                            </div>
-                            <div class="">
-                                <div class="text-center">
+                                <div class="text-center input-wrapper" style="position: relative;">
+                                    <div class="hover-text top-text-6"> 0 </div>
                                     <input type="text"
-                                        class="form-control form-control-lg text-center"
-                                        onkeyup="touchCode(this, 5,event)" maxLength="1"
-                                        id="code_input_4" name="code4" autocomplete="off" value="0">
+                                        class="form-control form-control-lg text-center h2-like"
+                                        onkeyup="touchCode(this, 7,event,'code_year_input_',7)"
+                                        onwheel="adjustValueOnScroll(event, this)"
+                                        maxLength="1"
+                                        id="code_year_input_6" name="code6" autocomplete="off" value="0">
+                                    <div class="hover-text bottom-text-6"> 0 </div>
                                 </div>
-                            </div>
-                            <div class="col-1">
-                                <div class="border">
-                                    <h2 class="my-1" id=""> ] </h2>
+                                <div class="text-center input-wrapper" style="position: relative;">
+                                    <div class="hover-text top-text-7"> 0 </div>
+                                    <input type="text"
+                                        class="form-control form-control-lg text-center h2-like"
+                                        onkeyup="touchCode(this, 8,event,'code_year_input_',7)"
+                                        onwheel="adjustValueOnScroll(event, this)"
+                                        maxLength="1"
+                                        id="code_year_input_7" name="code7" autocomplete="off" value="0">
+                                    <div class="hover-text bottom-text-7"> 0 </div>
                                 </div>
                             </div>
                         </div>
-                        </div>
-
                     </form>
                 </div>
 
                 <div id="modifMonthDay" style="display:none">
                     <form action="" method="" onsubmit="modifMoisJour(); return false;">
-                        <p class="card-title-desc">Vous pouvez changer <code>Jour - Mois</code>.</p>
-
-
+                        <p class="card-title-desc">Vous pouvez ajuster <code>Jour - Mois</code> selon vos besoins.</p>
                         <div class="row justify-content-center text-center">
                             <div class="col-1">
                                 <div class="border">
@@ -300,7 +375,7 @@ $name = "";
 
                 <div id="modifTime" style="display:none">
                     <form action="" method="" onsubmit="modifHeureMinute(); return false;">
-                        <p class="card-title-desc">Vous pouvez changer <code>Heure - Minute</code>.</p>
+                        <p class="card-title-desc">Vous pouvez ajuster <code>Heure - Minute</code> selon vos besoins.</p>
                         <div class="row justify-content-center text-center">
                             <div class="col-1">
                                 <div class="border">
