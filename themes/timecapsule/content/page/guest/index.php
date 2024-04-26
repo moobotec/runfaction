@@ -185,12 +185,12 @@ h1,h2
 </style>
 
 <div class="d-flex justify-content-between">
-    <div class="col-lg-6">
+    <div class="col-lg-5">
         <div class="container-aligner">
             <h1 id="zoneTitle" class="p-1" style="text-decoration: underline #88ff88;">Une bouteille ...</h1>
         </div>
     </div>
-    <div class="col-lg-6 ">
+    <div class="col-lg-7">
         <div class="w-100">
             <div class="row">
             <button type="button" class="buttons-date btn header-item waves-effect" data-bs-toggle="modal" data-bs-target="#datetimeModal">

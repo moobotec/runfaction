@@ -1,4 +1,7 @@
-var idHover = 0;
+let idHover = {
+    "year": 0,
+    "time": 0
+};
 
 function expandZone(selectedZoneId) {
     const zoneTitle = document.getElementById('zoneTitle');
@@ -123,27 +126,54 @@ $(function() {
         updateClockUtcGmt();
     });
 
-    $('button[id^="btClock"]').click(function() {
+    $('button[id^="btClock"]').click(function() 
+    {
         $('h2[id^="clock"]').removeClass('active');
         $('div[id^="modif"]').css("display", "none");
-        $('#clock'+ $(this).attr('id').replace('btClock', '')).addClass('active');
-        $('#modif'+ $(this).attr('id').replace('btClock', '')).css("display", "block");
+        if ( $(this).attr('id') == "btClockReset" )
+        {
+            prepareModalContent();
+        }
+        else
+        {
+            $('#clock'+ $(this).attr('id').replace('btClock', '')).addClass('active');
+            $('#modif'+ $(this).attr('id').replace('btClock', '')).css("display", "block");
+        }
     });
+
+    $('input[id^="code_time_input"]').hover(
+        function() { // mouseenter
+            let valueTop = parseInt($(this).val()) - 1;
+            let valueBottom =  parseInt($(this).val()) + 1;
+            let id = $(this).attr('id').replace('code_time_input_', '');
+            let valueMax= parseInt($(this).attr('data-max'));
+            idHover['time'] = id;
+            let showTop = (valueTop >= 0);
+            let showBottom = (valueBottom < (valueMax + 1));
+            updatePeripheralDigit('time',id, showTop, showBottom, valueTop ,valueBottom);
+        },
+        function() { // mouseleave
+            let id = $(this).attr('id').replace('code_time_input_', '');
+            idHover['time'] = 0;
+            updatePeripheralDigit('time',id, false, false, 0 ,0);
+        }
+    );
 
     $('input[id^="code_year_input"]').hover(
         function() { // mouseenter
             let valueTop = parseInt($(this).val()) - 1;
             let valueBottom =  parseInt($(this).val()) + 1;
             let id = $(this).attr('id').replace('code_year_input_', '');
-            idHover = id;
+            let valueMax=  parseInt($(this).attr('data-max'));
+            idHover['year'] = id;
             let showTop = (valueTop >= 0);
-            let showBottom = (valueBottom < 10);
-            updatePeripheralDigit(id, showTop, showBottom, valueTop ,valueBottom);
+            let showBottom = (valueBottom < (valueMax + 1));
+            updatePeripheralDigit('year',id, showTop, showBottom, valueTop ,valueBottom);
         },
         function() { // mouseleave
             let id = $(this).attr('id').replace('code_year_input_', '');
-            idHover = 0;
-            updatePeripheralDigit(id, false, false, 0 ,0);
+            idHover['year']  = 0;
+            updatePeripheralDigit('year',id, false, false, 0 ,0);
         }
     );
 
@@ -174,6 +204,7 @@ function prepareModalContent() {
     document.getElementById('clockTime').textContent = `[ ${hours} : ${minutes} ]`;
 
     fillDigitsYear(year,"code_year_input_","sign_year_input", 7 );
+    fillDigitsTime(parseInt(hours),parseInt(minutes),"code_time_input_", 4 );
 }
 
 function fillDigitsYear(number, prefixCode,prefixSign,maxDigits) 
@@ -185,7 +216,7 @@ function fillDigitsYear(number, prefixCode,prefixSign,maxDigits)
     // Gérer les nombres négatifs en convertissant le nombre en valeur absolue
     const sign = (number < 0) ? "-" : "+";
     const absNumber = Math.abs(number);
-    let digits = absNumber.toString();
+    let digits = absNumber.toString().padStart(maxDigits, '0');
 
     // Assurer que le nombre n'a pas plus de maxDigits 
     if (digits.length > maxDigits) {
@@ -201,13 +232,30 @@ function fillDigitsYear(number, prefixCode,prefixSign,maxDigits)
         inputIndex--;
     }
 
-    // Effacer les valeurs des champs restants si le nombre va jusqu'au premier digit
-    for (let i = inputIndex; i >= 1; i--) {
-        document.getElementById(prefixCode + i).value = '0';
-    }
-
     // initialisation du signe 
     document.getElementById(prefixSign).value = sign;
+}
+
+function fillDigitsTime(numberHours,numberMinutes, prefixCode , maxDigits ) 
+{
+    if (!Number.isInteger(numberHours) || isNaN(numberHours)) {
+        return;
+    }
+    if (!Number.isInteger(numberMinutes) || isNaN(numberMinutes)) {
+        return;
+    }
+
+    if (numberHours >= 24 || numberHours < 0) numberHours = 0;
+    if (numberMinutes >= 60 || numberHours < 0) numberMinutes = 0;
+
+    let digits = numberHours.toString().padStart(2, '0') + numberMinutes.toString().padStart(2, '0');
+    let inputIndex = maxDigits;
+
+    for (let i = digits.length - 1; i >= 0; i--) {
+        document.getElementById(prefixCode + inputIndex).value = digits[i];
+        inputIndex--;
+    }
+
 }
 
 /* Mise à jour du champ année final que l'utilisateur 
@@ -227,19 +275,23 @@ function updateFinalValue(code,sign)
 /* Mise à jour de la valeur de l'input passe en paramètre , puis mise à jour de la valeur finale,
 puis mise à jour de l'affichage des chiffre périphèrique en haut 
 et en bas si la souris est dessus en survol sinon pas besoin  */
-function setValueInput(inputElement,value) 
+function setValueInput(inputElement,value,type) 
 {
     inputElement.value = value;
-    updateFinalValue("code_year_input","sign_year_input");
+    if (type == 'year')
+    {
+        updateFinalValue("code_year_input","sign_year_input");
+    }
 
     let valueTop = parseInt(value) - 1;
     let valueBottom =  parseInt(value) + 1;
-    let id = $(inputElement).attr('id').replace('code_year_input_', '');
-    if (id == idHover)
+    let id = $(inputElement).attr('id').replace('code_'+type+'_input_', '');
+    let valueMax =  parseInt($(inputElement).attr('data-max'));
+    if (id == idHover[type])
     {
         let showTop = (valueTop >= 0);
-        let showBottom = (valueBottom < 10);
-        updatePeripheralDigit(id, showTop, showBottom, valueTop ,valueBottom);
+        let showBottom = (valueBottom < (valueMax + 1));
+        updatePeripheralDigit(type,id, showTop, showBottom, valueTop ,valueBottom);
     }
 }
 
@@ -250,49 +302,49 @@ function setValueInputSign(inputElement,value)
 
     let showTop = (value == "-");
     let showBottom = (value == "+");
-    updatePeripheralDigit('sign',showTop,showBottom,"+","-");
+    updatePeripheralDigit('year','sign',showTop,showBottom,"+","-");
 }
 
 /* Changement de l'effet de persitance des valeur 
     possible en haut et en bas */
-function updatePeripheralDigit(id,showTop,showBottom,valueTop,valueBottom) {
+function updatePeripheralDigit(type,id,showTop,showBottom,valueTop,valueBottom) {
 
-    $('.input-wrapper .top-text-'+id).css("visibility","hidden");
-    $('.input-wrapper .bottom-text-'+id).css("visibility","hidden");
-    $('.input-wrapper .top-text-'+id).css("opacity","0"); 
-    $('.input-wrapper .bottom-text-'+id).css("opacity","0"); 
+    $('.input-wrapper .top-text-'+type+'-'+id).css("visibility","hidden");
+    $('.input-wrapper .bottom-text-'+type+'-'+id).css("visibility","hidden");
+    $('.input-wrapper .top-text-'+type+'-'+id).css("opacity","0"); 
+    $('.input-wrapper .bottom-text-'+type+'-'+id).css("opacity","0"); 
 
     if (showTop)
     {
-        $('.input-wrapper .top-text-'+id).css("visibility","visible");
-        $('.input-wrapper .top-text-'+id).html(valueTop);
-        $('.input-wrapper .top-text-'+id).css("opacity","1"); 
+        $('.input-wrapper .top-text-'+type+'-'+id).css("visibility","visible");
+        $('.input-wrapper .top-text-'+type+'-'+id).html(valueTop);
+        $('.input-wrapper .top-text-'+type+'-'+id).css("opacity","1"); 
     }
     if (showBottom)
     {
-        $('.input-wrapper .bottom-text-'+id).css("visibility","visible");
-        $('.input-wrapper .bottom-text-'+id).html(valueBottom);
-        $('.input-wrapper .bottom-text-'+id).css("opacity","1");
+        $('.input-wrapper .bottom-text-'+type+'-'+id).css("visibility","visible");
+        $('.input-wrapper .bottom-text-'+type+'-'+id).html(valueBottom);
+        $('.input-wrapper .bottom-text-'+type+'-'+id).css("opacity","1");
     }
 }
 
-function touchCode(inputElement,event,prefix,pos,max) 
+function touchCode(inputElement,event,type,pos,max,maxValue) 
 {
     // Récupérer le code de la touche appuyée
     var codeTouche = event.keyCode || event.which;
     if (codeTouche != 16) // Touche "Maj enfoncée"
     {
-        if ((codeTouche >= 48 && codeTouche <= 57) || // Chiffres (0-9)
-            (codeTouche >= 96 && codeTouche <= 105) || // Pavé numerique (0-9)
+        if ((codeTouche >= 48 && codeTouche <= (48 + maxValue)) || // Chiffres (0-9)
+            (codeTouche >= 96 && codeTouche <= (96 + maxValue)) || // Pavé numerique (0-9)
             codeTouche === 8 || // Touche "Retour arrière" (Backspace)
             codeTouche === 9 || // Touche "Tabulation"
             codeTouche === 46) { // Touche "Supprimer" (Delete)
         
             if (codeTouche === 8 || codeTouche === 46)
             {
-                setValueInput(inputElement,0);
+                setValueInput(inputElement,0,type);
                 if ((pos-2) == 0) pos = max+2;
-                $("#"+prefix+(pos-2)).focus();
+                $("#code_"+type+"_input_"+(pos-2)).focus();
             }
             else if (codeTouche != 9)
             {
@@ -300,17 +352,17 @@ function touchCode(inputElement,event,prefix,pos,max)
                 var regex = /^[0-9]$/;
                 if (!regex.test(lastChar)) {
                     // Supprimer la dernière touche entrée si elle n'est pas valide
-                    setValueInput(inputElement,inputElement.value.slice(0, -1));
+                    setValueInput(inputElement,inputElement.value.slice(0, -1),type);
                 }
                 else
                 {
-                    setValueInput(inputElement,event.key);
-                    $("#"+prefix+pos).focus();
+                    setValueInput(inputElement,event.key,type);
+                    $("#code_"+type+"_input_"+pos).focus();
                 }
             }
         }
         else {
-            setValueInput(inputElement,0);
+            setValueInput(inputElement,0,type);
             event.preventDefault(); // Empêcher l'action par défaut pour les autres touches
         }
     }
@@ -334,7 +386,7 @@ function touchSign(inputElement, event)
 }
 
 /* Gestionnaire de modification de la mollette de la souris */
-function adjustOnScroll(event, inputElement,type) 
+function adjustOnScroll(event, inputElement,base,type) 
 {
     event.preventDefault();
     const delta = event.deltaY;
@@ -346,20 +398,22 @@ function adjustOnScroll(event, inputElement,type)
         return; // Ignore les petits défilements
     }
 
-    if (type == 'code')
+    if (base == 'code')
     {
         let currentValue = parseInt(inputElement.value, 10);
 
         // Incrémenter ou décrémenter la valeur en fonction de la direction du scroll
         currentValue += delta < 0 ? -1 : 1;
 
+        let valueMax = parseInt($(inputElement).attr('data-max'));
+
         // Contrôler les limites de la valeur
         if (currentValue < 0) currentValue = 0;
-        if (currentValue > 9) currentValue = 9;
+        if (currentValue > valueMax) currentValue = valueMax;
 
-        setValueInput(inputElement,currentValue);
+        setValueInput(inputElement,currentValue,type,valueMax);
     } 
-    else if (type == 'sign')
+    else if (base == 'sign')
     {
         let currentValue = 0;
 
@@ -372,5 +426,9 @@ function adjustOnScroll(event, inputElement,type)
         // Contrôler les limites de la valeur
         if (currentValue < 0) setValueInputSign(inputElement,"+");
         if (currentValue > 1) setValueInputSign(inputElement,"-");
+    }
+    else if (base == 'month')
+    {
+
     }
 }
