@@ -132,79 +132,38 @@ $(function() {
 
     $('input[id^="code_year_input"]').hover(
         function() { // mouseenter
-            let top = parseInt($(this).val()) - 1;
-            let bottom =  parseInt($(this).val()) + 1;
+            let valueTop = parseInt($(this).val()) - 1;
+            let valueBottom =  parseInt($(this).val()) + 1;
             let id = $(this).attr('id').replace('code_year_input_', '');
             idHover = id;
-            changeInputWrapper(id,top,bottom);
+            let showTop = (valueTop >= 0);
+            let showBottom = (valueBottom < 10);
+            updatePeripheralDigit(id, showTop, showBottom, valueTop ,valueBottom);
         },
         function() { // mouseleave
             let id = $(this).attr('id').replace('code_year_input_', '');
             idHover = 0;
-            changeInputWrapper(id,-1,10);
+            updatePeripheralDigit(id, false, false, 0 ,0);
         }
     );
 
     $('#sign_year_input').hover(
         function() { // mouseenter
-            changeSignWrapper($(this).val());
+            let showTop = ($(this).val() == "-");
+            let showBottom = ($(this).val() == "+");
+            updatePeripheralDigit('sign',showTop,showBottom,"+","-");
         },
         function() { // mouseleave
-            changeSignWrapper();
+            updatePeripheralDigit('sign', false, false, 0 ,0);
         }
     );
 
 });
 
-
-function setValueInput(inputElement,value) 
-{
-    inputElement.value = value;
-
-    var numberString = '';
-    $('input[id^="code_year_input"]').each(function() {
-        numberString += $(this).val(); // Ajouter la valeur de chaque input à la chaîne
-    });
-    
-    let number = parseInt(numberString);
-    if ($('#sign_year_input').val() == "-") number *= -1;
-    $('#clockYear').html('[ '+ parseInt(number) + ' ]');
-    
-    let top = parseInt(value) - 1;
-    let bottom =  parseInt(value) + 1;
-
-    let id = $(inputElement).attr('id').replace('code_year_input_', '');
-
-    if (id == idHover)
-    {
-        changeInputWrapper(id,top,bottom);
-    }
-}
-
-function changeInputWrapper(id,valueTop,valueBottom) {
-
-    $('.input-wrapper .top-text-'+id).css("visibility","hidden");
-    $('.input-wrapper .bottom-text-'+id).css("visibility","hidden");
-    $('.input-wrapper .top-text-'+id).css("opacity","0"); 
-    $('.input-wrapper .bottom-text-'+id).css("opacity","0"); 
-    if (valueTop >= 0)
-    {
-        $('.input-wrapper .top-text-'+id).css("visibility","visible");
-        $('.input-wrapper .top-text-'+id).html(valueTop);
-        $('.input-wrapper .top-text-'+id).css("opacity","1"); 
-    }
-    if (valueBottom < 10)
-    {
-        $('.input-wrapper .bottom-text-'+id).css("visibility","visible");
-        $('.input-wrapper .bottom-text-'+id).html(valueBottom);
-        $('.input-wrapper .bottom-text-'+id).css("opacity","1");
-    }
-}
-
 function prepareModalContent() {
     // Mettre à jour les éléments de la modal ou effectuer des opérations ici
     const now = new Date();
-    const year = now.getFullYear();
+    let year = now.getFullYear();
     const month = now.toLocaleString('fr-FR', { month: 'long' });
     const day = now.getDate();
     const hours = now.getHours().toString().padStart(2, '0');
@@ -214,28 +173,128 @@ function prepareModalContent() {
     document.getElementById('clockMonthDay').textContent = `[ ${day} ${month} ]`;
     document.getElementById('clockTime').textContent = `[ ${hours} : ${minutes} ]`;
 
-    fillDigitsWithNumber(year,'code_year_input_');
-
+    fillDigitsYear(year,"code_year_input_","sign_year_input", 7 );
 }
 
-function touchCode(inputElement, count, event,prefix,max) {
+function fillDigitsYear(number, prefixCode,prefixSign,maxDigits) 
+{
+    if (!Number.isInteger(number) || isNaN(number)) {
+        return;
+    }
+
+    // Gérer les nombres négatifs en convertissant le nombre en valeur absolue
+    const sign = (number < 0) ? "-" : "+";
+    const absNumber = Math.abs(number);
+    let digits = absNumber.toString();
+
+    // Assurer que le nombre n'a pas plus de maxDigits 
+    if (digits.length > maxDigits) {
+        digits = "9999999"
+    }
+    
+    // Initialiser l'index de l'input à partir duquel commencer à remplir
+    let inputIndex = maxDigits;
+
+    // Remplir les champs d'entrée avec les chiffres du nombre en ordre inverse
+    for (let i = digits.length - 1; i >= 0; i--) {
+        document.getElementById(prefixCode + inputIndex).value = digits[i];
+        inputIndex--;
+    }
+
+    // Effacer les valeurs des champs restants si le nombre va jusqu'au premier digit
+    for (let i = inputIndex; i >= 1; i--) {
+        document.getElementById(prefixCode + i).value = '0';
+    }
+
+    // initialisation du signe 
+    document.getElementById(prefixSign).value = sign;
+}
+
+/* Mise à jour du champ année final que l'utilisateur 
+pourra ensuite appliquer à la date courante*/
+function updateFinalValue(code,sign) 
+{
+    var numberString = '';
+    $('input[id^='+code+']').each(function() {
+        numberString += $(this).val(); // Ajouter la valeur de chaque input à la chaîne
+    });
+    
+    let number = parseInt(numberString);
+    if ($('#'+sign).val() == "-") number *= -1;
+    $('#clockYear').html('[ '+ parseInt(number) + ' ]');
+}
+
+/* Mise à jour de la valeur de l'input passe en paramètre , puis mise à jour de la valeur finale,
+puis mise à jour de l'affichage des chiffre périphèrique en haut 
+et en bas si la souris est dessus en survol sinon pas besoin  */
+function setValueInput(inputElement,value) 
+{
+    inputElement.value = value;
+    updateFinalValue("code_year_input","sign_year_input");
+
+    let valueTop = parseInt(value) - 1;
+    let valueBottom =  parseInt(value) + 1;
+    let id = $(inputElement).attr('id').replace('code_year_input_', '');
+    if (id == idHover)
+    {
+        let showTop = (valueTop >= 0);
+        let showBottom = (valueBottom < 10);
+        updatePeripheralDigit(id, showTop, showBottom, valueTop ,valueBottom);
+    }
+}
+
+function setValueInputSign(inputElement,value) 
+{
+    inputElement.value = value;
+    updateFinalValue("code_year_input","sign_year_input");
+
+    let showTop = (value == "-");
+    let showBottom = (value == "+");
+    updatePeripheralDigit('sign',showTop,showBottom,"+","-");
+}
+
+/* Changement de l'effet de persitance des valeur 
+    possible en haut et en bas */
+function updatePeripheralDigit(id,showTop,showBottom,valueTop,valueBottom) {
+
+    $('.input-wrapper .top-text-'+id).css("visibility","hidden");
+    $('.input-wrapper .bottom-text-'+id).css("visibility","hidden");
+    $('.input-wrapper .top-text-'+id).css("opacity","0"); 
+    $('.input-wrapper .bottom-text-'+id).css("opacity","0"); 
+
+    if (showTop)
+    {
+        $('.input-wrapper .top-text-'+id).css("visibility","visible");
+        $('.input-wrapper .top-text-'+id).html(valueTop);
+        $('.input-wrapper .top-text-'+id).css("opacity","1"); 
+    }
+    if (showBottom)
+    {
+        $('.input-wrapper .bottom-text-'+id).css("visibility","visible");
+        $('.input-wrapper .bottom-text-'+id).html(valueBottom);
+        $('.input-wrapper .bottom-text-'+id).css("opacity","1");
+    }
+}
+
+function touchCode(inputElement,event,prefix,pos,max) 
+{
     // Récupérer le code de la touche appuyée
     var codeTouche = event.keyCode || event.which;
-
-    if (codeTouche != 16)
+    if (codeTouche != 16) // Touche "Maj enfoncée"
     {
         if ((codeTouche >= 48 && codeTouche <= 57) || // Chiffres (0-9)
             (codeTouche >= 96 && codeTouche <= 105) || // Pavé numerique (0-9)
             codeTouche === 8 || // Touche "Retour arrière" (Backspace)
+            codeTouche === 9 || // Touche "Tabulation"
             codeTouche === 46) { // Touche "Supprimer" (Delete)
         
             if (codeTouche === 8 || codeTouche === 46)
             {
                 setValueInput(inputElement,0);
-                if ((count-2) == 0) count = max+2;
-                $("#"+prefix+(count-2)).focus();
+                if ((pos-2) == 0) pos = max+2;
+                $("#"+prefix+(pos-2)).focus();
             }
-            else
+            else if (codeTouche != 9)
             {
                 var lastChar = inputElement.value.slice(-1);
                 var regex = /^[0-9]$/;
@@ -246,18 +305,36 @@ function touchCode(inputElement, count, event,prefix,max) {
                 else
                 {
                     setValueInput(inputElement,event.key);
-                    $("#"+prefix+count).focus();   
+                    $("#"+prefix+pos).focus();
                 }
             }
         }
         else {
-            setValueInput(inputElement,input.value.slice(0, -1));
+            setValueInput(inputElement,0);
             event.preventDefault(); // Empêcher l'action par défaut pour les autres touches
         }
     }
 }
 
-function adjustValueOnScroll(event, inputElement) 
+/* Gestionnaire d'appui sur les touche du clavier pour les touche + et - du clavier */
+function touchSign(inputElement, event) 
+{
+    var codeTouche = event.keyCode || event.which;
+    if (codeTouche != 16) // Touche "Maj enfoncée"
+    {
+        if (event.key === '+' || event.key === '-') {
+            setValueInputSign(inputElement,event.key);
+        } 
+        else if (codeTouche != 9)
+        {
+            setValueInputSign(inputElement,"+");
+            event.preventDefault(); // Empêcher l'action par défaut pour les autres touches
+        }
+    }
+}
+
+/* Gestionnaire de modification de la mollette de la souris */
+function adjustOnScroll(event, inputElement,type) 
 {
     event.preventDefault();
     const delta = event.deltaY;
@@ -269,105 +346,31 @@ function adjustValueOnScroll(event, inputElement)
         return; // Ignore les petits défilements
     }
 
-    let currentValue = parseInt(inputElement.value, 10);
-
-    // Incrémenter ou décrémenter la valeur en fonction de la direction du scroll
-    currentValue += delta < 0 ? -1 : 1;
-
-    // Contrôler les limites de la valeur
-    if (currentValue < 0) currentValue = 0;
-    if (currentValue > 9) currentValue = 9;
-
-    setValueInput(inputElement,currentValue);
-}
-
-function fillDigitsWithNumber(number, prefix) {
-    // Gérer les nombres négatifs en convertissant le nombre en valeur absolue
-    const absNumber = Math.abs(number);
-    const digits = absNumber.toString();
-
-    // Assurer que le nombre n'a pas plus de 7 chiffres
-    if (digits.length > 7) {
-        digits = "9999999"
-    }
-    
-    // Initialiser l'index de l'input à partir duquel commencer à remplir
-    let inputIndex = 7;
-
-    // Remplir les champs d'entrée avec les chiffres du nombre en ordre inverse
-    for (let i = digits.length - 1; i >= 0; i--) {
-        document.getElementById(prefix + inputIndex).value = digits[i];
-        inputIndex--;
-    }
-
-    // Effacer les valeurs des champs restants si le nombre a moins de 7 chiffres
-    for (let i = inputIndex; i >= 1; i--) {
-        document.getElementById(prefix + i).value = '0';
-    }
-}
-
-function adjustSignOnScroll(event, inputElement) 
-{
-    event.preventDefault();
-    const delta = event.deltaY;
-
-    // Définir un seuil pour rendre le défilement moins sensible
-    const threshold = 50; // La valeur du seuil peut être ajustée en fonction de la sensibilité désirée
-
-    if (Math.abs(delta) < threshold) {
-        return; // Ignore les petits défilements
-    }
-    let currentValue = 0;
-
-    if (inputElement.value == "+") currentValue = 0;
-    if (inputElement.value == "-") currentValue = 1;
-
-    // Incrémenter ou décrémenter la valeur en fonction de la direction du scroll
-    currentValue += delta < 0 ? -1 : 1;
-
-    // Contrôler les limites de la valeur
-    if (currentValue < 0) currentValue = 0;
-    if (currentValue > 1) currentValue = 1;
-
-    if (currentValue == 0) inputElement.value = "+";
-    if (currentValue == 1) inputElement.value = "-";
-
-    changeSignWrapper(inputElement.value);
-}
-
-function changeSignWrapper(value) 
-{
-    $('.input-wrapper .sign-text-top').css("visibility","hidden");
-    $('.input-wrapper .sign-text-bottom').css("visibility","hidden");
-    $('.input-wrapper .sign-text-top').css("opacity","0"); 
-    $('.input-wrapper .sign-text-bottom').css("opacity","0"); 
-
-    let currentValue = -1;
-    if (value == "+") currentValue = 0;
-    if (value == "-") currentValue = 1;
-
-    if (currentValue != -1)
+    if (type == 'code')
     {
-        var numberString = '';
-        $('input[id^="code_year_input"]').each(function() {
-            numberString += $(this).val(); // Ajouter la valeur de chaque input à la chaîne
-        });
-        let number = parseInt(numberString);
-        if (currentValue == 1) number *= -1;
-        $('#clockYear').html('[ '+ parseInt(number) + ' ]');
-    }
+        let currentValue = parseInt(inputElement.value, 10);
 
+        // Incrémenter ou décrémenter la valeur en fonction de la direction du scroll
+        currentValue += delta < 0 ? -1 : 1;
 
-    if (currentValue == 1)
+        // Contrôler les limites de la valeur
+        if (currentValue < 0) currentValue = 0;
+        if (currentValue > 9) currentValue = 9;
+
+        setValueInput(inputElement,currentValue);
+    } 
+    else if (type == 'sign')
     {
-        $('.input-wrapper .sign-text-top').css("visibility","visible");
-        $('.input-wrapper .sign-text-top').html("+");
-        $('.input-wrapper .sign-text-top').css("opacity","1"); 
-    }
-    if (currentValue == 0)
-    {
-        $('.input-wrapper .sign-text-bottom').css("visibility","visible");
-        $('.input-wrapper .sign-text-bottom').html("-");
-        $('.input-wrapper .sign-text-bottom').css("opacity","1");
+        let currentValue = 0;
+
+        if (inputElement.value == "-") currentValue = 0;
+        if (inputElement.value == "+") currentValue = 1;
+
+        // Incrémenter ou décrémenter la valeur en fonction de la direction du scroll
+        currentValue += delta < 0 ? -1 : 1;
+
+        // Contrôler les limites de la valeur
+        if (currentValue < 0) setValueInputSign(inputElement,"+");
+        if (currentValue > 1) setValueInputSign(inputElement,"-");
     }
 }

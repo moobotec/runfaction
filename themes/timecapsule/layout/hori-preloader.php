@@ -246,21 +246,21 @@ $name = "";
                         <div class="row text-center">
                             <div class="d-flex justify-content-around">
                                 <div class="text-center input-wrapper" style="position: relative;"> 
-                                    <div class="hover-text sign-text-top"> + </div>
+                                    <div class="hover-text top-text-sign"> + </div>
                                     <input type="text"
                                         class="form-control form-control-lg text-center h2-like"
                                         onkeyup="touchSign(this,event)" 
-                                        onwheel="adjustSignOnScroll(event, this)"
+                                        onwheel="adjustOnScroll(event, this,'sign')"
                                         maxLength="1"
                                         id="sign_year_input" name="sign" autocomplete="off" value="+">
-                                    <div class="hover-text sign-text-bottom"> - </div>
+                                    <div class="hover-text bottom-text-sign"> - </div>
                                 </div>
                                 <div class="text-center input-wrapper" style="position: relative;"> 
                                     <div class="hover-text top-text-1"> 0 </div>
                                     <input type="text"
                                         class="form-control form-control-lg text-center h2-like"
-                                        onkeyup="touchCode(this, 2, event, 'code_year_input_', 7)" 
-                                        onwheel="adjustValueOnScroll(event, this)"
+                                        onkeyup="touchCode(this, event, 'code_year_input_',2,7)" 
+                                        onwheel="adjustOnScroll(event, this,'code')"
                                         maxLength="1"
                                         id="code_year_input_1" name="code1" autocomplete="off" value="0">
                                     <div class="hover-text bottom-text-1"> 0 </div>
@@ -269,8 +269,8 @@ $name = "";
                                     <div class="hover-text top-text-2"> 0 </div>
                                     <input type="text"
                                         class="form-control form-control-lg text-center h2-like"
-                                        onkeyup="touchCode(this, 3,event,'code_year_input_',7)"
-                                        onwheel="adjustValueOnScroll(event, this)"
+                                        onkeyup="touchCode(this, event,'code_year_input_',3,7)"
+                                        onwheel="adjustOnScroll(event, this,'code')"
                                         maxLength="1"
                                         id="code_year_input_2" name="code2" autocomplete="off" value="0">
                                     <div class="hover-text bottom-text-2"> 0 </div>
@@ -279,8 +279,8 @@ $name = "";
                                     <div class="hover-text top-text-3"> 0 </div>
                                     <input type="text"
                                         class="form-control form-control-lg text-center h2-like"
-                                        onkeyup="touchCode(this, 4,event,'code_year_input_',7)"
-                                        onwheel="adjustValueOnScroll(event, this)"
+                                        onkeyup="touchCode(this, event,'code_year_input_',4,7)"
+                                        onwheel="adjustOnScroll(event, this,'code')"
                                         maxLength="1"
                                         id="code_year_input_3" name="code3" autocomplete="off" value="0">
                                     <div class="hover-text bottom-text-3"> 0 </div>
@@ -289,8 +289,8 @@ $name = "";
                                     <div class="hover-text top-text-4"> 0 </div>
                                     <input type="text"
                                         class="form-control form-control-lg text-center h2-like"
-                                        onkeyup="touchCode(this, 5,event,'code_year_input_',7)"
-                                        onwheel="adjustValueOnScroll(event, this)"
+                                        onkeyup="touchCode(this, event,'code_year_input_',5,7)"
+                                        onwheel="adjustOnScroll(event, this,'code')"
                                         maxLength="1"
                                         id="code_year_input_4" name="code4" autocomplete="off" value="0">
                                     <div class="hover-text bottom-text-4"> 0 </div>
@@ -299,8 +299,8 @@ $name = "";
                                     <div class="hover-text top-text-5"> 0 </div>
                                     <input type="text"
                                         class="form-control form-control-lg text-center h2-like"
-                                        onkeyup="touchCode(this, 6,event,'code_year_input_',7)"
-                                        onwheel="adjustValueOnScroll(event, this)"
+                                        onkeyup="touchCode(this, event,'code_year_input_',6,7)"
+                                        onwheel="adjustOnScroll(event, this,'code')"
                                         maxLength="1"
                                         id="code_year_input_5" name="code5" autocomplete="off" value="0">
                                     <div class="hover-text bottom-text-5"> 0 </div>
@@ -309,8 +309,8 @@ $name = "";
                                     <div class="hover-text top-text-6"> 0 </div>
                                     <input type="text"
                                         class="form-control form-control-lg text-center h2-like"
-                                        onkeyup="touchCode(this, 7,event,'code_year_input_',7)"
-                                        onwheel="adjustValueOnScroll(event, this)"
+                                        onkeyup="touchCode(this, event,'code_year_input_',7,7)"
+                                        onwheel="adjustOnScroll(event, this,'code')"
                                         maxLength="1"
                                         id="code_year_input_6" name="code6" autocomplete="off" value="0">
                                     <div class="hover-text bottom-text-6"> 0 </div>
@@ -319,8 +319,8 @@ $name = "";
                                     <div class="hover-text top-text-7"> 0 </div>
                                     <input type="text"
                                         class="form-control form-control-lg text-center h2-like"
-                                        onkeyup="touchCode(this, 8,event,'code_year_input_',7)"
-                                        onwheel="adjustValueOnScroll(event, this)"
+                                        onkeyup="touchCode(this, event,'code_year_input_',8,7)"
+                                        onwheel="adjustOnScroll(event, this,'code')"
                                         maxLength="1"
                                         id="code_year_input_7" name="code7" autocomplete="off" value="0">
                                     <div class="hover-text bottom-text-7"> 0 </div>
