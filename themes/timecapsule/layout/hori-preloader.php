@@ -291,42 +291,54 @@ $name = "";
                 <div id="modifMonthDay" style="display:none">
                     <form action="" method="" onsubmit="modifMoisJour(); return false;">
                         <p class="card-title-desc">Vous pouvez ajuster <code>Jour - Mois</code> selon vos besoins.</p>
-                        <div class="row justify-content-center text-center">
+                        <div class="row text-center">
+                            <div class="d-flex justify-content-around">
                             <div class="col-1">
-                                <div class="border">
+                                <div class="">
                                     <h2 class="my-1" id=""> [ </h2>
                                 </div>
                             </div>
-                            <div class="col-2">
-                                <div class="mb-3 text-center">
-                                    <input type="text"
-                                        class="form-control form-control-lg text-center"
-                                        onkeyup="touchCode(this, 2,event)" maxLength="1"
-                                        id="code_input_1" name="code1" autocomplete="off" value="0" >
-                                </div>
+                            <div class="text-center input-wrapper" style="position: relative;"> 
+                                <div class="hover-text top-text-day-1"> 0 </div>
+                                <input type="text"
+                                    class="form-control form-control-lg text-center h2-like"
+                                    onkeyup="touchCode(this, event, 'day',2,2,3)" 
+                                    onwheel="adjustOnScroll(event, this,'code','day')"
+                                    maxLength="1"
+                                    id="code_day_input_1" name="code1" autocomplete="off" value="0" data-max="3">
+                                <div class="hover-text bottom-text-day-1"> 0 </div>
                             </div>
-                            <div class="col-2">
-                                <div class="mb-3 text-center">
-                                    <input type="text"
-                                        class="form-control form-control-lg text-center"
-                                        onkeyup="touchCode(this, 3,event)" maxLength="1"
-                                        id="code_input_2" name="code2" autocomplete="off" value="0">
-                                </div>
+                            <div class="text-center input-wrapper" style="position: relative;">
+                                <div class="hover-text top-text-day-2"> 0 </div>
+                                <input type="text"
+                                    class="form-control form-control-lg text-center h2-like"
+                                    onkeyup="touchCode(this, event,'day',3,2,9)"
+                                    onwheel="adjustOnScroll(event, this,'code','day')"
+                                    maxLength="1"
+                                    id="code_day_input_2" name="code2" autocomplete="off" value="0" data-max="9">
+                                <div class="hover-text bottom-text-day-2"> 0 </div>
                             </div>
-
-                            <div class="col-4">
-                                <div class="mb-3 text-center">
-                                    <h2 class="my-1" id="clockTime">janvier</h2>
-                                </div>
-                            </div>
-                          
                             <div class="col-1">
-                                <div class="border">
+                                    <div class="">
+                                        <h2 class="my-1" id="clockMonthDay"> &ensp; </h2>
+                                    </div>
+                                </div>
+                            <div class="text-center input-wrapper" style="position: relative;"> 
+                                <div class="hover-text top-text-day-month"> x </div>
+                                <input type="text"
+                                    class="form-control form-control-lg text-center h2-like"
+                                    onwheel="adjustOnScroll(event, this,'month','day')"
+                                    maxLength="8"
+                                    id="month_day_input" name="sign" autocomplete="off" value="" data-max="11" disabled>
+                                <div class="hover-text bottom-text-day-month"> x </div>
+                            </div>
+                            <div class="col-1">
+                                <div class="">
                                     <h2 class="my-1" id=""> ] </h2>
                                 </div>
                             </div>
                         </div>
-
+                        </div>
 
                     </form>
                 </div>
@@ -350,7 +362,7 @@ $name = "";
                                 <div class="">
                                     <h2 class="my-1" id=""> [ </h2>
                                 </div>
-                                 </div>
+                                </div>
                                 <div class="text-center input-wrapper" style="position: relative;"> 
                                     <div class="hover-text top-text-time-1"> 0 </div>
                                     <input type="text"

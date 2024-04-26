@@ -1,7 +1,10 @@
 let idHover = {
     "year": 0,
-    "time": 0
+    "time": 0,
+    "day": 0
 };
+
+var locale = "fr-FR";
 
 function expandZone(selectedZoneId) {
     const zoneTitle = document.getElementById('zoneTitle');
@@ -72,7 +75,7 @@ function displayTimezoneOffset() {
 function updateClock() {
     const now = new Date();
     const year = now.getFullYear();
-    const month = now.toLocaleString('fr-FR', { month: 'long' });
+    const month = now.toLocaleString(locale, { month: 'long' });
     const day = now.getDate();
     const hours = now.getHours().toString().padStart(2, '0');
     const minutes = now.getMinutes().toString().padStart(2, '0');
@@ -84,7 +87,7 @@ function updateClock() {
 function updateClockUtcGmt() {
     const nowUtc = new Date();
     const year = nowUtc.getUTCFullYear()
-    const month = nowUtc.toLocaleString('fr-FR', { month: 'long' , timeZone: 'UTC'  });
+    const month = nowUtc.toLocaleString(locale, { month: 'long' , timeZone: 'UTC'  });
     const day = nowUtc.getUTCDate()
     const hours = nowUtc.getUTCHours().toString().padStart(2, '0');
     const minutes = nowUtc.getUTCMinutes().toString().padStart(2, '0');
@@ -141,39 +144,31 @@ $(function() {
         }
     });
 
-    $('input[id^="code_time_input"]').hover(
-        function() { // mouseenter
-            let valueTop = parseInt($(this).val()) - 1;
-            let valueBottom =  parseInt($(this).val()) + 1;
-            let id = $(this).attr('id').replace('code_time_input_', '');
-            let valueMax= parseInt($(this).attr('data-max'));
-            idHover['time'] = id;
-            let showTop = (valueTop >= 0);
-            let showBottom = (valueBottom < (valueMax + 1));
-            updatePeripheralDigit('time',id, showTop, showBottom, valueTop ,valueBottom);
-        },
-        function() { // mouseleave
-            let id = $(this).attr('id').replace('code_time_input_', '');
-            idHover['time'] = 0;
-            updatePeripheralDigit('time',id, false, false, 0 ,0);
-        }
-    );
+    setupHoverHandlers('code_day_input', 'day');
+    setupHoverHandlers('code_time_input', 'time');
+    setupHoverHandlers('code_year_input', 'year');
 
-    $('input[id^="code_year_input"]').hover(
+    setupPasteHandlers('code_year_input', 'year');
+    setupPasteHandlers('code_year_input', 'time');
+    setupPasteHandlers('code_year_input', 'day');
+
+    $('#month_day_input').hover(
         function() { // mouseenter
-            let valueTop = parseInt($(this).val()) - 1;
-            let valueBottom =  parseInt($(this).val()) + 1;
-            let id = $(this).attr('id').replace('code_year_input_', '');
-            let valueMax=  parseInt($(this).attr('data-max'));
-            idHover['year'] = id;
+
+            let valueMax= parseInt($(this).attr('data-max'));
+            let currentValue = getMonthNumberFromName($(this).val(),locale) ;
+            let valueTop = currentValue - 1;
+            let valueBottom = currentValue + 1;
+        
             let showTop = (valueTop >= 0);
             let showBottom = (valueBottom < (valueMax + 1));
-            updatePeripheralDigit('year',id, showTop, showBottom, valueTop ,valueBottom);
+        
+            updatePeripheralDigit('day','month',showTop,showBottom,
+                convertMonthNumberToName(valueTop,locale),
+                convertMonthNumberToName(valueBottom,locale));
         },
         function() { // mouseleave
-            let id = $(this).attr('id').replace('code_year_input_', '');
-            idHover['year']  = 0;
-            updatePeripheralDigit('year',id, false, false, 0 ,0);
+            updatePeripheralDigit('day','month', false, false, 0 , 0);
         }
     );
 
@@ -181,20 +176,72 @@ $(function() {
         function() { // mouseenter
             let showTop = ($(this).val() == "-");
             let showBottom = ($(this).val() == "+");
-            updatePeripheralDigit('sign',showTop,showBottom,"+","-");
+            updatePeripheralDigit('year','sign',showTop,showBottom,"+","-");
         },
         function() { // mouseleave
-            updatePeripheralDigit('sign', false, false, 0 ,0);
+            updatePeripheralDigit('year','sign', false, false, 0 ,0);
         }
     );
 
+    $('#sign_year_input').on('paste', function(event) {
+        event.preventDefault();
+        var pasteText = event.originalEvent.clipboardData.getData('text');
+        if (pasteText.length > 1) pasteText = pasteText.substring(0,1);
+        let codeTouche = pasteText.charCodeAt(0);
+        event.key = pasteText;
+        applySign(this,codeTouche,event);
+    });
+
 });
+
+function setupHoverHandlers(prefix, descriptor) {
+    $(`input[id^="${prefix}"]`).hover(
+        function() { // mouseenter
+            hoverMouseEnter(this,descriptor);
+        },
+        function() { // mouseleave
+            hoverMouseLeave(this,descriptor);
+        }
+    );
+}
+
+function setupPasteHandlers(prefix, descriptor) {
+    $(`input[id^="${prefix}"]`).on('paste', function(event) {
+        event.preventDefault();
+        var pasteText = event.originalEvent.clipboardData.getData('text');
+        if (pasteText.length > 1) pasteText = pasteText.substring(0,1);
+        let codeTouche = pasteText.charCodeAt(0);
+        event.key = pasteText;
+        let id = $(this).attr('id').replace(prefix +'_', '');
+        let valueMax= parseInt($(this).attr('data-max'));
+        applyCode(this,codeTouche,event,descriptor,parseInt(id) + 1,0,valueMax);
+    });
+}
+
+function hoverMouseEnter(inputElement,type) 
+{
+    let valueTop = parseInt($(inputElement).val()) - 1;
+    let valueBottom =  parseInt($(inputElement).val()) + 1;
+    let id = $(inputElement).attr('id').replace('code_'+type+'_input_', '');
+    let valueMax= parseInt($(inputElement).attr('data-max'));
+    idHover[type] = id;
+    let showTop = (valueTop >= 0);
+    let showBottom = (valueBottom < (valueMax + 1));
+    updatePeripheralDigit(type,id, showTop, showBottom, valueTop ,valueBottom);
+}
+
+function hoverMouseLeave(inputElement,type) 
+{
+    let id = $(inputElement).attr('id').replace('code_'+type+'_input_', '');
+    idHover[type]  = 0;
+    updatePeripheralDigit(type,id, false, false, 0 ,0);
+}
 
 function prepareModalContent() {
     // Mettre à jour les éléments de la modal ou effectuer des opérations ici
     const now = new Date();
     let year = now.getFullYear();
-    const month = now.toLocaleString('fr-FR', { month: 'long' });
+    const month = now.toLocaleString(locale, { month: 'long' });
     const day = now.getDate();
     const hours = now.getHours().toString().padStart(2, '0');
     const minutes = now.getMinutes().toString().padStart(2, '0');
@@ -205,6 +252,8 @@ function prepareModalContent() {
 
     fillDigitsYear(year,"code_year_input_","sign_year_input", 7 );
     fillDigitsTime(parseInt(hours),parseInt(minutes),"code_time_input_", 4 );
+    fillDigitsDay(parseInt(day),"code_day_input_", 2 );
+    fillDigitsMonth(month,"month_day_input");
 }
 
 function fillDigitsYear(number, prefixCode,prefixSign,maxDigits) 
@@ -255,21 +304,119 @@ function fillDigitsTime(numberHours,numberMinutes, prefixCode , maxDigits )
         document.getElementById(prefixCode + inputIndex).value = digits[i];
         inputIndex--;
     }
+}
 
+function fillDigitsDay(numberDays, prefixCode , maxDigits ) 
+{
+    if (!Number.isInteger(numberDays) || isNaN(numberDays)) {
+        return;
+    }
+
+    if (numberDays >= 32 || numberDays < 0) numberDays = 1;
+
+    let digits = numberDays.toString().padStart(2, '0')
+    let inputIndex = maxDigits;
+
+    for (let i = digits.length - 1; i >= 0; i--) {
+        document.getElementById(prefixCode + inputIndex).value = digits[i];
+        inputIndex--;
+    }
+}
+
+function fillDigitsMonth(month , prefixMonth)
+{
+    document.getElementById(prefixMonth).value = month;
 }
 
 /* Mise à jour du champ année final que l'utilisateur 
 pourra ensuite appliquer à la date courante*/
-function updateFinalValue(code,sign) 
+function updateFinalValue(type) 
 {
-    var numberString = '';
-    $('input[id^='+code+']').each(function() {
-        numberString += $(this).val(); // Ajouter la valeur de chaque input à la chaîne
-    });
+    if (type == 'year')
+    {
+        var numberStringYear = '';
+        $('input[id^=code_'+type+'_input]').each(function() {
+            numberStringYear += $(this).val(); 
+        });
+
+        var numberStringDay = '';
+        $('input[id^=code_day_input]').each(function() {
+            numberStringDay += $(this).val(); 
+        });
+
+        let year = parseInt(numberStringYear);
+        let month = $('#month_day_input').val();
+        let sign = $('#sign_'+type+'_input').val();
+        let day = parseInt(numberStringDay);
+        updateYearMonthDay(year,sign,month,day);
+
+    }
+    else if (type == 'time')
+    {   
+        var numberString = '';
+        $('input[id^=code_'+type+'_input]').each(function() {
+            numberString += $(this).val();
+        });
+        let hours = parseInt(numberString.substring(0,2));
+        if (hours >= 24) hours = 23;
+        let minutes = parseInt(numberString.substring(2,4));
+        if (minutes >= 60) minutes = 59;
+        $('#clockTime').html('[ '+ hours.toString().padStart(2, '0') + ' : '+ minutes.toString().padStart(2, '0') + ' ]');
+    }
+    else if (type == 'day')
+    {  
+        var numberStringDay = '';
+        $('input[id^=code_'+type+'_input]').each(function() {
+            numberStringDay += $(this).val();
+        });
+        
+        var numberStringYear = '';
+        $('input[id^=code_year_input]').each(function() {
+            numberStringYear += $(this).val();
+        });
+        let year = parseInt(numberStringYear);
+        let month = $('#month_'+type+'_input').val();
+        let day = parseInt(numberStringDay);
+        let sign = $('#sign_year_input').val();
+
+        updateYearMonthDay(year,sign,month,day);
+    }
+}
+
+function updateYearMonthDay(year,sign,month,day) 
+{
+    let monthValue = getMonthNumberFromName(month,locale) ;
+    let lastDayOfMonth = 0;
+    if (monthValue == 0 || monthValue == 2 || monthValue == 4 || monthValue == 6 
+        || monthValue == 7 || monthValue == 9 || monthValue == 11 )
+    {
+        lastDayOfMonth = 31;
+    }
+    else if ( monthValue == 3 || monthValue == 5 || monthValue == 8  || monthValue == 10 )
+    {
+        lastDayOfMonth = 30;
+    }
+    else if (monthValue == 1 )
+    {
+        if (isLeapYear(year)) lastDayOfMonth = 29;
+        else lastDayOfMonth = 28;
+    }
+
+    if (day > lastDayOfMonth) day = lastDayOfMonth;
+    if (day == 0) days = 1;
     
-    let number = parseInt(numberString);
-    if ($('#'+sign).val() == "-") number *= -1;
-    $('#clockYear').html('[ '+ parseInt(number) + ' ]');
+    $('#clockMonthDay').html('[ '+ day.toString().padStart(2, '0') + ' '+month+' ]');
+
+    if (sign == "-") year *= -1; 
+    $('#clockYear').html('[ '+ parseInt(year) + ' ]');
+}
+
+function isLeapYear(year) {
+    if ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) {
+        return true;  // L'année est bissextile
+    } else {
+        return false; // L'année n'est pas bissextile
+    }
 }
 
 /* Mise à jour de la valeur de l'input passe en paramètre , puis mise à jour de la valeur finale,
@@ -278,11 +425,8 @@ et en bas si la souris est dessus en survol sinon pas besoin  */
 function setValueInput(inputElement,value,type) 
 {
     inputElement.value = value;
-    if (type == 'year')
-    {
-        updateFinalValue("code_year_input","sign_year_input");
-    }
-
+    updateFinalValue(type);
+    
     let valueTop = parseInt(value) - 1;
     let valueBottom =  parseInt(value) + 1;
     let id = $(inputElement).attr('id').replace('code_'+type+'_input_', '');
@@ -298,11 +442,27 @@ function setValueInput(inputElement,value,type)
 function setValueInputSign(inputElement,value) 
 {
     inputElement.value = value;
-    updateFinalValue("code_year_input","sign_year_input");
+    updateFinalValue('year');
 
     let showTop = (value == "-");
     let showBottom = (value == "+");
     updatePeripheralDigit('year','sign',showTop,showBottom,"+","-");
+}
+
+function setValueInputMonth(inputElement,value,maxValue) 
+{
+    inputElement.value = convertMonthNumberToName(value,locale);
+    updateFinalValue('day');
+
+    let valueTop = parseInt(value) - 1;
+    let valueBottom =  parseInt(value) + 1;
+
+    let showTop = (valueTop >= 0);
+    let showBottom = (valueBottom < (maxValue + 1));
+
+    updatePeripheralDigit('day','month',showTop,showBottom,
+        convertMonthNumberToName(valueTop,locale),
+        convertMonthNumberToName(valueBottom,locale));
 }
 
 /* Changement de l'effet de persitance des valeur 
@@ -328,43 +488,60 @@ function updatePeripheralDigit(type,id,showTop,showBottom,valueTop,valueBottom) 
     }
 }
 
+function applyCode(inputElement,codeTouche,event,type,pos,max,maxValue) 
+{
+    if ((codeTouche >= 48 && codeTouche <= (48 + maxValue)) || // Chiffres (0-9)
+        (codeTouche >= 96 && codeTouche <= (96 + maxValue)) || // Pavé numerique (0-9)
+        codeTouche === 8 || // Touche "Retour arrière" (Backspace)
+        codeTouche === 9 || // Touche "Tabulation"
+        codeTouche === 46) { // Touche "Supprimer" (Delete)
+    
+        if (codeTouche === 8 || codeTouche === 46)
+        {
+            setValueInput(inputElement,0,type);
+            if ((pos-2) == 0) pos = max+2;
+            $("#code_"+type+"_input_"+(pos-2)).focus();
+        }
+        else if (codeTouche != 9)
+        {
+            var lastChar = inputElement.value.slice(-1);
+            var regex = /^[0-9]$/;
+            if (!regex.test(lastChar)) {
+                // Supprimer la dernière touche entrée si elle n'est pas valide
+                setValueInput(inputElement,inputElement.value.slice(0, -1),type);
+            }
+            else
+            {
+                setValueInput(inputElement,event.key,type);
+                $("#code_"+type+"_input_"+pos).focus();
+            }
+        }
+    }
+    else {
+        setValueInput(inputElement,0,type);
+        event.preventDefault(); // Empêcher l'action par défaut pour les autres touches
+    }
+}
+
+function applySign(inputElement,codeTouche,event) 
+{
+    if (event.key === '+' || event.key === '-') {
+        setValueInputSign(inputElement,event.key);
+    } 
+    else if (codeTouche != 9)
+    {
+        setValueInputSign(inputElement,"+");
+        event.preventDefault(); // Empêcher l'action par défaut pour les autres touches
+    }
+}
+
 function touchCode(inputElement,event,type,pos,max,maxValue) 
 {
     // Récupérer le code de la touche appuyée
     var codeTouche = event.keyCode || event.which;
     if (codeTouche != 16) // Touche "Maj enfoncée"
     {
-        if ((codeTouche >= 48 && codeTouche <= (48 + maxValue)) || // Chiffres (0-9)
-            (codeTouche >= 96 && codeTouche <= (96 + maxValue)) || // Pavé numerique (0-9)
-            codeTouche === 8 || // Touche "Retour arrière" (Backspace)
-            codeTouche === 9 || // Touche "Tabulation"
-            codeTouche === 46) { // Touche "Supprimer" (Delete)
-        
-            if (codeTouche === 8 || codeTouche === 46)
-            {
-                setValueInput(inputElement,0,type);
-                if ((pos-2) == 0) pos = max+2;
-                $("#code_"+type+"_input_"+(pos-2)).focus();
-            }
-            else if (codeTouche != 9)
-            {
-                var lastChar = inputElement.value.slice(-1);
-                var regex = /^[0-9]$/;
-                if (!regex.test(lastChar)) {
-                    // Supprimer la dernière touche entrée si elle n'est pas valide
-                    setValueInput(inputElement,inputElement.value.slice(0, -1),type);
-                }
-                else
-                {
-                    setValueInput(inputElement,event.key,type);
-                    $("#code_"+type+"_input_"+pos).focus();
-                }
-            }
-        }
-        else {
-            setValueInput(inputElement,0,type);
-            event.preventDefault(); // Empêcher l'action par défaut pour les autres touches
-        }
+        applyCode(inputElement,codeTouche,event,type,pos,max,maxValue);
     }
 }
 
@@ -374,15 +551,31 @@ function touchSign(inputElement, event)
     var codeTouche = event.keyCode || event.which;
     if (codeTouche != 16) // Touche "Maj enfoncée"
     {
-        if (event.key === '+' || event.key === '-') {
-            setValueInputSign(inputElement,event.key);
-        } 
-        else if (codeTouche != 9)
-        {
-            setValueInputSign(inputElement,"+");
-            event.preventDefault(); // Empêcher l'action par défaut pour les autres touches
+        applySign(inputElement,codeTouche,event);
+    }
+}
+
+function getMonthNumberFromName(monthName, locale) {
+    // Essayer tous les mois de l'année jusqu'à ce que le nom correspondant soit trouvé
+    for (let month = 0; month < 12; month++) {
+        let date = new Date(2020, month, 1);
+        let formatter = new Intl.DateTimeFormat(locale, { month: "long" });
+        if (formatter.format(date).toLowerCase() === monthName.toLowerCase()) {
+            return month;  // Retourner le numéro du mois en format humain (janvier = 1)
         }
     }
+    return undefined; // Retourner undefined si aucun mois ne correspond
+}
+
+function convertMonthNumberToName(monthNumber, locale) {
+    // Créer une date avec l'année arbitraire 2020 et le mois spécifié (mois - 1 car Date utilise des indices de mois de 0 à 11)
+    let date = new Date(2020, monthNumber, 1);
+
+    // Créer un formateur de date avec la locale spécifiée et le format long pour le mois
+    let formatter = new Intl.DateTimeFormat(locale, { month: 'long' });
+
+    // Retourner le mois formaté selon la locale
+    return formatter.format(date);
 }
 
 /* Gestionnaire de modification de la mollette de la souris */
@@ -429,6 +622,17 @@ function adjustOnScroll(event, inputElement,base,type)
     }
     else if (base == 'month')
     {
+        let currentValue = getMonthNumberFromName(inputElement.value,locale) ;
 
+        // Incrémenter ou décrémenter la valeur en fonction de la direction du scroll
+        currentValue += delta < 0 ? -1 : 1;
+
+        let valueMax = parseInt($(inputElement).attr('data-max'));
+
+        // Contrôler les limites de la valeur
+        if (currentValue < 0) currentValue = 0;
+        if (currentValue > valueMax) currentValue = valueMax;
+
+        setValueInputMonth(inputElement,currentValue,valueMax);
     }
 }
