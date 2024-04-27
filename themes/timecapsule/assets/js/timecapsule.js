@@ -1,7 +1,27 @@
-let idHover = {
+var idHover = {
     "year": 0,
     "time": 0,
     "day": 0
+};
+
+var currentDate = {
+    "valid": false,
+    "year": null,
+    "month": null,
+    "day": null,
+    "hours": null,
+    "minutes": null,
+    "secondes": null
+};
+
+var currentModalDate = {
+    "valid": false,
+    "year": null,
+    "month": null,
+    "day": null,
+    "hours": null,
+    "minutes": null,
+    "secondes": null
 };
 
 var locale = "fr-FR";
@@ -72,19 +92,57 @@ function displayTimezoneOffset() {
     return displayOffset;
 }
 
-function updateClock() {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.toLocaleString(locale, { month: 'long' });
-    const day = now.getDate();
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    const seconds = now.getSeconds().toString().padStart(2, '0');
-    
-    document.getElementById('clock').textContent = `[ ${year} ][ ${day} ${month} ][ ${hours} : ${minutes} : ${seconds} ]`;
+function updateClock() 
+{
+    currentDate.secondes++;
+
+    // Gérer le dépassement des secondes et incrémenter les minutes
+    if (currentDate.secondes >= 60) {
+        currentDate.secondes = 0;
+        currentDate.minutes++;
+    }
+
+    // Gérer le dépassement des minutes et incrémenter les heures
+    if (currentDate.minutes >= 60) {
+        currentDate.minutes = 0;
+        currentDate.hours++;
+    }
+
+    // Gérer le dépassement des heures et incrémenter les jours
+    if (currentDate.hours >= 24) {
+        currentDate.hours = 0;
+        currentDate.day++;
+    }
+
+    // Gérer le dépassement des jours et incrémenter les mois
+    if (currentDate.day > daysInMonth(currentDate.year, currentDate.month)) {
+        currentDate.day = 1;
+        currentDate.month++;
+    }
+
+    // Gérer le dépassement des mois et incrémenter les années
+    if (currentDate.month > 11) {
+        currentDate.month = 0;
+        currentDate.year++;
+    }
+
+    document.getElementById('clock').textContent = formatDateTime();
 }
 
-function updateClockUtcGmt() {
+function formatDateTime() 
+{
+    const year = currentDate.year;
+    const month = convertMonthNumberToName(currentDate.month,locale);
+    const day = currentDate.day.toString().padStart(2, '0');
+    const hours = currentDate.hours.toString().padStart(2, '0');
+    const minutes = currentDate.minutes.toString().padStart(2, '0');
+    const secondes = currentDate.secondes.toString().padStart(2, '0');
+
+    return `[ ${year} ][ ${day} ${month} ][ ${hours} : ${minutes} : ${secondes} ]`;
+}
+
+function updateClockUtcGmt() 
+{
     const nowUtc = new Date();
     const year = nowUtc.getUTCFullYear()
     const month = nowUtc.toLocaleString(locale, { month: 'long' , timeZone: 'UTC'  });
@@ -114,6 +172,9 @@ function defaultPosition() {
 }
 
 $(function() {
+
+    setCurrentDate();
+
     // Mise à jour de l'horloge chaque seconde
     setInterval(updateClock, 1000);
 
@@ -122,8 +183,10 @@ $(function() {
 
     getLocation();
 
+   
     $('#datetimeModal').on('show.bs.modal', function(event) {
         // Fonction pour préparer le contenu de la modal
+        copyCurrentDate(false);
         prepareModalContent();
         setInterval(updateClockUtcGmt, 1000);
         updateClockUtcGmt();
@@ -133,9 +196,22 @@ $(function() {
     {
         $('h2[id^="clock"]').removeClass('active');
         $('div[id^="modif"]').css("display", "none");
-        if ( $(this).attr('id') == "btClockReset" )
+
+        if ( $(this).attr('id') == "btClockErase" )
         {
+            copyCurrentDate(true);
             prepareModalContent();
+        }
+        else if ( $(this).attr('id') == "btClockReset" )
+        {
+            resetCurrentDate();
+            prepareModalContent();
+        }
+        else if ( $(this).attr('id') == "btClockModify" )
+        {
+            modifyCurrentDate();
+            document.getElementById('clock').textContent = formatDateTime();
+            $('#datetimeModal').modal('hide');
         }
         else
         {
@@ -194,6 +270,66 @@ $(function() {
 
 });
 
+function prepareModalContent() 
+{    
+    let month = convertMonthNumberToName(currentModalDate.month,locale);
+
+    document.getElementById('clockYear').textContent = `[ ${currentModalDate.year} ]`;
+    document.getElementById('clockMonthDay').textContent = `[ ${currentModalDate.day.toString().padStart(2, '0')} ${month} ]`;
+    document.getElementById('clockTime').textContent = `[ ${currentModalDate.hours.toString().padStart(2, '0')} : ${currentModalDate.minutes.toString().padStart(2, '0')} ]`;
+
+    fillDigitsYear(currentModalDate.year,"code_year_input_","sign_year_input", 7 );
+    fillDigitsTime(currentModalDate.hours,currentModalDate.minutes,"code_time_input_", 4 );
+    fillDigitsDay(currentModalDate.day,"code_day_input_", 2 );
+    fillDigitsMonth(month,"month_day_input");
+}
+
+function copyCurrentDate(isForced) 
+{
+    if (( isForced == false && currentModalDate.valid == false )  || ( isForced == true ) )
+    {
+        currentModalDate.valid = currentDate.valid;
+        currentModalDate.year = currentDate.year;
+        currentModalDate.month = currentDate.month;
+        currentModalDate.day = currentDate.day;
+        currentModalDate.hours = currentDate.hours;
+        currentModalDate.minutes = currentDate.minutes;
+        currentModalDate.secondes = currentDate.secondes;
+    }  
+}
+
+function modifyCurrentDate() 
+{
+    currentDate.valid = currentModalDate.valid;
+    currentDate.year = currentModalDate.year;
+    currentDate.month = currentModalDate.month;
+    currentDate.day = currentModalDate.day;
+    currentDate.hours = currentModalDate.hours;
+    currentDate.minutes = currentModalDate.minutes;
+}
+
+function resetCurrentDate() 
+{
+    const now = new Date();
+    currentModalDate.year = now.getFullYear();
+    currentModalDate.month = now.getMonth();
+    currentModalDate.day = now.getDate();
+    currentModalDate.hours = now.getHours();
+    currentModalDate.minutes = now.getMinutes();
+}
+
+function setCurrentDate() 
+{
+    const now = new Date();
+    currentDate.valid = true;
+    currentDate.year = (currentDate.year == null ) ? now.getFullYear() :  currentDate.year ;
+    currentDate.month = (currentDate.month == null ) ? now.getMonth() : currentDate.month;
+    currentDate.day = (currentDate.day == null ) ? now.getDate() : currentDate.day;
+    currentDate.hours = (currentDate.hours == null ) ? now.getHours() : currentDate.hours;
+    currentDate.minutes = (currentDate.minutes == null ) ? now.getMinutes() : currentDate.minutes;
+    currentDate.secondes = (currentDate.secondes == null ) ? now.getSeconds() : currentDate.secondes;
+}
+
 function setupHoverHandlers(prefix, descriptor) {
     $(`input[id^="${prefix}"]`).hover(
         function() { // mouseenter
@@ -237,24 +373,6 @@ function hoverMouseLeave(inputElement,type)
     updatePeripheralDigit(type,id, false, false, 0 ,0);
 }
 
-function prepareModalContent() {
-    // Mettre à jour les éléments de la modal ou effectuer des opérations ici
-    const now = new Date();
-    let year = now.getFullYear();
-    const month = now.toLocaleString(locale, { month: 'long' });
-    const day = now.getDate();
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    
-    document.getElementById('clockYear').textContent = `[ ${year} ]`;
-    document.getElementById('clockMonthDay').textContent = `[ ${day} ${month} ]`;
-    document.getElementById('clockTime').textContent = `[ ${hours} : ${minutes} ]`;
-
-    fillDigitsYear(year,"code_year_input_","sign_year_input", 7 );
-    fillDigitsTime(parseInt(hours),parseInt(minutes),"code_time_input_", 4 );
-    fillDigitsDay(parseInt(day),"code_day_input_", 2 );
-    fillDigitsMonth(month,"month_day_input");
-}
 
 function fillDigitsYear(number, prefixCode,prefixSign,maxDigits) 
 {
@@ -349,7 +467,6 @@ function updateFinalValue(type)
         let sign = $('#sign_'+type+'_input').val();
         let day = parseInt(numberStringDay);
         updateYearMonthDay(year,sign,month,day);
-
     }
     else if (type == 'time')
     {   
@@ -362,6 +479,9 @@ function updateFinalValue(type)
         let minutes = parseInt(numberString.substring(2,4));
         if (minutes >= 60) minutes = 59;
         $('#clockTime').html('[ '+ hours.toString().padStart(2, '0') + ' : '+ minutes.toString().padStart(2, '0') + ' ]');
+
+        currentModalDate.minutes = minutes;
+        currentModalDate.hours = hours;
     }
     else if (type == 'day')
     {  
@@ -383,25 +503,30 @@ function updateFinalValue(type)
     }
 }
 
-function updateYearMonthDay(year,sign,month,day) 
+function daysInMonth(year,month) 
 {
-    let monthValue = getMonthNumberFromName(month,locale) ;
     let lastDayOfMonth = 0;
-    if (monthValue == 0 || monthValue == 2 || monthValue == 4 || monthValue == 6 
-        || monthValue == 7 || monthValue == 9 || monthValue == 11 )
+    if (month == 0 || month == 2 || month == 4 || month == 6 
+        || month == 7 || month == 9 || month == 11 )
     {
         lastDayOfMonth = 31;
     }
-    else if ( monthValue == 3 || monthValue == 5 || monthValue == 8  || monthValue == 10 )
+    else if ( month == 3 || month == 5 || month == 8  || month == 10 )
     {
         lastDayOfMonth = 30;
     }
-    else if (monthValue == 1 )
+    else if (month == 1 )
     {
         if (isLeapYear(year)) lastDayOfMonth = 29;
         else lastDayOfMonth = 28;
     }
+    return lastDayOfMonth;
+}
 
+function updateYearMonthDay(year,sign,month,day) 
+{
+    let monthValue = getMonthNumberFromName(month,locale) ;
+    let lastDayOfMonth = daysInMonth(year,monthValue);
     if (day > lastDayOfMonth) day = lastDayOfMonth;
     if (day == 0) days = 1;
     
@@ -409,13 +534,17 @@ function updateYearMonthDay(year,sign,month,day)
 
     if (sign == "-") year *= -1; 
     $('#clockYear').html('[ '+ parseInt(year) + ' ]');
+
+    currentModalDate.year = parseInt(year);
+    currentModalDate.month = monthValue;
+    currentModalDate.day = day;
 }
 
 function isLeapYear(year) {
     if ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) {
         return true;  // L'année est bissextile
     } else {
-        return false; // L'année n'est pas bissextile
+        return false;
     }
 }
 
@@ -561,7 +690,7 @@ function getMonthNumberFromName(monthName, locale) {
         let date = new Date(2020, month, 1);
         let formatter = new Intl.DateTimeFormat(locale, { month: "long" });
         if (formatter.format(date).toLowerCase() === monthName.toLowerCase()) {
-            return month;  // Retourner le numéro du mois en format humain (janvier = 1)
+            return month; 
         }
     }
     return undefined; // Retourner undefined si aucun mois ne correspond

@@ -168,13 +168,19 @@ $name = "";
                 <div class="modal-body">
                 <p class="card-title-desc">Ceci est la date courante en UTC, mise à jour en temps réel.</p>
                 <div class="my-3 row">
-                <div class="d-flex justify-content-center">
+                <div class="d-flex justify-content-around">
                     <div class="">
                         <h2 class="pt-3"><i class="bx bx-time-five"></i></h2>
                     </div>
                     <div class="">
                         <h2 class="my-1" id="clockUtcGmt">[ xxx ][ xx xxxx ][ xx : xx : xx ]</h2>
                     </div>
+                    <button type="button" id="btClockReset" class="buttons-change p-2 btn header-item waves-effect">
+                        <div class="d-flex justify-content-center">
+                        <div class="">
+                        <h2 class="pt-3"><i class="bx bx-reset"></i></h2>
+                        </div>
+                    </button>
                 </div>
                 </div>
                 <p class="card-title-desc">Modifiez la date et l'heure actuelles en choisissant parmi les options suivantes : <code>Année</code>, <code>Jour - Mois</code>, ou <code>Heure - Minute</code>.</p>
@@ -189,7 +195,7 @@ $name = "";
                     <button type="button" id="btClockTime" class="buttons-change p-2 btn header-item waves-effect">
                         <h2 class="my-1" id="clockTime">[ xx : xx ]</h2>
                     </button>
-                    <button type="button" id="btClockReset" class="buttons-change p-2 btn header-item waves-effect">
+                    <button type="button" id="btClockErase" class="buttons-change p-2 btn header-item waves-effect">
                         <div class="d-flex justify-content-center">
                         <div class="">
                             <h2 class="pt-3"><i class="bx bxs-eraser"></i></h2>
@@ -419,7 +425,7 @@ $name = "";
                 </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="buttons-position btn btn-light header-item btn waves-effect waves-light"><h4>Appliquer les changements</h4></button>
+                    <button type="button" id="btClockModify" class="buttons-position btn btn-light header-item btn waves-effect waves-light"><h4>Appliquer les changements</h4></button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
