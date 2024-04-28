@@ -5,23 +5,27 @@ var idHover = {
 };
 
 var currentDate = {
+    "cookies":false,
     "valid": false,
     "year": null,
     "month": null,
     "day": null,
     "hours": null,
     "minutes": null,
-    "secondes": null
+    "secondes": null,
+    "epoch":null
 };
 
 var currentModalDate = {
+    "cookies":false,
     "valid": false,
     "year": null,
     "month": null,
     "day": null,
     "hours": null,
     "minutes": null,
-    "secondes": null
+    "secondes": null,
+    "epoch":null
 };
 
 var locale = "fr-FR";
@@ -100,11 +104,32 @@ function defaultPosition() {
     document.getElementById('position').innerHTML = "45.8336° N, 1.2611° E, France, Terre";
 }
 
+/*
+* Fonctions de gestion des cookie
+*/
+
+function setCurrentDateInCookie(date) {
+    const dateStr = JSON.stringify(date);  // Convertir la date en chaîne JSON pour la stocker
+    const days = 10;  // Nombre de jours avant expiration du cookie
+    let expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
+    expires = expires.toUTCString();  // Formater la date d'expiration en chaîne
+
+    document.cookie = `currentDate=${dateStr};expires=${expires};path=/`;
+}
+
+function getCurrentDateFromCookie() {
+    const cookies = document.cookie.split(';');
+    const dateCookie = cookies.find(cookie => cookie.trim().startsWith('currentDate='));
+    if (dateCookie) {
+        const dateStr = dateCookie.split('=')[1];
+        return JSON.parse(dateStr);  // Convertir la chaîne ISO en objet Date
+    }
+    return null;  // Retourner null si le cookie n'existe pas
+}
 
 /*
 * Fonctions de gestion de la date courante
 */
-
 function displayTimezoneOffset() {
     const now = new Date();
     const timezoneOffset = now.getTimezoneOffset(); // Récupère le décalage en minutes
@@ -117,7 +142,9 @@ function displayTimezoneOffset() {
 
 function updateCurrentClock() 
 {
-    currentDate.secondes++;
+    const now = new Date();
+    currentDate.secondes += (jsDateToEpoch(now) - currentDate.epoch);
+    currentDate.epoch = jsDateToEpoch(now);
 
     // Gérer le dépassement des secondes et incrémenter les minutes
     if (currentDate.secondes >= 60) {
@@ -202,7 +229,8 @@ function updateUniversalTimeClock()
         "day": nowUtc.getUTCDate(),
         "hours": nowUtc.getUTCHours(),
         "minutes": nowUtc.getUTCMinutes(),
-        "secondes": nowUtc.getUTCSeconds()
+        "secondes": nowUtc.getUTCSeconds(),
+        "epoch" : jsDateToEpoch(nowUtc)
     };
 
     updateContentClock('clockUtcGmt',utcClock,true)
@@ -215,7 +243,7 @@ $(function() {
 
     // Mise à jour de l'horloge chaque seconde
     setInterval(updateCurrentClock, 1000);
-    updateCurrentClock();
+    updateContentClock('clock',currentDate,false);
 
     getLocation();
 
@@ -360,6 +388,8 @@ function modifyCurrentDate()
     currentDate.day = currentModalDate.day;
     currentDate.hours = currentModalDate.hours;
     currentDate.minutes = currentModalDate.minutes;
+
+    setCurrentDateInCookie(currentDate);
 }
 
 function resetCurrentDate() 
@@ -372,16 +402,46 @@ function resetCurrentDate()
     currentModalDate.minutes = now.getMinutes();
 }
 
+function jsDateToEpoch(d){
+    // d = javascript date obj
+    // returns epoch timestamp
+    return (d.getTime()-d.getMilliseconds())/1000;
+}
+
 function setCurrentDate() 
 {
-    const now = new Date();
-    currentDate.valid = true;
-    currentDate.year = (currentDate.year == null ) ? now.getFullYear() :  currentDate.year ;
-    currentDate.month = (currentDate.month == null ) ? now.getMonth() : currentDate.month;
-    currentDate.day = (currentDate.day == null ) ? now.getDate() : currentDate.day;
-    currentDate.hours = (currentDate.hours == null ) ? now.getHours() : currentDate.hours;
-    currentDate.minutes = (currentDate.minutes == null ) ? now.getMinutes() : currentDate.minutes;
-    currentDate.secondes = (currentDate.secondes == null ) ? now.getSeconds() : currentDate.secondes;
+    const dateCookie = getCurrentDateFromCookie();
+    if ( dateCookie == null )
+    {
+        alert("Nous utilisons les cookies pour aider votre navigation !");
+        currentDate.cookies = true;
+        setCurrentDateInCookie(currentDate);
+    }
+
+    if ( dateCookie == null || dateCookie.valid == false )
+    {
+        const now = new Date();
+        currentDate.valid = true;
+        currentDate.year = (currentDate.year == null ) ? now.getFullYear() :  currentDate.year ;
+        currentDate.month = (currentDate.month == null ) ? now.getMonth() : currentDate.month;
+        currentDate.day = (currentDate.day == null ) ? now.getDate() : currentDate.day;
+        currentDate.hours = (currentDate.hours == null ) ? now.getHours() : currentDate.hours;
+        currentDate.minutes = (currentDate.minutes == null ) ? now.getMinutes() : currentDate.minutes;
+        currentDate.secondes = (currentDate.secondes == null ) ? now.getSeconds() : currentDate.secondes;
+        currentDate.epoch = (currentDate.epoch == null ) ? jsDateToEpoch(now) : currentDate.epoch; ;
+    }
+    else
+    {
+        currentDate.valid = true;
+        currentDate.year = (currentDate.year == null ) ? dateCookie.year :  currentDate.year ;
+        currentDate.month = (currentDate.month == null ) ? dateCookie.month : currentDate.month;
+        currentDate.day = (currentDate.day == null ) ? dateCookie.day : currentDate.day;
+        currentDate.hours = (currentDate.hours == null ) ? dateCookie.hours : currentDate.hours;
+        currentDate.minutes = (currentDate.minutes == null ) ? dateCookie.minutes : currentDate.minutes;
+        currentDate.secondes = (currentDate.secondes == null ) ? dateCookie.secondes : currentDate.secondes;
+        currentDate.epoch =  (currentDate.epoch == null ) ? dateCookie.epoch : currentDate.epoch;
+    }
+
 }
 
 function setupHoverHandlers(prefix, descriptor) {
@@ -804,7 +864,7 @@ function convertMonthNumberToName(monthNumber, locale) {
     let formatter = new Intl.DateTimeFormat(locale, { month: 'long' });
 
     // Retourner le mois formaté selon la locale
-    return formatter.format(date);
+    return formatter.format(date).toLowerCase();
 }
 
 /* Gestionnaire de modification de la mollette de la souris */

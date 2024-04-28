@@ -183,7 +183,7 @@ $name = "";
                     </button>
                 </div>
                 </div>
-                <div class="my-1 row">
+                <div class="pb-3 my-1 row">
                 <div class="d-flex justify-content-around">
                     <div class="">
                         <h2 class="pt-3"><i class="bx bx-time-five"></i></h2>
