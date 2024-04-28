@@ -25,6 +25,7 @@ var currentModalDate = {
 };
 
 var locale = "fr-FR";
+var notation = "24h"; // 12h ou 24h
 
 function expandZone(selectedZoneId) {
     const zoneTitle = document.getElementById('zoneTitle');
@@ -82,6 +83,28 @@ function closeZone(event, zoneId) {
 
 }
 
+function getLocation() {
+    if (navigator.geolocation) {
+        document.getElementById('position').innerHTML = "Localisation ...";
+        navigator.geolocation.getCurrentPosition(showPosition,defaultPosition);
+    } else { 
+        document.getElementById('position').innerHTML = "e, e, e, e";
+    }
+}
+
+function showPosition(position) {
+    document.getElementById('position').innerHTML = position.coords.latitude + ", " + position.coords.longitude + ", France, Terre";
+}
+
+function defaultPosition() {
+    document.getElementById('position').innerHTML = "45.8336° N, 1.2611° E, France, Terre";
+}
+
+
+/*
+* Fonctions de gestion de la date courante
+*/
+
 function displayTimezoneOffset() {
     const now = new Date();
     const timezoneOffset = now.getTimezoneOffset(); // Récupère le décalage en minutes
@@ -92,7 +115,7 @@ function displayTimezoneOffset() {
     return displayOffset;
 }
 
-function updateClock() 
+function updateCurrentClock() 
 {
     currentDate.secondes++;
 
@@ -126,49 +149,64 @@ function updateClock()
         currentDate.year++;
     }
 
-    document.getElementById('clock').textContent = formatDateTime();
+    updateContentClock('clock',currentDate,false);
 }
 
-function formatDateTime() 
+function updateContentClock(id,date,isGmt) 
 {
-    const year = currentDate.year;
-    const month = convertMonthNumberToName(currentDate.month,locale);
-    const day = currentDate.day.toString().padStart(2, '0');
-    const hours = currentDate.hours.toString().padStart(2, '0');
-    const minutes = currentDate.minutes.toString().padStart(2, '0');
-    const secondes = currentDate.secondes.toString().padStart(2, '0');
-
-    return `[ ${year} ][ ${day} ${month} ][ ${hours} : ${minutes} : ${secondes} ]`;
+    document.getElementById(id).innerHTML = formatDateTime(date) + ((isGmt == true) ? displayTimezoneOffset() : '');
 }
 
-function updateClockUtcGmt() 
+function formatDateTime(date) 
+{
+    const year = date.year;
+    const month = convertMonthNumberToName(date.month,locale);
+    const day = date.day.toString().padStart(2, '0');
+    
+    let hours = date.hours;
+    const minutes = date.minutes.toString().padStart(2, '0');
+    const secondes = date.secondes.toString().padStart(2, '0');
+
+    let suffix = ' ';  // Suffixe AM/PM pour le format 12 heures
+    if ( notation == "12h" )
+    {
+        suffix = "<small> "+ computeSuffixHours(hours) + " </small>";
+        hours = computeHours(hours);
+    }
+
+    hours = hours.toString().padStart(2, '0');
+
+    return `[ ${year} ][ ${day} ${month} ][${suffix}${hours} : ${minutes} : ${secondes} ]`;
+}
+
+function computeSuffixHours(hours) 
+{
+    return hours >= 12 ? 'PM' : 'AM';
+}
+
+function computeHours(hours) 
+{
+    hours = hours % 12;
+    hours = hours ? hours : 12;  // Convertir "0" en "12"
+    return hours;
+}
+
+function updateUniversalTimeClock() 
 {
     const nowUtc = new Date();
-    const year = nowUtc.getUTCFullYear()
-    const month = nowUtc.toLocaleString(locale, { month: 'long' , timeZone: 'UTC'  });
-    const day = nowUtc.getUTCDate()
-    const hours = nowUtc.getUTCHours().toString().padStart(2, '0');
-    const minutes = nowUtc.getUTCMinutes().toString().padStart(2, '0');
-    const seconds = nowUtc.getUTCSeconds().toString().padStart(2, '0');
-    
-    document.getElementById('clockUtcGmt').textContent = `[ ${year} ][ ${day} ${month} ][ ${hours} : ${minutes} : ${seconds} ]` + displayTimezoneOffset();
-}
 
-function getLocation() {
-    if (navigator.geolocation) {
-        document.getElementById('position').innerHTML = "Localisation ...";
-        navigator.geolocation.getCurrentPosition(showPosition,defaultPosition);
-    } else { 
-        document.getElementById('position').innerHTML = "e, e, e, e";
-    }
-}
+    var utcClock = {
+        "valid": true,
+        "year": nowUtc.getUTCFullYear(),
+        "month": nowUtc.getUTCMonth(),
+        "day": nowUtc.getUTCDate(),
+        "hours": nowUtc.getUTCHours(),
+        "minutes": nowUtc.getUTCMinutes(),
+        "secondes": nowUtc.getUTCSeconds()
+    };
 
-function showPosition(position) {
-    document.getElementById('position').innerHTML = position.coords.latitude + ", " + position.coords.longitude + ", France, Terre";
-}
-
-function defaultPosition() {
-    document.getElementById('position').innerHTML = "45.8336° N, 1.2611° E, France, Terre";
+    updateContentClock('clockUtcGmt',utcClock,true)
+    updateContentClock('clockCurrent',currentDate,false);
 }
 
 $(function() {
@@ -176,20 +214,16 @@ $(function() {
     setCurrentDate();
 
     // Mise à jour de l'horloge chaque seconde
-    setInterval(updateClock, 1000);
-
-    // Initialiser l'horloge immédiatement au chargement de la page
-    updateClock();
+    setInterval(updateCurrentClock, 1000);
+    updateCurrentClock();
 
     getLocation();
 
-   
     $('#datetimeModal').on('show.bs.modal', function(event) {
-        // Fonction pour préparer le contenu de la modal
         copyCurrentDate(false);
         prepareModalContent();
-        setInterval(updateClockUtcGmt, 1000);
-        updateClockUtcGmt();
+        setInterval(updateUniversalTimeClock, 1000);
+        updateUniversalTimeClock();
     });
 
     $('button[id^="btClock"]').click(function() 
@@ -210,7 +244,7 @@ $(function() {
         else if ( $(this).attr('id') == "btClockModify" )
         {
             modifyCurrentDate();
-            document.getElementById('clock').textContent = formatDateTime();
+            updateContentClock('clock',currentDate,false);
             $('#datetimeModal').modal('hide');
         }
         else
@@ -259,6 +293,17 @@ $(function() {
         }
     );
 
+    $('#prefix_time_input').hover(
+        function() { // mouseenter
+            let showTop = ($(this).val() == "AM");
+            let showBottom = ($(this).val() == "PM");
+            updatePeripheralDigit('time','prefix',showTop,showBottom,"PM","AM");
+        },
+        function() { // mouseleave
+            updatePeripheralDigit('time','prefix', false, false, 0 ,0);
+        }
+    );
+
     $('#sign_year_input').on('paste', function(event) {
         event.preventDefault();
         var pasteText = event.originalEvent.clipboardData.getData('text');
@@ -276,10 +321,19 @@ function prepareModalContent()
 
     document.getElementById('clockYear').textContent = `[ ${currentModalDate.year} ]`;
     document.getElementById('clockMonthDay').textContent = `[ ${currentModalDate.day.toString().padStart(2, '0')} ${month} ]`;
-    document.getElementById('clockTime').textContent = `[ ${currentModalDate.hours.toString().padStart(2, '0')} : ${currentModalDate.minutes.toString().padStart(2, '0')} ]`;
+    let hours = currentModalDate.hours;
+    let suffix = ' ';  // Suffixe AM/PM pour le format 12 heures
+    if ( notation == "12h" )
+    {
+        suffix = "<small> "+ computeSuffixHours(hours) + " </small>";
+        hours = computeHours(hours);
+    }
+    hours = hours.toString().padStart(2, '0');
+
+    fillInterTime(suffix,hours,currentModalDate.minutes);
 
     fillDigitsYear(currentModalDate.year,"code_year_input_","sign_year_input", 7 );
-    fillDigitsTime(currentModalDate.hours,currentModalDate.minutes,"code_time_input_", 4 );
+    fillDigitsTime(currentModalDate.hours,currentModalDate.minutes,"code_time_input_","prefix_time_input", 4 );
     fillDigitsDay(currentModalDate.day,"code_day_input_", 2 );
     fillDigitsMonth(month,"month_day_input");
 }
@@ -403,7 +457,7 @@ function fillDigitsYear(number, prefixCode,prefixSign,maxDigits)
     document.getElementById(prefixSign).value = sign;
 }
 
-function fillDigitsTime(numberHours,numberMinutes, prefixCode , maxDigits ) 
+function fillDigitsTime(numberHours,numberMinutes, prefixCode, prefixSuffix , maxDigits ) 
 {
     if (!Number.isInteger(numberHours) || isNaN(numberHours)) {
         return;
@@ -414,6 +468,21 @@ function fillDigitsTime(numberHours,numberMinutes, prefixCode , maxDigits )
 
     if (numberHours >= 24 || numberHours < 0) numberHours = 0;
     if (numberMinutes >= 60 || numberHours < 0) numberMinutes = 0;
+  
+    let suffix = ' ';  // Suffixe AM/PM pour le format 12 heures
+    if ( notation == "12h" )
+    {
+        suffix = computeSuffixHours(numberHours);
+        numberHours = computeHours(numberHours);
+        $('#prefix_time').css("display","block");
+        $('#prefix_time_ensp').css("display","block");
+        $('#'+prefixSuffix).val(suffix);
+        suffix = "<small> "+ suffix + " </small>";
+    }
+    else{
+        $('#prefix_time').css("display","none");
+        $('#prefix_time_ensp').css("display","none");
+    }
 
     let digits = numberHours.toString().padStart(2, '0') + numberMinutes.toString().padStart(2, '0');
     let inputIndex = maxDigits;
@@ -446,6 +515,11 @@ function fillDigitsMonth(month , prefixMonth)
     document.getElementById(prefixMonth).value = month;
 }
 
+function fillInterTime(suffix , hours , minutes)
+{
+    $('#clockTime').html('['+ suffix + hours.toString().padStart(2, '0') + ' : '+ minutes.toString().padStart(2, '0') + ' ]'); 
+}
+
 /* Mise à jour du champ année final que l'utilisateur 
 pourra ensuite appliquer à la date courante*/
 function updateFinalValue(type) 
@@ -474,14 +548,30 @@ function updateFinalValue(type)
         $('input[id^=code_'+type+'_input]').each(function() {
             numberString += $(this).val();
         });
-        let hours = parseInt(numberString.substring(0,2));
-        if (hours >= 24) hours = 23;
+        
+        let hours = 0;
+        hours = parseInt(numberString.substring(0,2));
         let minutes = parseInt(numberString.substring(2,4));
         if (minutes >= 60) minutes = 59;
-        $('#clockTime').html('[ '+ hours.toString().padStart(2, '0') + ' : '+ minutes.toString().padStart(2, '0') + ' ]');
-
         currentModalDate.minutes = minutes;
-        currentModalDate.hours = hours;
+
+        let suffix = ' '; 
+        if ( notation == "12h" )
+        {
+            suffix = "<small> "+ $('#prefix_time_input').val() + " </small>";
+            hours = computeHours(hours);
+            currentModalDate.hours = hours + (($('#prefix_time_input').val() == "PM") ? 12 : -12 );
+            if (currentModalDate.hours >= 24) currentModalDate.hours -= 12;
+            if (currentModalDate.hours < 0) currentModalDate.hours += 12;
+        }
+        else
+        {
+            if (hours >= 24) hours = 23;
+            currentModalDate.hours = hours;
+        }
+        
+        fillInterTime(suffix,hours,minutes);
+      
     }
     else if (type == 'day')
     {  
@@ -576,6 +666,16 @@ function setValueInputSign(inputElement,value)
     let showTop = (value == "-");
     let showBottom = (value == "+");
     updatePeripheralDigit('year','sign',showTop,showBottom,"+","-");
+}
+
+function setValueInputPrefix(inputElement,value) 
+{
+    inputElement.value = value;
+    updateFinalValue('time');
+
+    let showTop = (value == "AM");
+    let showBottom = (value == "PM");
+    updatePeripheralDigit('time','prefix',showTop,showBottom,"PM","AM");
 }
 
 function setValueInputMonth(inputElement,value,maxValue) 
@@ -763,5 +863,19 @@ function adjustOnScroll(event, inputElement,base,type)
         if (currentValue > valueMax) currentValue = valueMax;
 
         setValueInputMonth(inputElement,currentValue,valueMax);
+    }
+    else if (base == 'prefix')
+    {
+        let currentValue = 0;
+
+        if (inputElement.value == "AM") currentValue = 0;
+        if (inputElement.value == "PM") currentValue = 1;
+
+        // Incrémenter ou décrémenter la valeur en fonction de la direction du scroll
+        currentValue += delta < 0 ? -1 : 1;
+
+        // Contrôler les limites de la valeur
+        if (currentValue < 0) setValueInputPrefix(inputElement,"PM");
+        if (currentValue > 1) setValueInputPrefix(inputElement,"AM");
     }
 }

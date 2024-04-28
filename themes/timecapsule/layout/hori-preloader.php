@@ -166,8 +166,8 @@ $name = "";
                     <button type="button" class="close-btn-pre" data-bs-dismiss="modal" >✖</button>
                 </div>
                 <div class="modal-body">
-                <p class="card-title-desc">Ceci est la date courante en UTC, mise à jour en temps réel.</p>
-                <div class="my-3 row">
+                <p class="card-title-desc">Ceci est la date exacte en UTC et la date courante, mise à jour en temps réel.</p>
+                <div class="my-1 row">
                 <div class="d-flex justify-content-around">
                     <div class="">
                         <h2 class="pt-3"><i class="bx bx-time-five"></i></h2>
@@ -183,8 +183,24 @@ $name = "";
                     </button>
                 </div>
                 </div>
+                <div class="my-1 row">
+                <div class="d-flex justify-content-around">
+                    <div class="">
+                        <h2 class="pt-3"><i class="bx bx-time-five"></i></h2>
+                    </div>
+                    <div class="">
+                        <h2 class="my-1" id="clockCurrent">[ xxx ][ xx xxxx ][ xx : xx : xx ]</h2>
+                    </div>
+                    <button type="button" id="btClockErase" class="buttons-change p-2 btn header-item waves-effect">
+                        <div class="d-flex justify-content-center">
+                        <div class="">
+                        <h2 class="pt-3"><i class="bx bx-reset"></i></h2>
+                        </div>
+                    </button>
+                </div>
+                </div>
                 <p class="card-title-desc">Modifiez la date et l'heure actuelles en choisissant parmi les options suivantes : <code>Année</code>, <code>Jour - Mois</code>, ou <code>Heure - Minute</code>.</p>
-                <div class="my-3 row">
+                <div class="my-1 row">
                 <div class="d-flex justify-content-around text-center">
                     <button type="button" id="btClockYear" class="buttons-change p-2 btn header-item waves-effect">
                         <h2 class="my-1" id="clockYear">[ xxx ]</h2>
@@ -194,12 +210,6 @@ $name = "";
                     </button>
                     <button type="button" id="btClockTime" class="buttons-change p-2 btn header-item waves-effect">
                         <h2 class="my-1" id="clockTime">[ xx : xx ]</h2>
-                    </button>
-                    <button type="button" id="btClockErase" class="buttons-change p-2 btn header-item waves-effect">
-                        <div class="d-flex justify-content-center">
-                        <div class="">
-                            <h2 class="pt-3"><i class="bx bxs-eraser"></i></h2>
-                        </div>
                     </button>
                     </div>
                 </div>
@@ -296,7 +306,7 @@ $name = "";
 
                 <div id="modifMonthDay" style="display:none">
                     <form action="" method="" onsubmit="modifMoisJour(); return false;">
-                        <p class="card-title-desc">Vous pouvez ajuster <code>Jour - Mois</code> selon vos besoins.</p>
+                        <p class="card-title-desc">Vous pouvez ajuster le <code>Jour</code> et le <code>Mois</code> selon vos besoins.</p>
                         <div class="row text-center">
                             <div class="d-flex justify-content-around">
                             <div class="col-1">
@@ -351,22 +361,28 @@ $name = "";
 
                 <div id="modifTime" style="display:none">
                     <form action="" method="" onsubmit="modifHeureMinute(); return false;">
-                        <p class="card-title-desc">Vous pouvez ajuster <code>Heure - Minute</code> selon vos besoins.</p>
+                        <p class="card-title-desc">Vous pouvez ajuster les <code>Heures</code> et les <code>Minute</code> selon vos besoins.</p>
                         <div class="row text-center">
                             <div class="d-flex justify-content-around">
-                                <!--<div class="text-center input-wrapper" style="position: relative;"> 
-                                    <div class="hover-text top-text-time-sign"> 0 </div>
-                                    <input type="text"
-                                        class="form-control form-control-lg text-center h2-like"
-                                        onkeyup="touchTimeSign(this,event)" 
-                                        onwheel="adjustOnScroll(event, this,'meridien','time')"
-                                        maxLength="1"
-                                        id="sign_time_input" name="sign" autocomplete="off" value="AM">
-                                    <div class="hover-text bottom-text-time-sign"> 0 </div>
-                                </div>-->
+                                
                                 <div class="col-1">
                                 <div class="">
                                     <h2 class="my-1" id=""> [ </h2>
+                                </div>
+                                </div>
+                                <div id="prefix_time" class="text-center input-wrapper" style="position: relative; display: none"> 
+                                    <div class="hover-text top-text-time-prefix"> 0 </div>
+                                    <input type="text"
+                                        class="form-control form-control-lg text-center h2-like"
+                                        onkeyup="touchTimePrefix(this,event)" 
+                                        onwheel="adjustOnScroll(event, this,'prefix','time')"
+                                        maxLength="1"
+                                        id="prefix_time_input" name="sign" autocomplete="off" value="" disabled>
+                                    <div class="hover-text bottom-text-time-prefix"> 0 </div>
+                                </div>
+                                <div id="prefix_time_ensp" class="col-1" style="display: none" >
+                                <div class="">
+                                    <h2 class="my-1" id=""> &ensp; </h2>
                                 </div>
                                 </div>
                                 <div class="text-center input-wrapper" style="position: relative;"> 
@@ -485,8 +501,6 @@ $name = "";
 
           </div>
       </div>
-
-      
 
     </div>
     <?=Component::create('partials/variables') ?>
