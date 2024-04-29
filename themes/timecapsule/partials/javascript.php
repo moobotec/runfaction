@@ -38,10 +38,10 @@ echo '<script src="'.BASEPATH.'themes/'.THEME.'/assets/libs/jquery/jquery.min.js
 echo '<!-- Base js -->
 <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/base.js?='.time().'"></script>';
 
-echo '<!-- App js -->
-<script src="'.BASEPATH.'themes/'.THEME.'/assets/js/app.js"></script>';
-
 echo '<!-- Timecapsule js -->
 <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/timecapsule.js?='.time().'"></script>';
+
+echo '<!-- App js -->
+<script src="'.BASEPATH.'themes/'.THEME.'/assets/js/app.js"></script>';
 
 ?>
