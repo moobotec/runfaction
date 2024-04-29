@@ -168,7 +168,7 @@ use Steampixel\Component;
         </div>
 
         <div class="center-buttons">
-            <button type="button" class="buttons-selected buttons-jeter text-uppercase btn header-item waves-effect ">
+            <button type="button" class="buttons-selected buttons-jeter text-uppercase btn header-item waves-effect " key="t-throw">
                 Jeter
             </button>
         </div>
