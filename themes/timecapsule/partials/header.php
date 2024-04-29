@@ -71,7 +71,6 @@ use Steampixel\Component;
     flex-grow: 0;
     flex-basis: 200px; /* Largeur fixe pour le logo */
     flex-shrink: 0;
-
 }
 
 .center-buttons {
@@ -103,6 +102,7 @@ use Steampixel\Component;
 .buttons-propos:hover,.buttons-jeter:hover,.buttons-trouver:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Ombre plus prononcée au survol */
     transform: translateY(-2px); /* Léger effet de soulèvement au survol */
+    text-decoration: underline #88ff88;
 }
 
 .buttons-selected {
@@ -113,24 +113,11 @@ use Steampixel\Component;
     text-decoration: underline #88ff88;
 }
 
-
-.center-buttons:active {
-    text-decoration: underline #88ff88;
-}
-
 .right-controls {
     display: flex;
     align-items: center;
     margin-left: auto; /* Pousser tous les éléments de ce conteneur vers la droite */
     
-}
-
-.buttons-jeter {
-    border-right:  1px solid black; /* Bordure pour chaque zone */
-}
-
-.buttons-trouver {
-    border-right:  1px solid black; /* Bordure pour chaque zone */
 }
 
 .language-selector, .control-buttons {
@@ -167,12 +154,12 @@ use Steampixel\Component;
             </a>
         </div>
 
-        <div class="center-buttons">
+        <div class="center-buttons" style="border-right:  2px solid black;">
             <button type="button" class="buttons-selected buttons-jeter text-uppercase btn header-item waves-effect " key="t-throw">
                 Jeter
             </button>
         </div>
-        <div class="center-buttons">
+        <div class="center-buttons" style="border-right:  2px solid black;">
             <button type="button" class="buttons-trouver text-uppercase btn header-item waves-effect">
                 Trouver
             </button>
