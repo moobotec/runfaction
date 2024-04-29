@@ -160,13 +160,13 @@ use Steampixel\Component;
             </button>
         </div>
         <div class="center-buttons" style="border-right:  2px solid black;">
-            <button type="button" class="buttons-trouver text-uppercase btn header-item waves-effect">
+            <button type="button" class="buttons-trouver text-uppercase btn header-item waves-effect" key="t-find">
                 Trouver
             </button>
         </div>
         <div class="center-buttons">
-            <button type="button" class="buttons-propos text-uppercase btn header-item waves-effect">
-                A propos
+            <button type="button" class="buttons-propos text-uppercase btn header-item waves-effect" key="t-about">
+                &Agrave; propos
             </button>
         </div>
 

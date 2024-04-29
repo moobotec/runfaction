@@ -1,3 +1,5 @@
 {
-    "t-throw":"throw"
+    "t-throw":"throw",
+    "t-find":"find",
+    "t-about":"about"
 }
