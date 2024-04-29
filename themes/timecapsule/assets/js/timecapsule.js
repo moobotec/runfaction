@@ -382,12 +382,14 @@ function copyCurrentDate(isForced)
 
 function modifyCurrentDate() 
 {
+    const now = new Date();
     currentDate.valid = currentModalDate.valid;
     currentDate.year = currentModalDate.year;
     currentDate.month = currentModalDate.month;
     currentDate.day = currentModalDate.day;
     currentDate.hours = currentModalDate.hours;
     currentDate.minutes = currentModalDate.minutes;
+    currentDate.secondes = now.getSeconds();
 
     setCurrentDateInCookie(currentDate);
 }
