@@ -140,7 +140,9 @@ use Steampixel\Component;
                     <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/logo.png';?>" alt="" height="22">
                 </span>
                 <span class="logo-lg">
-                    <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/logo-dark.png';?>" alt="" height="32">
+                    <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/logo-dark-caps.png';?>" alt="" height="32"
+                    onmouseover="this.src='<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/logo-dark.png';?>'" 
+                    onmouseout="this.src='<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/logo-dark-caps.png';?>'" >
                 </span>
             </a>
 
@@ -149,7 +151,9 @@ use Steampixel\Component;
                     <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/logo.png';?>" alt="" height="22">
                 </span>
                 <span class="logo-lg">
-                    <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/logo-light.png';?>" alt="" height="32">
+                    <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/logo-light-caps.png';?>" alt="" height="32"
+                    onmouseover="this.src='<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/logo-light.png';?>'" 
+                    onmouseout="this.src='<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/logo-light-caps.png';?>'" >
                 </span>
             </a>
         </div>

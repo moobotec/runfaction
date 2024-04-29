@@ -1,11 +1,11 @@
 <?php
-$param_server_principal_domaine = '';
-$param_server_principal_ip = '';
-$param_server_principal_port = 0;
+$param_server_principal_domaine = '192.168.1.54';
+$param_server_principal_ip = '192.168.1.54';
+$param_server_principal_port = 80;
 $param_server_secondaire_ip = '86.254.62.178';
 $param_server_secondaire_port = 9898;
-$param_protocole = '';
-$param_root = '';
+$param_protocole = 'http';
+$param_root = '/home/daumand/timecapsule/';
 $param_racine = '/';
 $param_server_disk_total_space = 0;
 $param_server_disk_use_space = 0;
@@ -13,7 +13,7 @@ $param_timezone = 'Europe/Paris';
 $param_environement = 'DEV'; //dev,preprod,prod
 $param_bdd = 'DEV';
 $param_version = '1.0.1'; 
-$param_title = 'TimeCapsule';
+$param_title = 'TimeCaps.';
 $param_auteur = 'Daumand David';
 $param_description = '';
 $param_keyword = '';

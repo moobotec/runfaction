@@ -130,6 +130,78 @@ $name = "";
   <body data-topbar="dark" data-layout="horizontal">
 
 
+  <!-- cookie banner => https://github.com/shaack/bootstrap-cookie-consent-settings -->
+  <div id="cookieModal" class="modal fade" role="dialog" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg shadow" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Gérer le consentement aux cookies</h4>
+            </div>
+            <div class="modal-body">
+                <div class="bccs-body-text" style="font-size: 80%">
+                    <p>Pour offrir les meilleures expériences, nous utilisons des technologies telles que les cookies pour stocker et/ou accéder aux informations des appareils. Le fait de consentir à ces technologies nous permettra de traiter des données telles que le comportement de navigation ou les ID uniques sur ce site. Le fait de ne pas consentir ou de retirer son consentement peut avoir un effet négatif sur certaines caractéristiques et fonctions.</p>
+                </div>
+                <p class="d-flex justify-content-between mb-0">
+                    <a href="#" disabled>Renseignements personnels</a>
+                    <a href="#bccs-options" data-bs-toggle="collapse">Voir les préférences</a>
+                </p>
+                <div id="bccs-options" class="collapse">
+                    <hr>
+                    <div class="bccs-option" data-name="necessary">
+                        <div class="form-check mb-1">
+                            <input type="checkbox" class="form-check-input" id="bccs-checkbox-necessary" disabled="">
+                            <label class="form-check-label" for="bccs-checkbox-necessary"><b>Cookies strictement nécessaires</b></label>
+                        </div>
+                        <ul>
+                            <li>Le stockage ou l’accès technique est strictement nécessaire dans la finalité d’intérêt légitime de permettre l’utilisation d’un service spécifique explicitement demandé par l’abonné ou l’internaute, ou dans le seul but d’effectuer la transmission d’une communication sur un réseau de communications électroniques.</li>
+                        </ul>
+                    </div><div class="bccs-option" data-name="statistics">
+                        <div class="form-check mb-1">
+                            <input type="checkbox" class="form-check-input" id="bccs-checkbox-statistics">
+                            <label class="form-check-label" for="bccs-checkbox-statistics"><b>Statistiques</b></label>
+                        </div>
+                        <ul>
+                            <li>Le stockage ou l’accès technique qui est utilisé exclusivement à des fins statistiques.</li>
+                        </ul>
+                    </div><div class="bccs-option" data-name="marketing">
+                        <div class="form-check mb-1">
+                            <input type="checkbox" class="form-check-input" id="bccs-checkbox-marketing">
+                            <label class="form-check-label" for="bccs-checkbox-marketing"><b>Marketing</b></label>
+                        </div>
+                        <ul>
+                            <li>Le stockage ou l’accès technique est nécessaire pour créer des profils d’internautes afin d’envoyer des publicités, ou pour suivre l’internaute sur un site web ou sur plusieurs sites web ayant des finalités marketing similaires.</li>
+                        </ul>
+                    </div><div class="bccs-option" data-name="personalization">
+                        <div class="form-check mb-1">
+                            <input type="checkbox" class="form-check-input" id="bccs-checkbox-personalization">
+                            <label class="form-check-label" for="bccs-checkbox-personalization"><b>Personnalisation</b></label>
+                        </div>
+                        <ul>
+                            <li>Sauvegarde de vos préférences des visites précédentes</li><li>Recueillir les retours des utilisateurs pour améliorer notre site internet</li><li>Enregistrement de vos intérêts afin de proposer des contenus et des offres personnalisés</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex justify-content-end">
+                <div class="">
+                <button type="button" id="bccs-buttonDoNotAgree" class="buttons-position btn btn-light header-item waves-effect waves-light" ><h4 key="modal-refuser">Refuser</h4></button>
+                </div>
+                <div class="">
+                <button type="button" id="bccs-buttonAgree" class="buttons-position btn btn-light header-item waves-effect waves-light" ><h4 key="modal-accepter">Accepter</h4></button>
+                </div>
+                <div class="">
+                <button type="button" id="bccs-buttonSave" class="buttons-position btn btn-light header-item waves-effect waves-light" style="display: none;" ><h4 key="modal-enregistrer-pref">Enregistrer les préférences</h4></button>
+                </div>
+                <div class="">
+                <button type="button" id="bccs-buttonAgreeAll" class="buttons-position btn btn-light header-item waves-effect waves-light" style="display: none;" ><h4 key="modal-accepter-tout">Accepter tout</h4></button>
+                </div>    
+            </div>
+            </div>
+        </div>
+    </div>
+  </div><!-- /.modal -->
+
     <div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -138,18 +210,35 @@ $name = "";
                     <button type="button" class="close-btn-pre" data-bs-dismiss="modal" >✖</button>
                 </div>
                 <div class="modal-body">
-                  <p>Cras mattis consectetur purus sit amet fermentum.
-                      Cras justo odio, dapibus ac facilisis in,
-                      egestas eget quam. Morbi leo risus, porta ac
-                      consectetur ac, vestibulum at eros.</p>
-                  <p>Praesent commodo cursus magna, vel scelerisque
-                      nisl consectetur et. Vivamus sagittis lacus vel
-                      augue laoreet rutrum faucibus dolor auctor.</p>
-                  <p class="mb-0">Aenean lacinia bibendum nulla sed consectetur.
-                      Praesent commodo cursus magna, vel scelerisque
-                      nisl consectetur et. Donec sed odio dui. Donec
-                      ullamcorper nulla non metus auctor
-                      fringilla.</p>
+                <p class="card-title-desc" key="modal-datetime-utc" >Vous pouvez changer le notation de l'heure.</p>
+                <div class="mb-3 row">
+                    <label class="col-md-2 col-form-label">Notation</label>
+                    <div class="col-md-4">
+                        <select class="form-select">
+                            <option>24 heures</option>
+                            <option>12 heures</option>
+                        </select>
+                    </div>
+                </div>
+                <p class="card-title-desc" key="modal-datetime-utc" >Vous pouvez changer le thème.</p>
+                <div class="mb-3 row">
+                    <label class="col-md-2 col-form-label">Thème</label>
+                    <div class="col-md-4">
+                        <select class="form-select">
+                            <option>Lumineux</option>
+                            <option>Sombre</option>
+                        </select>
+                    </div>
+                </div>
+                <p class="card-title-desc" key="modal-datetime-utc" >Vous pouvez changer les paramètres sur les cookies.</p>
+                <div class="mb-3 row">
+                    <label class="col-md-2 col-form-label">Cookies</label>
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-primary waves-effect waves-light">
+                            <i class="bx bx-smile font-size-16 align-middle me-2"></i> Reset
+                        </button>
+                    </div>
+                </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="buttons-position btn btn-light header-item btn waves-effect waves-light"><h4 key="modal-apply">Appliquer les changements</h4></button>

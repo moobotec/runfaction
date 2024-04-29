@@ -418,9 +418,34 @@ function setCurrentDate()
     const dateCookie = getCurrentDateFromCookie();
     if ( dateCookie == null )
     {
-        alert("Nous utilisons les cookies pour aider votre navigation !");
-        currentDate.cookies = true;
-        setCurrentDateInCookie(currentDate);
+        setTimeout(function() {
+
+            $( "#bccs-checkbox-necessary" ).prop( "checked", true );
+
+            $('#bccs-options').on('hide.bs.collapse', function (e) {
+                $('#bccs-buttonDoNotAgree').css("display", "block");
+                $('#bccs-buttonAgree').css("display", "block");
+                $('#bccs-buttonSave').css("display", "none");
+                $('#bccs-buttonAgreeAll').css("display", "none");
+            });
+
+            $('#bccs-options').on('show.bs.collapse', function (e) {
+                $('#bccs-buttonDoNotAgree').css("display", "none");
+                $('#bccs-buttonAgree').css("display", "none");
+                $('#bccs-buttonSave').css("display", "block");
+                $('#bccs-buttonAgreeAll').css("display", "block");
+            });
+
+            $('button[id^="bccs-"]').click(function() 
+            {
+                currentDate.cookies = true;
+                setCurrentDateInCookie(currentDate);
+
+                $('#cookieModal').modal('hide');
+            });
+
+            $('#cookieModal').modal('show');
+        }, 3000);
     }
 
     if ( dateCookie == null || dateCookie.valid == false )
