@@ -14,13 +14,17 @@ var theme = '';
 
     var language = localStorage.getItem('language');
     // Default Language
-    var default_lang = 'en';
+    var default_lang = 'fr';
 
     function setLanguage(lang) {
         if (document.getElementById("header-lang-img")) {
-            if (lang == 'en') {
+            if (lang == 'fr') {
+                document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/fr.jpg";
+            } 
+            else if (lang == 'en') {
                 document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/us.jpg";
-            } else if (lang == 'sp') {
+            } 
+            else if (lang == 'sp') {
                 document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/spain.jpg";
             }
             else if (lang == 'gr') {
