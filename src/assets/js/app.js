@@ -51,7 +51,7 @@ var theme = '';
                 if (index === 'locale') {
                     locale = val;
                 } 
-                $("[key='" + index + "']").text(val);
+                $("[key='" + index + "']").html(val);
             });
         });
     }
