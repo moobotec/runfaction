@@ -17,5 +17,14 @@
     "t-gr" : "English",
     "t-it" : "Italian",
     "t-es" : "Spanish",
-    "t-ru" : "Russian"
+    "t-ru" : "Russian",
+    "modal-datetime-title": "Modify the current date",
+    "modal-datetime-utc": "This is the exact date in UTC and the current date, updated in real time.",
+    "modal-datetime-current" : "Change the current date and time by choosing from the following options: <code>Year</code>, <code>Day - Month</code>, or <code>Time - Minute</code>.",
+    "modal-datetime-year" : "You can adjust the <code>Year</code> according to your needs.",
+    "modal-datetime-daymonth" : "You can adjust the <code>Day</code> and <code>Month</code> according to your needs.",
+    "modal-datetime-time" : "You can adjust the <code>Hours</code> and <code>Minute</code> according to your needs.",
+    "modal-position-title": "Change your position",
+    "modal-configuration-title" : "Configuration",
+    "modal-apply": "Apply changes"
 }
