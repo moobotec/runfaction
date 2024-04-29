@@ -179,33 +179,33 @@ use Steampixel\Component;
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
                          <!-- item-->
-                         <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="fr">
-                            <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/flags/french.jpg';?>" alt="user-image" class="me-1" height="12"> <span class="align-middle">Français</span>
+                        <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="fr">
+                            <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/flags/french.jpg';?>" alt="user-image" class="me-1" height="12"> <span class="align-middle" key="t-fr">Français</span>
                         </a>
                         
                         <!-- item-->
                         <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="en">
-                            <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/flags/us.jpg';?>" alt="user-image" class="me-1" height="12"> <span class="align-middle">Anglais</span>
+                            <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/flags/us.jpg';?>" alt="user-image" class="me-1" height="12"> <span class="align-middle" key="t-en">Anglais</span>
                         </a>
 
                         <!-- item-->
                         <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="sp">
-                            <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/flags/spain.jpg';?>" alt="user-image" class="me-1" height="12"> <span class="align-middle">Espagnol</span>
+                            <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/flags/spain.jpg';?>" alt="user-image" class="me-1" height="12"> <span class="align-middle" key="t-es">Espagnol</span>
                         </a>
 
                         <!-- item-->
                         <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="gr">
-                            <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/flags/germany.jpg';?>" alt="user-image" class="me-1" height="12"> <span class="align-middle">Allemand</span>
+                            <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/flags/germany.jpg';?>" alt="user-image" class="me-1" height="12"> <span class="align-middle" key="t-gr">Allemand</span>
                         </a>
 
                         <!-- item-->
                         <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="it">
-                            <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/flags/italy.jpg';?>" alt="user-image" class="me-1" height="12"> <span class="align-middle">Italien</span>
+                            <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/flags/italy.jpg';?>" alt="user-image" class="me-1" height="12"> <span class="align-middle" key="t-it">Italien</span>
                         </a>
 
                         <!-- item-->
                         <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="ru">
-                            <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/flags/russia.jpg';?>" alt="user-image" class="me-1" height="12"> <span class="align-middle">Russe</span>
+                            <img src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/flags/russia.jpg';?>" alt="user-image" class="me-1" height="12"> <span class="align-middle" key="t-ru">Russe</span>
                         </a>
                     </div>
                 </div>

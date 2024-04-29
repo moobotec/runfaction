@@ -209,19 +209,19 @@ h1,h2
     <div class="row g-0 ">
         <div id="zone1" class="zone-top-left col-6 d-flex" style="background-color: lightblue;" onclick="expandZone('zone1')">
             <button class="close-btn" onclick="closeZone(event, 'zone1')">✖</button>
-            <div class="content-zone-text m-auto"><h2>&Agrave; la mer.</h2></div>
+            <div class="content-zone-text m-auto"><h2 key="t-sea">&Agrave; la mer.</h2></div>
         </div>
         <div id="zone2" class="zone-top-right col-6 d-flex" style="background-color: lightgreen;" onclick="expandZone('zone2')">
             <button class="close-btn" onclick="closeZone(event, 'zone2')">✖</button>
-            <div class="content-zone-text m-auto"><h2>Dans un trou.</h2></div>
+            <div class="content-zone-text m-auto"><h2 key="t-hole">Dans un trou.</h2></div>
         </div>
         <div id="zone3" class="zone-bottom-left  col-6 d-flex" style="background-color: lightcoral;" onclick="expandZone('zone3')">
             <button class="close-btn" onclick="closeZone(event, 'zone3')">✖</button>
-            <div class="content-zone-text m-auto"><h2>Dans l'espace.</h2></div>
+            <div class="content-zone-text m-auto"><h2 key="t-space">Dans l'espace.</h2></div>
         </div>
         <div id="zone4" class="zone-bottom-right  col-6 d-flex" style="background-color: lightgoldenrodyellow;" onclick="expandZone('zone4')">
             <button class="close-btn" onclick="closeZone(event, 'zone4')">✖</button>
-            <div class="content-zone-text m-auto"><h2>Dans le temps.</h2></div>
+            <div class="content-zone-text m-auto"><h2 key="t-time">Dans le temps.</h2></div>
         </div>
     </div>
 </div>

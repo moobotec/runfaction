@@ -1,5 +1,16 @@
 {
-    "t-throw":"jeter",
-    "t-find":"trouver",
-    "t-about":"à propos"
+    "locale" : "fr-FR",
+    "t-throw" : "jeter",
+    "t-find" : "trouver",
+    "t-about" : "à propos",
+    "t-sea" : "À la mer.",
+    "t-hole" : "Dans un trou.",
+    "t-space" : "Dans l'espace.",
+    "t-time" : "Dans le temps.",
+    "t-fr" : "Français",
+    "t-en" : "Anglais",
+    "t-gr" : "Allemand",
+    "t-it" : "Italien",
+    "t-es" : "Espagnol",
+    "t-ru" : "Russe"
 }

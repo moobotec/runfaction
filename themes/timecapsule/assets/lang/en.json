@@ -1,5 +1,16 @@
 {
-    "t-throw":"throw",
-    "t-find":"find",
-    "t-about":"about"
+    "locale" : "en-US",
+    "t-throw" : "throw",
+    "t-find" : "find",
+    "t-about" : "about",
+    "t-sea" :  "At the sea.",
+    "t-hole" : "In the hole.",
+    "t-space" : "In the space.",
+    "t-time" : "In time.",
+    "t-fr" : "French",
+    "t-en" : "Anglais",
+    "t-gr" : "English",
+    "t-it" : "Italian",
+    "t-es" : "Spanish",
+    "t-ru" : "Russian"
 }

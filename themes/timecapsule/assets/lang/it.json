@@ -1,5 +1,16 @@
 {
+    "locale" : "it_IT",
     "t-throw":"gettare",
     "t-find":"trovare",
-    "t-about":"di"
+    "t-about":"di",
+    "t-sea" : "Al mare.",
+    "t-hole" : "In un buco.",
+    "t-space" : "Nello spazio.",
+    "t-time" : "In tempo.",
+    "t-fr" : "Francese",
+    "t-en" : "Inglese",
+    "t-gr" : "Tedesco",
+    "t-it" : "Italiano",
+    "t-es" : "Spagnolo",
+    "t-ru" : "Russo"
 }

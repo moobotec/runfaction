@@ -1,6 +1,17 @@
 {
-    "t-throw":"tirar",
-    "t-find":"encontrar",
-    "t-about":"a proposito"
+    "locale" : "es_ES",
+    "t-throw" : "tirar",
+    "t-find" : "encontrar",
+    "t-about" : "a proposito",
+    "t-sea" : "Al mar.",
+    "t-hole" : "En un agujero.",
+    "t-space" : "En el espacio.",
+    "t-time" : "En el tiempo.",
+    "t-fr" : "Francés",
+    "t-en" : "Inglés",
+    "t-gr" : "Alemán",
+    "t-it" : "Italiano",
+    "t-es" : "Español",
+    "t-ru" : "Ruso"
 }
  

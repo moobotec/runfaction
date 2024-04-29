@@ -1,5 +1,16 @@
 {
-    "t-throw":"werfen",
-    "t-find":"finden",
-    "t-about":"um"
+    "locale" : "de-DE",
+    "t-throw" : "werfen",
+    "t-find" : "finden",
+    "t-about" : "um",
+    "t-sea" : "An der see.",
+    "t-hole" : "In einem loch.",
+    "t-space" : "Im weltall.",
+    "t-time" : "Rechtzeitig.",
+    "t-fr" : "Französisch",
+    "t-en" : "Englisch",
+    "t-gr" : "Deutsch",
+    "t-it" : "Italienisch",
+    "t-es" : "Spanisch",
+    "t-ru" : "Russisch"
 }
