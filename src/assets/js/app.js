@@ -19,7 +19,7 @@ var theme = '';
     function setLanguage(lang) {
         if (document.getElementById("header-lang-img")) {
             if (lang == 'fr') {
-                document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/fr.jpg";
+                document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/french.jpg";
             } 
             else if (lang == 'en') {
                 document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/us.jpg";
