@@ -134,7 +134,7 @@ $name = "";
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title" id="myModalLabel">Configuration</h3>
+                    <h3 class="modal-title" id="myModalLabel" key="modal-configuration-title">Configuration</h3>
                     <button type="button" class="close-btn-pre" data-bs-dismiss="modal" >✖</button>
                 </div>
                 <div class="modal-body">
@@ -152,7 +152,7 @@ $name = "";
                       fringilla.</p>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="buttons-position btn btn-light header-item btn waves-effect waves-light"><h4>Appliquer les changements</h4></button>
+                  <button type="button" class="buttons-position btn btn-light header-item btn waves-effect waves-light"><h4 key="modal-apply">Appliquer les changements</h4></button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -162,11 +162,11 @@ $name = "";
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title" id="myModalLabel">Modifier la date courante</h3>
+                    <h3 class="modal-title" id="myModalLabel" key="modal-datetime-title">Modifier la date courante</h3>
                     <button type="button" class="close-btn-pre" data-bs-dismiss="modal" >✖</button>
                 </div>
                 <div class="modal-body">
-                <p class="card-title-desc">Ceci est la date exacte en UTC et la date courante, mise à jour en temps réel.</p>
+                <p class="card-title-desc" key="modal-datetime-utc" >Ceci est la date exacte en UTC et la date courante, mise à jour en temps réel.</p>
                 <div class="my-1 row">
                 <div class="d-flex justify-content-around">
                     <div class="">
@@ -199,7 +199,7 @@ $name = "";
                     </button>
                 </div>
                 </div>
-                <p class="card-title-desc">Modifiez la date et l'heure actuelles en choisissant parmi les options suivantes : <code>Année</code>, <code>Jour - Mois</code>, ou <code>Heure - Minute</code>.</p>
+                <p class="card-title-desc" key="modal-datetime-current" >Modifier la date et l'heure actuelles en choisissant parmi les options suivantes : <code>Année</code>, <code>Jour - Mois</code>, ou <code>Heure - Minute</code>.</p>
                 <div class="my-1 row">
                 <div class="d-flex justify-content-around text-center">
                     <button type="button" id="btClockYear" class="buttons-change p-2 btn header-item waves-effect">
@@ -216,7 +216,7 @@ $name = "";
 
                 <div id="modifYear" class="my-3" style="display:none">
                     <form action="" method="" onsubmit="modifYear(); return false;">
-                        <p class="card-title-desc">Vous pouvez ajuster l'<code>Année</code> selon vos besoins.</p>
+                        <p class="card-title-desc" key="modal-datetime-year">Vous pouvez ajuster l'<code>Année</code> selon vos besoins.</p>
                         <div class="row text-center">
                             <div class="d-flex justify-content-around">
                                 <div class="text-center input-wrapper" style="position: relative;"> 
@@ -306,7 +306,7 @@ $name = "";
 
                 <div id="modifMonthDay" style="display:none">
                     <form action="" method="" onsubmit="modifMoisJour(); return false;">
-                        <p class="card-title-desc">Vous pouvez ajuster le <code>Jour</code> et le <code>Mois</code> selon vos besoins.</p>
+                        <p class="card-title-desc" key="modal-datetime-daymonth">Vous pouvez ajuster le <code>Jour</code> et le <code>Mois</code> selon vos besoins.</p>
                         <div class="row text-center">
                             <div class="d-flex justify-content-around">
                             <div class="col-1">
@@ -361,7 +361,7 @@ $name = "";
 
                 <div id="modifTime" style="display:none">
                     <form action="" method="" onsubmit="modifHeureMinute(); return false;">
-                        <p class="card-title-desc">Vous pouvez ajuster les <code>Heures</code> et les <code>Minute</code> selon vos besoins.</p>
+                        <p class="card-title-desc" key="modal-datetime-time">Vous pouvez ajuster les <code>Heures</code> et les <code>Minute</code> selon vos besoins.</p>
                         <div class="row text-center">
                             <div class="d-flex justify-content-around">
                                 
@@ -441,7 +441,7 @@ $name = "";
                 </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="btClockModify" class="buttons-position btn btn-light header-item btn waves-effect waves-light"><h4>Appliquer les changements</h4></button>
+                    <button type="button" id="btClockModify" class="buttons-position btn btn-light header-item btn waves-effect waves-light"><h4 key="modal-apply">Appliquer les changements</h4></button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -451,7 +451,7 @@ $name = "";
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title" id="myModalLabel">Modifier votre position</h3>
+                    <h3 class="modal-title" id="myModalLabel" key="modal-position-title">Modifier votre position</h3>
                     <button type="button" class="close-btn-pre" data-bs-dismiss="modal" >✖</button>
                 </div>
                 <div class="modal-body">
@@ -469,7 +469,7 @@ $name = "";
                       fringilla.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="buttons-position btn btn-light header-item btn waves-effect waves-light"><h4>Appliquer les changements</h4></button>
+                    <button type="button" class="buttons-position btn btn-light header-item btn waves-effect waves-light"><h4 key="modal-apply">Appliquer les changements</h4></button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

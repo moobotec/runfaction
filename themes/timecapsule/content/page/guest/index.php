@@ -187,7 +187,11 @@ h1,h2
 <div class="d-flex justify-content-between">
     <div class="col-lg-5">
         <div class="container-aligner">
-            <h1 id="zoneTitle" class="p-1" style="text-decoration: underline #88ff88;">Une bouteille ...</h1>
+            <h1 id="zoneTitle" class="p-1" style="text-decoration: underline #88ff88;display:block;" key="t-bottle">Une bouteille ...</h1>
+            <h1 id="zoneTitle-zone1" class="p-1" style="text-decoration: underline #88ff88;display:none;" key="t-bottle-sea">Une bouteille à la mer.</h1>
+            <h1 id="zoneTitle-zone2" class="p-1" style="text-decoration: underline #88ff88;display:none;" key="t-bottle-hole">Une bouteille dans un trou.</h1>
+            <h1 id="zoneTitle-zone3" class="p-1" style="text-decoration: underline #88ff88;display:none;" key="t-bottle-space">Une bouteille dans l'espace.</h1>
+            <h1 id="zoneTitle-zone4" class="p-1" style="text-decoration: underline #88ff88;display:none;" key="t-bottle-time">Une bouteille dans le temps.</h1>
         </div>
     </div>
     <div class="col-lg-7">

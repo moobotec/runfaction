@@ -3,6 +3,11 @@
     "t-throw" : "jeter",
     "t-find" : "trouver",
     "t-about" : "à propos",
+    "t-bottle" : "Une bouteille ...",
+    "t-bottle-sea" : "Une bouteille à la mer.",
+    "t-bottle-hole" : "Une bouteille dans un trou.",
+    "t-bottle-space" : "Une bouteille dans l'espace.",
+    "t-bottle-time" : "Une bouteille dans le temps.",
     "t-sea" : "À la mer.",
     "t-hole" : "Dans un trou.",
     "t-space" : "Dans l'espace.",
@@ -12,5 +17,14 @@
     "t-gr" : "Allemand",
     "t-it" : "Italien",
     "t-es" : "Espagnol",
-    "t-ru" : "Russe"
+    "t-ru" : "Russe",
+    "modal-datetime-title" : "Modifier la date courante",
+    "modal-datetime-utc" : "Ceci est la date exacte en UTC et la date courante, mise à jour en temps réel.",
+    "modal-datetime-current" : "Modifier la date et l'heure actuelles en choisissant parmi les options suivantes : <code>Année</code>, <code>Jour - Mois</code>, ou <code>Heure - Minute</code>.",
+    "modal-datetime-year" : "Vous pouvez ajuster l'<code>Année</code> selon vos besoins.",
+    "modal-datetime-daymonth" : "Vous pouvez ajuster le <code>Jour</code> et le <code>Mois</code> selon vos besoins.",
+    "modal-datetime-time" : "Vous pouvez ajuster les <code>Heures</code> et les <code>Minute</code> selon vos besoins.",
+    "modal-position-title" : "Modifier votre position",
+    "modal-configuration-title" : "Configuration",
+    "modal-apply" : "Appliquer les changements"
 }
