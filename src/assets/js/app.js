@@ -6,7 +6,7 @@ Website: https://themesbrand.com/
 Contact: themesbrand@gmail.com
 File: Main Js File
 */
-var theme = '';
+var theme = 'timecapsule';
 
 (function ($) {
 
@@ -45,7 +45,7 @@ var theme = '';
     // Multi language setting
     function getLanguage() {
         (language == null) ? setLanguage(default_lang) : false;
-        $.getJSON('assets/lang/' + language + '.json', function (lang) {
+        $.getJSON('themes/'+theme+'/assets/lang/' + language + '.json', function (lang) {
             $('html').attr('lang', language);
             $.each(lang, function (index, val) {
                 (index === 'head') ? $(document).attr("title", val['title']) : false;
