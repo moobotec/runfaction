@@ -12,7 +12,7 @@ var theme = '';
 
     'use strict';
 
-    var language = localStorage.getItem('language');
+    /*var language = localStorage.getItem('language');
     // Default Language
     var default_lang = 'fr';
 
@@ -40,10 +40,10 @@ var theme = '';
             language = localStorage.getItem('language');
             getLanguage();
         }
-    }
+    }*/
 
     // Multi language setting
-    function getLanguage() {
+    /*function getLanguage() {
         (language == null) ? setLanguage(default_lang) : false;
         $.getJSON('themes/'+theme+'/assets/lang/' + language + '.json', function (lang) {
             $('html').attr('lang', language);
@@ -54,7 +54,7 @@ var theme = '';
                 $("[key='" + index + "']").html(val);
             });
         });
-    }
+    }*/
 
     function initMetisMenu() {
         //metis menu
@@ -218,7 +218,7 @@ var theme = '';
     }
 
     function initSettings() {
-        if (window.sessionStorage) {
+        /*if (window.sessionStorage) {
             var alreadyVisited = sessionStorage.getItem("is_visited");
             if (!alreadyVisited) {
                 sessionStorage.setItem("is_visited", "light-mode-switch");
@@ -230,7 +230,7 @@ var theme = '';
         }
         $("#light-mode-switch, #dark-mode-switch, #rtl-mode-switch, #dark-rtl-mode-switch").on("change", function (e) {
             updateThemeSetting(e.target.id);
-        });
+        });*/
 
         // show password input value
         $("#password-addon").on('click', function () {
@@ -246,7 +246,7 @@ var theme = '';
         })
     }
 
-    function updateThemeSetting(id) {
+    /*function updateThemeSetting(id) {
         if ($("#light-mode-switch").prop("checked") == true && id === "light-mode-switch") {
             $("html").removeAttr("dir");
             $("#dark-mode-switch").prop("checked", false);
@@ -281,16 +281,16 @@ var theme = '';
             sessionStorage.setItem("is_visited", "dark-rtl-mode-switch");
         }
 
-    }
+    }*/
 
-    function initLanguage() {
+    /*function initLanguage() {
         // Auto Loader
         if (language != null && language !== default_lang)
             setLanguage(language);
         $('.language').on('click', function (e) {
             setLanguage($(this).attr('data-lang'));
         });
-    }
+    }*/
 
     function initCheckAll() {
         $('#checkAll').on('change', function () {
