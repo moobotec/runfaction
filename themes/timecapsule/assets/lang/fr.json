@@ -33,5 +33,21 @@
     "modal-notation-24" : "24 heures",
     "modal-theme" : "Thème",
     "modal-theme-light" : "Clair",
-    "modal-theme-dark" : "Sombre"
+    "modal-theme-dark" : "Sombre",
+    "modal-cookie-title" : "Gérer le consentement aux cookies",
+    "modal-cookie-body" : "Pour offrir les meilleures expériences, nous utilisons des technologies telles que les cookies pour stocker et/ou accéder aux informations des appareils. Le fait de consentir à ces technologies nous permettra de traiter des données telles que le comportement de navigation ou les ID uniques sur ce site. Le fait de ne pas consentir ou de retirer son consentement peut avoir un effet négatif sur certaines caractéristiques et fonctions.",
+    "modal-cookie-options" : "Voir les préférences",
+    "modal-cookie-person" : "Renseignements personnels",
+    "modal-cookie-necessary" : "Cookies strictement nécessaires",
+    "modal-cookie-necessary-info" : "<li>Le stockage ou l’accès technique est strictement nécessaire dans la finalité d’intérêt légitime de permettre l’utilisation d’un service spécifique explicitement demandé par l’abonné ou l’internaute, ou dans le seul but d’effectuer la transmission d’une communication sur un réseau de communications électroniques.</li>",
+    "modal-cookie-statistics" : "Statistiques",
+    "modal-cookie-statistics-info" : "<li>Le stockage ou l’accès technique qui est utilisé exclusivement à des fins statistiques.</li>",
+    "modal-cookie-marketing" : "Marketing",
+    "modal-cookie-marketing-info" : "<li>Le stockage ou l’accès technique est nécessaire pour créer des profils d’internautes afin d’envoyer des publicités, ou pour suivre l’internaute sur un site web ou sur plusieurs sites web ayant des finalités marketing similaires.</li>",
+    "modal-cookie-personalization" : "Personnalisation",
+    "modal-cookie-personalization-info" : "<li>Sauvegarde de vos préférences des visites précédentes</li><li>Recueillir les retours des utilisateurs pour améliorer notre site internet</li><li>Enregistrement de vos intérêts afin de proposer des contenus et des offres personnalisés</li>",
+    "modal-cookie-btn-refuse": "Refuser",
+    "modal-cookie-btn-accept": "Accepter",
+    "modal-cookie-btn-save-pref": "Enregistrer les préférences",
+    "modal-cookie-btn-accept-all": "Accepter tout"
 }

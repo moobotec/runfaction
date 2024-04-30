@@ -33,5 +33,21 @@
     "modal-notation-24": "24 ore",
     "modal-theme" : "Tema",
     "modal-theme-light": "Cancella",
-    "modal-theme-dark": "Scuro"
+    "modal-theme-dark": "Scuro",
+    "modal-cookie-title": "Gestisci il consenso ai cookie",
+    "modal-cookie-body": "Per fornire le migliori esperienze, utilizziamo tecnologie come i cookie per archiviare e/o accedere alle informazioni del dispositivo. Il consenso a queste tecnologie ci consentirà di elaborare dati come il comportamento di navigazione o gli ID univoci su questo sito Il mancato consenso o la revoca del consenso possono avere un effetto negativo su determinate caratteristiche e funzioni.",
+    "modal-cookie-options": "Visualizza preferenze",
+    "modal-cookie-person": "Informazioni personali",
+    "modal-cookie-necessary": "Cookie strettamente necessari",
+    "modal-cookie-necessary-info": "<li>L'archiviazione o l'accesso tecnico è strettamente necessario per il legittimo interesse di consentire l'utilizzo di un servizio specifico esplicitamente richiesto dall'abbonato o dall'utente di Internet, o al solo scopo di trasmettere una comunicazione su una rete di comunicazione elettronica.</li>",
+    "modal-cookie-statistics": "Statistiche",
+    "modal-cookie-statistics-info" : "<li>Archiviazione o accesso tecnico utilizzato esclusivamente per scopi statistici.</li>",
+    "modal-cookie-marketing": "Marketing",
+    "modal-cookie-marketing-info": "<li>L'archiviazione o l'accesso tecnico è necessario per creare profili utente Internet al fine di inviare pubblicità o tracciare l'utente Internet su uno o più siti Web con scopi di marketing simili.</ li>",
+    "modal-cookie-personalization": "Personalizzazione",
+    "modal-cookie-personalization-info": "<li>Salvare le tue preferenze dalle visite precedenti</li><li>Raccogliere il feedback degli utenti per migliorare il nostro sito web</li><li>Registrare i tuoi interessi al fine di offrire offerte personalizzate contenuti e offerte</li>",
+    "modal-cookie-btn-refuse": "Rifiuta",
+    "modal-cookie-btn-accept": "Accetta",
+    "modal-cookie-btn-save-pref": "Salva preferenze",
+    "modal-cookie-btn-accept-all": "Accetta tutto"
 }

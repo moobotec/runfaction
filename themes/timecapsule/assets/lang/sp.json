@@ -33,6 +33,22 @@
     "modal-notation-24": "24 horas",
     "modal-theme" : "Tema",
     "modal-theme-light": "Borrar",
-    "modal-theme-dark": "Oscuro"
+    "modal-theme-dark": "Oscuro",
+    "modal-cookie-title": "Administrar consentimiento de cookies",
+    "modal-cookie-body": "Para brindar las mejores experiencias, utilizamos tecnologías como cookies para almacenar y/o acceder a información del dispositivo. Dar consentimiento a estas tecnologías nos permitirá procesar datos como el comportamiento de navegación o identificaciones únicas en este sitio . La falta de consentimiento o la retirada del consentimiento pueden tener un efecto negativo en determinadas características y funciones.",
+    "modal-cookie-options": "Ver preferencias",
+    "modal-cookie-person": "Información personal",
+    "modal-cookie-necessary": "Cookies estrictamente necesarias",
+    "modal-cookie-necessary-info": "<li>El almacenamiento o el acceso técnico es estrictamente necesario con el fin de interés legítimo de permitir el uso de un servicio específico solicitado explícitamente por el suscriptor o usuario de Internet, o con el único fin de transmitir una comunicación en una red de comunicaciones electrónicas.</li>",
+    "modal-cookie-statistics": "Estadísticas",
+    "modal-cookie-statistics-info": "<li>Almacenamiento o acceso técnico que se utiliza exclusivamente con fines estadísticos.</li>",
+    "modal-cookie-marketing": "Marketing",
+    "modal-cookie-marketing-info": "<li>El almacenamiento o el acceso técnico es necesario para crear perfiles de usuario de Internet con el fin de enviar anuncios o para rastrear al usuario de Internet en un sitio web o en varios sitios web con fines de marketing similares.< /li>",
+    "modal-cookie-personalization": "Personalización",
+    "modal-cookie-personalization-info": "<li>Guardar sus preferencias de visitas anteriores</li><li>Recopilar comentarios de los usuarios para mejorar nuestro sitio web</li><li>Registrar sus intereses para poder ofrecerles ofertas personalizadas contenidos y ofertas</li>",
+    "modal-cookie-btn-refuse": "Rechazar",
+    "modal-cookie-btn-accept": "Aceptar",
+    "modal-cookie-btn-save-pref": "Guardar preferencias",
+    "modal-cookie-btn-accept-all": "Aceptar todo"
 }
  

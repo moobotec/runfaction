@@ -31,12 +31,12 @@ var currentModalDate = {
 var language = null;
 var locale = null;
 var notation = null; 
+var is_visited = null;
 
 var default_lang = 'fr';
 var default_loc = 'fr-FR';
 var default_not = '24h'; // 12h ou 24h
-
-var is_visited = "light-mode-switch";
+var default_theme = 'light-mode-switch'; 
 
 (function ($) {
 
@@ -84,38 +84,12 @@ var is_visited = "light-mode-switch";
     }
 
     function updateThemeSetting(id) {
-        if ($("#light-mode-switch").prop("checked") == true && id === "light-mode-switch") {
-            $("html").removeAttr("dir");
-            $("#dark-mode-switch").prop("checked", false);
-            $("#rtl-mode-switch").prop("checked", false);
-            $("#dark-rtl-mode-switch").prop("checked", false);
+        if (id === "light-mode-switch") {
             $("#bootstrap-style").attr('href', 'themes/'+theme+'/assets/css/bootstrap.min.css');
             $("#app-style").attr('href', 'themes/'+theme+'/assets/css/app.min.css');
-            sessionStorage.setItem("is_visited", "light-mode-switch");
-        } else if ($("#dark-mode-switch").prop("checked") == true && id === "dark-mode-switch") {
-            $("html").removeAttr("dir");
-            $("#light-mode-switch").prop("checked", false);
-            $("#rtl-mode-switch").prop("checked", false);
-            $("#dark-rtl-mode-switch").prop("checked", false);
+        } else if ( id === "dark-mode-switch") {
             $("#bootstrap-style").attr('href', 'themes/'+theme+'/assets/css/bootstrap-dark.min.css');
             $("#app-style").attr('href', 'themes/'+theme+'/assets/css/app-dark.min.css');
-            sessionStorage.setItem("is_visited", "dark-mode-switch");
-        } else if ($("#rtl-mode-switch").prop("checked") == true && id === "rtl-mode-switch") {
-            $("#light-mode-switch").prop("checked", false);
-            $("#dark-mode-switch").prop("checked", false);
-            $("#dark-rtl-mode-switch").prop("checked", false);
-            $("#bootstrap-style").attr('href', 'themes/'+theme+'/assets/css/bootstrap-rtl.min.css');
-            $("#app-style").attr('href', 'themes/'+theme+'/assets/css/app-rtl.min.css');
-            $("html").attr("dir", 'rtl');
-            sessionStorage.setItem("is_visited", "rtl-mode-switch");
-        } else if ($("#dark-rtl-mode-switch").prop("checked") == true && id === "dark-rtl-mode-switch") {
-            $("#light-mode-switch").prop("checked", false);
-            $("#rtl-mode-switch").prop("checked", false);
-            $("#dark-mode-switch").prop("checked", false);
-            $("#bootstrap-style").attr('href', 'themes/'+theme+'/assets/css/bootstrap-dark-rtl.min.css');
-            $("#app-style").attr('href', 'themes/'+theme+'/assets/css/app-dark-rtl.min.css');
-            $("html").attr("dir", 'rtl');
-            sessionStorage.setItem("is_visited", "dark-rtl-mode-switch");
         }
     }
 
@@ -132,20 +106,13 @@ var is_visited = "light-mode-switch";
         });
     }
 
-    function initSettings() {
-        /*if (window.sessionStorage) {
-            var alreadyVisited = sessionStorage.getItem("is_visited");
-            if (!alreadyVisited) {
-                sessionStorage.setItem("is_visited", "light-mode-switch");
-            } else {
-                $(".right-bar input:checkbox").prop('checked', false);
-                $("#" + alreadyVisited).prop('checked', true);
-                updateThemeSetting(alreadyVisited);
-            }
-        }*/
-        /*$("#light-mode-switch, #dark-mode-switch, #rtl-mode-switch, #dark-rtl-mode-switch").on("change", function (e) {
-            updateThemeSetting(e.target.id);
-        });*/
+    function initSettings() 
+    {
+        is_visited = getThemeFromCookie();
+        if (is_visited != null && is_visited !== default_theme)
+        {
+            updateThemeSetting(is_visited);
+        }
     }
 
     function initDate() {
@@ -263,16 +230,24 @@ var is_visited = "light-mode-switch";
     function initNotation() {
 
         notation = getNotationFromCookie();
+        is_visited = getThemeFromCookie();
 
         $('#configurationModal').on('show.bs.modal', function(event) {
             $('#selectNotation').val(notation);
+            $('#selectTheme').val(is_visited);
         });
 
         $('#btConfigModify').click(function() 
         {
             notation = $('#selectNotation').val();
+            is_visited = $('#selectTheme').val();
+
+            updateCookiePart("theme",is_visited);
+            updateThemeSetting(is_visited);
+
             updateCookiePart("notation",notation);
             updateCurrentClock();
+
             $('#configurationModal').modal('hide');
         });
     }
@@ -497,6 +472,12 @@ function getNotationFromCookie() {
     const cookies = getMoobotecFromCookie();
     if (cookies != null) return cookies.notation;
     return default_not; 
+}
+
+function getThemeFromCookie() {
+    const cookies = getMoobotecFromCookie();
+    if (cookies != null) return cookies.theme;
+    return default_theme; 
 }
 
 function getLocalFromCookie() {

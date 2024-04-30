@@ -14,7 +14,7 @@
     "t-time" : "In time.",
     "t-fr" : "French",
     "t-en" : "Anglais",
-    "t-gr" : "English",
+    "t-gr" : "German",
     "t-it" : "Italian",
     "t-es" : "Spanish",
     "t-ru" : "Russian",
@@ -33,5 +33,22 @@
     "modal-notation-24": "24 hours",
     "modal-theme" : "Theme",
     "modal-theme-light": "Light",
-    "modal-theme-dark": "Dark"
+    "modal-theme-dark": "Dark",
+    "modal-cookie-title": "Manage cookie consent",
+    "modal-cookie-body": "To provide the best experiences, we use technologies such as cookies to store and/or access device information. Consenting to these technologies will allow us to process data such as browsing behavior or unique IDs on this site. Failure to consent or withdrawing consent may have a negative effect on certain features and functions.",
+    "modal-cookie-options": "View preferences",
+    "modal-cookie-person": "Personal information",
+    "modal-cookie-necessary": "Strictly necessary cookies",
+    "modal-cookie-necessary-info": "<li>Storage or technical access is strictly necessary for the legitimate interest purpose of enabling the use of a specific service explicitly requested by the subscriber or Internet user, or for the sole purpose of transmitting a communication on an electronic communications network.</li>",
+    "modal-cookie-statistics": "Statistics",
+    "modal-cookie-statistics-info" : "<li>Storage or technical access that is used exclusively for statistical purposes.</li>",
+    "modal-cookie-marketing": "Marketing",
+    "modal-cookie-marketing-info": "<li>Storage or technical access is necessary to create Internet user profiles in order to send advertisements, or to track the Internet user on one website or on several websites with similar marketing purposes.</li>",
+    "modal-cookie-personalization": "Personalization",
+    "modal-cookie-personalization-info": "<li>Saving your preferences from previous visits</li><li>Collecting user feedback to improve our website</li><li>Recording your interests in order to to offer personalized content and offers</li>",
+    "modal-cookie-btn-refuse": "Refuse",
+    "modal-cookie-btn-accept": "Accept",
+    "modal-cookie-btn-save-pref": "Save preferences",
+    "modal-cookie-btn-accept-all": "Accept all"
 }
+

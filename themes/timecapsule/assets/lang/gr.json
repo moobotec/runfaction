@@ -33,5 +33,21 @@
     "modal-notation-24": "24 Stunden",
     "modal-theme" : "Thema",
     "modal-theme-light": "Klar",
-    "modal-theme-dark": "Dunkel"
+    "modal-theme-dark": "Dunkel",
+    "modal-cookie-title": "Cookie-Einwilligung verwalten",
+    "modal-cookie-body": "Um die besten Erlebnisse zu bieten, verwenden wir Technologien wie Cookies, um Geräteinformationen zu speichern und/oder darauf zuzugreifen. Die Zustimmung zu diesen Technologien ermöglicht es uns, Daten wie das Surfverhalten oder eindeutige IDs auf dieser Website zu verarbeiten . Die Nichterteilung oder der Widerruf der Einwilligung können sich negativ auf bestimmte Funktionen und Funktionen auswirken.",
+    "modal-cookie-options": "Einstellungen anzeigen",
+    "modal-cookie-person": "Persönliche Daten",
+    "modal-cookie-necessary": "Unbedingt notwendige Cookies",
+    "modal-cookie-necessary-info": "<li>Die Speicherung oder der technische Zugriff ist unbedingt erforderlich, um das berechtigte Interesse zu wahren, die Nutzung eines bestimmten, vom Abonnenten oder Internetnutzers ausdrücklich gewünschten Dienstes zu ermöglichen, oder ausschließlich zum Zweck der Übermittlung eine Kommunikation in einem elektronischen Kommunikationsnetz.</li>",
+    "modal-cookie-statistics": "Statistik",
+    "modal-cookie-statistics-info": "<li>Speicher oder technischer Zugriff, der ausschließlich statistischen Zwecken dient.</li>",
+    "modal-cookie-marketing": "Marketing",
+    "modal-cookie-marketing-info": "<li>Die Speicherung oder der technische Zugriff ist erforderlich, um Internetnutzerprofile zu erstellen, um Werbung zu versenden, oder um den Internetnutzer auf einer Website oder auf mehreren Websites mit ähnlichen Marketingzwecken zu verfolgen.< /li>",
+    "modal-cookie-personalization": "Personalisierung",
+    "modal-cookie-personalization-info": "<li>Speichern Ihrer Präferenzen aus früheren Besuchen</li><li>Sammeln von Benutzerfeedback zur Verbesserung unserer Website</li><li>Aufzeichnen Ihrer Interessen, um Ihnen personalisierte Angebote anbieten zu können Inhalte und Angebote</li>",
+    "modal-cookie-btn-refuse": "Ablehnen",
+    "modal-cookie-btn-accept": "Akzeptieren",
+    "modal-cookie-btn-save-pref": "Einstellungen speichern",
+    "modal-cookie-btn-accept-all": "Alle akzeptieren"
 }
