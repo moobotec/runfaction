@@ -30,6 +30,125 @@ var currentModalDate = {
 
 var locale = "fr-FR";
 var notation = "24h"; // 12h ou 24h
+var theme = 'timecapsule';
+
+(function ($) {
+
+    'use strict';
+
+    var language = localStorage.getItem('language');
+    // Default Language
+    var default_lang = 'fr';
+
+    function setLanguage(lang) {
+        if (document.getElementById("header-lang-img")) {
+            if (lang == 'fr') {
+                document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/french.jpg";
+            } 
+            else if (lang == 'en') {
+                document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/us.jpg";
+            } 
+            else if (lang == 'sp') {
+                document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/spain.jpg";
+            }
+            else if (lang == 'gr') {
+                document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/germany.jpg";
+            }
+            else if (lang == 'it') {
+                document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/italy.jpg";
+            }
+            else if (lang == 'ru') {
+                document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/russia.jpg";
+            }
+            localStorage.setItem('language', lang);
+            language = localStorage.getItem('language');
+            getLanguage();
+        }
+    }
+
+    // Multi language setting
+    function getLanguage() {
+        (language == null) ? setLanguage(default_lang) : false;
+        $.getJSON('themes/'+theme+'/assets/lang/' + language + '.json', function (lang) {
+            $('html').attr('lang', language);
+            $.each(lang, function (index, val) {
+                if (index === 'locale') {
+                    locale = val;
+                } 
+                $("[key='" + index + "']").html(val);
+            });
+        });
+    }
+
+    function initLanguage() {
+        // Auto Loader
+        if (language != null && language !== default_lang)
+            setLanguage(language);
+        $('.language').on('click', function (e) {
+            setLanguage($(this).attr('data-lang'));
+        });
+    }
+
+    function initSettings() {
+        if (window.sessionStorage) {
+            var alreadyVisited = sessionStorage.getItem("is_visited");
+            if (!alreadyVisited) {
+                sessionStorage.setItem("is_visited", "light-mode-switch");
+            } else {
+                $(".right-bar input:checkbox").prop('checked', false);
+                $("#" + alreadyVisited).prop('checked', true);
+                updateThemeSetting(alreadyVisited);
+            }
+        }
+        $("#light-mode-switch, #dark-mode-switch, #rtl-mode-switch, #dark-rtl-mode-switch").on("change", function (e) {
+            updateThemeSetting(e.target.id);
+        });
+    }
+
+    function updateThemeSetting(id) {
+        if ($("#light-mode-switch").prop("checked") == true && id === "light-mode-switch") {
+            $("html").removeAttr("dir");
+            $("#dark-mode-switch").prop("checked", false);
+            $("#rtl-mode-switch").prop("checked", false);
+            $("#dark-rtl-mode-switch").prop("checked", false);
+            $("#bootstrap-style").attr('href', 'themes/'+theme+'/assets/css/bootstrap.min.css');
+            $("#app-style").attr('href', 'themes/'+theme+'/assets/css/app.min.css');
+            sessionStorage.setItem("is_visited", "light-mode-switch");
+        } else if ($("#dark-mode-switch").prop("checked") == true && id === "dark-mode-switch") {
+            $("html").removeAttr("dir");
+            $("#light-mode-switch").prop("checked", false);
+            $("#rtl-mode-switch").prop("checked", false);
+            $("#dark-rtl-mode-switch").prop("checked", false);
+            $("#bootstrap-style").attr('href', 'themes/'+theme+'/assets/css/bootstrap-dark.min.css');
+            $("#app-style").attr('href', 'themes/'+theme+'/assets/css/app-dark.min.css');
+            sessionStorage.setItem("is_visited", "dark-mode-switch");
+        } else if ($("#rtl-mode-switch").prop("checked") == true && id === "rtl-mode-switch") {
+            $("#light-mode-switch").prop("checked", false);
+            $("#dark-mode-switch").prop("checked", false);
+            $("#dark-rtl-mode-switch").prop("checked", false);
+            $("#bootstrap-style").attr('href', 'themes/'+theme+'/assets/css/bootstrap-rtl.min.css');
+            $("#app-style").attr('href', 'themes/'+theme+'/assets/css/app-rtl.min.css');
+            $("html").attr("dir", 'rtl');
+            sessionStorage.setItem("is_visited", "rtl-mode-switch");
+        } else if ($("#dark-rtl-mode-switch").prop("checked") == true && id === "dark-rtl-mode-switch") {
+            $("#light-mode-switch").prop("checked", false);
+            $("#rtl-mode-switch").prop("checked", false);
+            $("#dark-mode-switch").prop("checked", false);
+            $("#bootstrap-style").attr('href', 'themes/'+theme+'/assets/css/bootstrap-dark-rtl.min.css');
+            $("#app-style").attr('href', 'themes/'+theme+'/assets/css/app-dark-rtl.min.css');
+            $("html").attr("dir", 'rtl');
+            sessionStorage.setItem("is_visited", "dark-rtl-mode-switch");
+        }
+    }
+
+    function init() {
+        initSettings();
+        initLanguage();
+    }
+
+    init();
+
+})(jQuery)
 
 function expandZone(selectedZoneId) {
     document.getElementById('zoneTitle').style.display = "none";
