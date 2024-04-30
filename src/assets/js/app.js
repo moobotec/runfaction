@@ -217,7 +217,7 @@ var theme = '';
         });
     }
 
-    function initSettings() {
+    function initSettingsPassword() {
         /*if (window.sessionStorage) {
             var alreadyVisited = sessionStorage.getItem("is_visited");
             if (!alreadyVisited) {
@@ -315,8 +315,8 @@ var theme = '';
         initRightSidebar();
         initDropdownMenu();
         initComponents();
-        initSettings();
-        initLanguage();
+        initSettingsPassword();
+        //initLanguage();
         initPreloader();
         Waves.init();
         initCheckAll();
