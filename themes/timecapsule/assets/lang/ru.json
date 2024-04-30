@@ -26,5 +26,12 @@
     "modal-datetime-time": "Вы можете настроить <code>Часы</code> и <code>Минуты</code> в соответствии с вашими потребностями.",
     "modal-position-title": "Измените свою позицию",
     "modal-configuration-title" : "Конфигурация",
-    "modal-apply": "Применить изменения"
+    "modal-apply": "Применить изменения",
+    "modal-reset-cookies": "<i class=\"bx bx-smile font-size-16 align-middle me-2\"></i> Сбросить",
+    "modal-notation": "Обозначение",
+    "modal-notation-12": "12 часов",
+    "modal-notation-24": "24 часа",
+    "modal-theme" : "Тема",
+    "modal-theme-light": "Очистить",
+    "modal-theme-dark": "Темный"
 }

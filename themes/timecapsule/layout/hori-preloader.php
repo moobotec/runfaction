@@ -202,7 +202,7 @@ $name = "";
     </div>
   </div><!-- /.modal -->
 
-    <div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div id="configurationModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -212,36 +212,36 @@ $name = "";
                 <div class="modal-body">
                 <p class="card-title-desc" key="modal-datetime-utc" >Vous pouvez changer le notation de l'heure.</p>
                 <div class="mb-3 row">
-                    <label class="col-md-2 col-form-label">Notation</label>
+                    <label class="col-md-2 col-form-label" key="modal-notation">Notation</label>
                     <div class="col-md-4">
-                        <select class="form-select">
-                            <option>24 heures</option>
-                            <option>12 heures</option>
+                        <select id="selectNotation" class="form-select">
+                            <option value="24h" key="modal-notation-24">24 heures</option>
+                            <option value="12h" key="modal-notation-12">12 heures</option>
                         </select>
                     </div>
                 </div>
                 <p class="card-title-desc" key="modal-datetime-utc" >Vous pouvez changer le thème.</p>
                 <div class="mb-3 row">
-                    <label class="col-md-2 col-form-label">Thème</label>
+                    <label class="col-md-2 col-form-label" key="modal-theme">Thème</label>
                     <div class="col-md-4">
                         <select class="form-select">
-                            <option>Lumineux</option>
-                            <option>Sombre</option>
+                            <option key="modal-theme-light">Clair</option>
+                            <option key="modal-theme-dark">Sombre</option>
                         </select>
                     </div>
                 </div>
                 <p class="card-title-desc" key="modal-datetime-utc" >Vous pouvez changer les paramètres sur les cookies.</p>
                 <div class="mb-3 row">
-                    <label class="col-md-2 col-form-label">Cookies</label>
+                    <label class="col-md-2 col-form-label">Cookie</label>
                     <div class="col-md-4">
-                        <button type="button" class="btn btn-primary waves-effect waves-light">
-                            <i class="bx bx-smile font-size-16 align-middle me-2"></i> Reset
+                        <button type="button" id="btResetCookies" class="btn btn-primary waves-effect waves-light" key="modal-reset-cookies">
+                            <i class="bx bx-smile font-size-16 align-middle me-2"></i> Réinitialiser
                         </button>
                     </div>
                 </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="buttons-position btn btn-light header-item btn waves-effect waves-light"><h4 key="modal-apply">Appliquer les changements</h4></button>
+                  <button type="button" id="btConfigModify" class="buttons-position btn btn-light header-item waves-effect waves-light"><h4 key="modal-apply">Appliquer les changements</h4></button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

@@ -26,5 +26,12 @@
     "modal-datetime-time": "Puoi regolare le <code>Ore</code> e i <code>Minuti</code> in base alle tue esigenze.",
     "modal-position-title": "Cambia la tua posizione",
     "titolo-configurazione-modale": "Configurazione",
-    "modal-apply": "Applica modifiche"
+    "modal-apply": "Applica modifiche",
+    "modal-reset-cookies": "<i class=\"bx bx-smile font-size-16 align-middle me-2\"></i> Ripristina",
+    "modal-notation": "Notazione",
+    "modal-notation-12": "12 ore",
+    "modal-notation-24": "24 ore",
+    "modal-theme" : "Tema",
+    "modal-theme-light": "Cancella",
+    "modal-theme-dark": "Scuro"
 }

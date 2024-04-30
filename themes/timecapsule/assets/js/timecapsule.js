@@ -1,3 +1,5 @@
+var theme = 'timecapsule';
+
 var idHover = {
     "year": 0,
     "time": 0,
@@ -5,7 +7,6 @@ var idHover = {
 };
 
 var currentDate = {
-    "cookies":false,
     "valid": false,
     "year": null,
     "month": null,
@@ -17,7 +18,6 @@ var currentDate = {
 };
 
 var currentModalDate = {
-    "cookies":false,
     "valid": false,
     "year": null,
     "month": null,
@@ -28,17 +28,19 @@ var currentModalDate = {
     "epoch":null
 };
 
-var locale = "fr-FR";
-var notation = "24h"; // 12h ou 24h
-var theme = 'timecapsule';
+var language = null;
+var locale = null;
+var notation = null; 
+
+var default_lang = 'fr';
+var default_loc = 'fr-FR';
+var default_not = '24h'; // 12h ou 24h
+
+var is_visited = "light-mode-switch";
 
 (function ($) {
 
     'use strict';
-
-    var language = localStorage.getItem('language');
-    // Default Language
-    var default_lang = 'fr';
 
     function setLanguage(lang) {
         if (document.getElementById("header-lang-img")) {
@@ -60,8 +62,8 @@ var theme = 'timecapsule';
             else if (lang == 'ru') {
                 document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/russia.jpg";
             }
-            localStorage.setItem('language', lang);
-            language = localStorage.getItem('language');
+            language = lang;
+            updateCookiePart("language",lang);
             getLanguage();
         }
     }
@@ -74,34 +76,10 @@ var theme = 'timecapsule';
             $.each(lang, function (index, val) {
                 if (index === 'locale') {
                     locale = val;
+                    updateCookiePart("locale",locale);
                 } 
                 $("[key='" + index + "']").html(val);
             });
-        });
-    }
-
-    function initLanguage() {
-        // Auto Loader
-        if (language != null && language !== default_lang)
-            setLanguage(language);
-        $('.language').on('click', function (e) {
-            setLanguage($(this).attr('data-lang'));
-        });
-    }
-
-    function initSettings() {
-        if (window.sessionStorage) {
-            var alreadyVisited = sessionStorage.getItem("is_visited");
-            if (!alreadyVisited) {
-                sessionStorage.setItem("is_visited", "light-mode-switch");
-            } else {
-                $(".right-bar input:checkbox").prop('checked', false);
-                $("#" + alreadyVisited).prop('checked', true);
-                updateThemeSetting(alreadyVisited);
-            }
-        }
-        $("#light-mode-switch, #dark-mode-switch, #rtl-mode-switch, #dark-rtl-mode-switch").on("change", function (e) {
-            updateThemeSetting(e.target.id);
         });
     }
 
@@ -141,14 +119,391 @@ var theme = 'timecapsule';
         }
     }
 
+    function initLanguage() {
+        // Auto Loader
+        locale = getLocalFromCookie();
+        language = getLanguageFromCookie();
+        if (language != null && language !== default_lang)
+        {
+            setLanguage(language);
+        }
+        $('.language').on('click', function (e) {
+            setLanguage($(this).attr('data-lang'));
+        });
+    }
+
+    function initSettings() {
+        /*if (window.sessionStorage) {
+            var alreadyVisited = sessionStorage.getItem("is_visited");
+            if (!alreadyVisited) {
+                sessionStorage.setItem("is_visited", "light-mode-switch");
+            } else {
+                $(".right-bar input:checkbox").prop('checked', false);
+                $("#" + alreadyVisited).prop('checked', true);
+                updateThemeSetting(alreadyVisited);
+            }
+        }*/
+        /*$("#light-mode-switch, #dark-mode-switch, #rtl-mode-switch, #dark-rtl-mode-switch").on("change", function (e) {
+            updateThemeSetting(e.target.id);
+        });*/
+    }
+
+    function initDate() {
+        setCurrentDate();
+        // Mise à jour de l'horloge chaque seconde
+        setInterval(updateCurrentClock, 1000);
+        updateContentClock('clock',currentDate,false);
+
+        $('#datetimeModal').on('show.bs.modal', function(event) {
+            copyCurrentDate(false);
+            prepareModalContent();
+            setInterval(updateUniversalTimeClock, 1000);
+            updateUniversalTimeClock();
+        });
+    
+        $('#datetimeModal').on('show.bs.modal', function(event) {
+            copyCurrentDate(false);
+            prepareModalContent();
+            setInterval(updateUniversalTimeClock, 1000);
+            updateUniversalTimeClock();
+        });
+
+        $('button[id^="btClock"]').click(function() 
+        {
+            $('h2[id^="clock"]').removeClass('active');
+            $('div[id^="modif"]').css("display", "none");
+    
+            if ( $(this).attr('id') == "btClockErase" )
+            {
+                copyCurrentDate(true);
+                prepareModalContent();
+            }
+            else if ( $(this).attr('id') == "btClockReset" )
+            {
+                resetCurrentDate();
+                prepareModalContent();
+            }
+            else if ( $(this).attr('id') == "btClockModify" )
+            {
+                modifyCurrentDate();
+                updateContentClock('clock',currentDate,false);
+                $('#datetimeModal').modal('hide');
+            }
+            else
+            {
+                $('#clock'+ $(this).attr('id').replace('btClock', '')).addClass('active');
+                $('#modif'+ $(this).attr('id').replace('btClock', '')).css("display", "block");
+            }
+        });
+    
+        setupHoverHandlers('code_day_input', 'day');
+        setupHoverHandlers('code_time_input', 'time');
+        setupHoverHandlers('code_year_input', 'year');
+    
+        setupPasteHandlers('code_year_input', 'year');
+        setupPasteHandlers('code_year_input', 'time');
+        setupPasteHandlers('code_year_input', 'day');
+    
+        $('#month_day_input').hover(
+            function() { // mouseenter
+    
+                let valueMax= parseInt($(this).attr('data-max'));
+                let currentValue = getMonthNumberFromName($(this).val(),locale) ;
+                let valueTop = currentValue - 1;
+                let valueBottom = currentValue + 1;
+            
+                let showTop = (valueTop >= 0);
+                let showBottom = (valueBottom < (valueMax + 1));
+            
+                updatePeripheralDigit('day','month',showTop,showBottom,
+                    convertMonthNumberToName(valueTop,locale),
+                    convertMonthNumberToName(valueBottom,locale));
+            },
+            function() { // mouseleave
+                updatePeripheralDigit('day','month', false, false, 0 , 0);
+            }
+        );
+    
+        $('#sign_year_input').hover(
+            function() { // mouseenter
+                let showTop = ($(this).val() == "-");
+                let showBottom = ($(this).val() == "+");
+                updatePeripheralDigit('year','sign',showTop,showBottom,"+","-");
+            },
+            function() { // mouseleave
+                updatePeripheralDigit('year','sign', false, false, 0 ,0);
+            }
+        );
+    
+        $('#prefix_time_input').hover(
+            function() { // mouseenter
+                let showTop = ($(this).val() == "AM");
+                let showBottom = ($(this).val() == "PM");
+                updatePeripheralDigit('time','prefix',showTop,showBottom,"PM","AM");
+            },
+            function() { // mouseleave
+                updatePeripheralDigit('time','prefix', false, false, 0 ,0);
+            }
+        );
+    
+        $('#sign_year_input').on('paste', function(event) {
+            event.preventDefault();
+            var pasteText = event.originalEvent.clipboardData.getData('text');
+            if (pasteText.length > 1) pasteText = pasteText.substring(0,1);
+            let codeTouche = pasteText.charCodeAt(0);
+            event.key = pasteText;
+            applySign(this,codeTouche,event);
+        });
+    }
+
+    function initLocation() {
+        getLocation();
+    }
+
+    function initNotation() {
+
+        notation = getNotationFromCookie();
+
+        $('#configurationModal').on('show.bs.modal', function(event) {
+            $('#selectNotation').val(notation);
+        });
+
+        $('#btConfigModify').click(function() 
+        {
+            notation = $('#selectNotation').val();
+            updateCookiePart("notation",notation);
+            updateCurrentClock();
+            $('#configurationModal').modal('hide');
+        });
+    }
+
     function init() {
+
+        const moobotecCookie = getMoobotecFromCookie();
+        if ( moobotecCookie == null )
+        {
+            setTimeout(function() {
+    
+                $( "#bccs-checkbox-necessary" ).prop( "checked", true );
+    
+                $('#bccs-options').on('hide.bs.collapse', function (e) {
+                    $('#bccs-buttonDoNotAgree').css("display", "block");
+                    $('#bccs-buttonAgree').css("display", "block");
+                    $('#bccs-buttonSave').css("display", "none");
+                    $('#bccs-buttonAgreeAll').css("display", "none");
+                });
+    
+                $('#bccs-options').on('show.bs.collapse', function (e) {
+                    $('#bccs-buttonDoNotAgree').css("display", "none");
+                    $('#bccs-buttonAgree').css("display", "none");
+                    $('#bccs-buttonSave').css("display", "block");
+                    $('#bccs-buttonAgreeAll').css("display", "block");
+                });
+    
+                $('button[id^="bccs-"]').click(function() 
+                {
+                    let id = $(this).attr('id').replace('bccs-', '');
+                    let necessary = true;
+                    let statistics = false;
+                    let marketing = false;
+                    let personalization = false;
+                    if (id == "buttonAgree" || id == "buttonAgreeAll"  )
+                    {
+                        necessary = true;
+                        statistics = true;
+                        marketing = true;
+                        personalization = true;
+                    }
+                    else if (id == "buttonSave" )
+                    {
+                        necessary = $("#bccs-checkbox-necessary").prop("checked");
+                        statistics = $("#bccs-checkbox-statistics").prop("checked");
+                        marketing = $("#bccs-checkbox-marketing").prop("checked");
+                        personalization = $("#bccs-checkbox-personalization").prop("checked");
+                    }
+                    var cookies = {
+                        "necessary": necessary,
+                        "statistics": statistics,
+                        "marketing": marketing,
+                        "personalization": personalization,
+                        "currentDate" : ( personalization ) ? currentDate : null,
+                        "language" : "fr",
+                        "notation" : "24h",
+                        "locale" : "fr-FR",
+                        "theme" : "light-mode-switch"
+                    }
+                    setMoobotecInCookie(cookies);
+                    $('#cookieModal').modal('hide');
+                });
+    
+                $('#cookieModal').modal('show');
+            }, 500);
+        }
+
+        $('#btResetCookies').click(function() 
+        {
+            $('#bccs-options').on('hide.bs.collapse', function (e) {
+                $('#bccs-buttonDoNotAgree').css("display", "block");
+                $('#bccs-buttonAgree').css("display", "block");
+                $('#bccs-buttonSave').css("display", "none");
+                $('#bccs-buttonAgreeAll').css("display", "none");
+            });
+
+            $('#bccs-options').on('show.bs.collapse', function (e) {
+                $('#bccs-buttonDoNotAgree').css("display", "none");
+                $('#bccs-buttonAgree').css("display", "none");
+                $('#bccs-buttonSave').css("display", "block");
+                $('#bccs-buttonAgreeAll').css("display", "block");
+            });
+
+            $('button[id^="bccs-"]').click(function() 
+            {
+                let id = $(this).attr('id').replace('bccs-', '');
+                let necessary = true;
+                let statistics = false;
+                let marketing = false;
+                let personalization = false;
+                if (id == "buttonAgree" || id == "buttonAgreeAll"  )
+                {
+                    necessary = true;
+                    statistics = true;
+                    marketing = true;
+                    personalization = true;
+                }
+                else if (id == "buttonSave" )
+                {
+                    necessary = $("#bccs-checkbox-necessary").prop("checked");
+                    statistics = $("#bccs-checkbox-statistics").prop("checked");
+                    marketing = $("#bccs-checkbox-marketing").prop("checked");
+                    personalization = $("#bccs-checkbox-personalization").prop("checked");
+                }
+                var cookies = {
+                    "necessary": necessary,
+                    "statistics": statistics,
+                    "marketing": marketing,
+                    "personalization": personalization,
+                    "currentDate" : ( personalization ) ? currentDate : null,
+                    "language" : language,
+                    "notation" : notation,
+                    "locale" : locale,
+                    "theme" : is_visited
+                }
+                updateMoobotecInCookie(cookies);
+                $('#cookieModal').modal('hide');
+            });
+
+            $( "#bccs-checkbox-necessary" ).prop( "checked", getNecessaryFromCookie() );
+            $( "#bccs-checkbox-statistics" ).prop( "checked", getStatisticsFromCookie() );
+            $( "#bccs-checkbox-marketing" ).prop( "checked", getMarketingFromCookie() );
+            $( "#bccs-checkbox-personalization" ).prop( "checked", getPersonalizationFromCookie() );
+
+            $('#configurationModal').modal('hide');
+            $('#cookieModal').modal('show');
+        });
+       
         initSettings();
         initLanguage();
+        initNotation();
+        initDate();
+        initLocation();
     }
 
     init();
 
 })(jQuery)
+
+
+/*
+* Fonctions de gestion des cookie
+*/
+
+// Fonction pour mettre à jour une partie spécifique du cookie JSON
+function updateCookiePart(key, newValue) {
+    // Récupérer le cookie existant
+    const cookies = document.cookie.split(';');
+    const existingCookie = cookies.find(cookie => cookie.trim().startsWith('moobotecCookies='));
+    if (existingCookie) {
+        const data = existingCookie.split('=')[1];
+        // Analyser le cookie JSON en un objet JavaScript
+        var cookieObject = JSON.parse(data);
+
+        // Mettre à jour la partie spécifique de l'objet
+        cookieObject[key] = newValue;
+
+        updateMoobotecInCookie(cookieObject);
+    }
+}
+
+function updateMoobotecInCookie(cookies) {
+    const cookiesStr = JSON.stringify(cookies);  // Convertir la date en chaîne JSON pour la stocker
+    document.cookie = `moobotecCookies=${cookiesStr}`;
+}
+
+function setMoobotecInCookie(cookies) {
+    const cookiesStr = JSON.stringify(cookies);  // Convertir la date en chaîne JSON pour la stocker
+    const days = 10;  // Nombre de jours avant expiration du cookie
+    let expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
+    expires = expires.toUTCString();  // Formater la date d'expiration en chaîne
+    document.cookie = `moobotecCookies=${cookiesStr};expires=${expires};path=/`;
+}
+
+function getMoobotecFromCookie() {
+    const cookies = document.cookie.split(';');
+    const moobotecCookies = cookies.find(cookie => cookie.trim().startsWith('moobotecCookies='));
+    if (moobotecCookies) {
+        const dateStr = moobotecCookies.split('=')[1];
+        return JSON.parse(dateStr);  // Convertir la chaîne ISO en objet Date
+    }
+    return null;  // Retourner null si le cookie n'existe pas
+}
+
+function getStatisticsFromCookie() {
+    const cookies = getMoobotecFromCookie();
+    if (cookies != null) return cookies.statistics;
+    return null; 
+}
+
+function getPersonalizationFromCookie() {
+    const cookies = getMoobotecFromCookie();
+    if (cookies != null) return cookies.personalization;
+    return null; 
+}
+
+function getMarketingFromCookie() {
+    const cookies = getMoobotecFromCookie();
+    if (cookies != null) return cookies.marketing;
+    return null; 
+}
+
+function getNecessaryFromCookie() {
+    const cookies = getMoobotecFromCookie();
+    if (cookies != null) return cookies.necessary;
+    return null; 
+}
+
+function getCurrentDateFromCookie() {
+    const cookies = getMoobotecFromCookie();
+    if (cookies != null) return cookies.currentDate;
+    return null; 
+}
+
+function getLanguageFromCookie() {
+    const cookies = getMoobotecFromCookie();
+    if (cookies != null) return cookies.language;
+    return default_lang; 
+}
+
+function getNotationFromCookie() {
+    const cookies = getMoobotecFromCookie();
+    if (cookies != null) return cookies.notation;
+    return default_not; 
+}
+
+function getLocalFromCookie() {
+    const cookies = getMoobotecFromCookie();
+    if (cookies != null) return cookies.locale;
+    return default_loc; 
+}
 
 function expandZone(selectedZoneId) {
     document.getElementById('zoneTitle').style.display = "none";
@@ -224,29 +579,6 @@ function showPosition(position) {
 
 function defaultPosition() {
     document.getElementById('position').innerHTML = "45.8336° N, 1.2611° E, France, Terre";
-}
-
-/*
-* Fonctions de gestion des cookie
-*/
-
-function setCurrentDateInCookie(date) {
-    const dateStr = JSON.stringify(date);  // Convertir la date en chaîne JSON pour la stocker
-    const days = 10;  // Nombre de jours avant expiration du cookie
-    let expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
-    expires = expires.toUTCString();  // Formater la date d'expiration en chaîne
-
-    document.cookie = `currentDate=${dateStr};expires=${expires};path=/`;
-}
-
-function getCurrentDateFromCookie() {
-    const cookies = document.cookie.split(';');
-    const dateCookie = cookies.find(cookie => cookie.trim().startsWith('currentDate='));
-    if (dateCookie) {
-        const dateStr = dateCookie.split('=')[1];
-        return JSON.parse(dateStr);  // Convertir la chaîne ISO en objet Date
-    }
-    return null;  // Retourner null si le cookie n'existe pas
 }
 
 /*
@@ -359,112 +691,6 @@ function updateUniversalTimeClock()
     updateContentClock('clockCurrent',currentDate,false);
 }
 
-$(function() {
-
-    setCurrentDate();
-
-    // Mise à jour de l'horloge chaque seconde
-    setInterval(updateCurrentClock, 1000);
-    updateContentClock('clock',currentDate,false);
-
-    getLocation();
-
-    $('#datetimeModal').on('show.bs.modal', function(event) {
-        copyCurrentDate(false);
-        prepareModalContent();
-        setInterval(updateUniversalTimeClock, 1000);
-        updateUniversalTimeClock();
-    });
-
-    $('button[id^="btClock"]').click(function() 
-    {
-        $('h2[id^="clock"]').removeClass('active');
-        $('div[id^="modif"]').css("display", "none");
-
-        if ( $(this).attr('id') == "btClockErase" )
-        {
-            copyCurrentDate(true);
-            prepareModalContent();
-        }
-        else if ( $(this).attr('id') == "btClockReset" )
-        {
-            resetCurrentDate();
-            prepareModalContent();
-        }
-        else if ( $(this).attr('id') == "btClockModify" )
-        {
-            modifyCurrentDate();
-            updateContentClock('clock',currentDate,false);
-            $('#datetimeModal').modal('hide');
-        }
-        else
-        {
-            $('#clock'+ $(this).attr('id').replace('btClock', '')).addClass('active');
-            $('#modif'+ $(this).attr('id').replace('btClock', '')).css("display", "block");
-        }
-    });
-
-    setupHoverHandlers('code_day_input', 'day');
-    setupHoverHandlers('code_time_input', 'time');
-    setupHoverHandlers('code_year_input', 'year');
-
-    setupPasteHandlers('code_year_input', 'year');
-    setupPasteHandlers('code_year_input', 'time');
-    setupPasteHandlers('code_year_input', 'day');
-
-    $('#month_day_input').hover(
-        function() { // mouseenter
-
-            let valueMax= parseInt($(this).attr('data-max'));
-            let currentValue = getMonthNumberFromName($(this).val(),locale) ;
-            let valueTop = currentValue - 1;
-            let valueBottom = currentValue + 1;
-        
-            let showTop = (valueTop >= 0);
-            let showBottom = (valueBottom < (valueMax + 1));
-        
-            updatePeripheralDigit('day','month',showTop,showBottom,
-                convertMonthNumberToName(valueTop,locale),
-                convertMonthNumberToName(valueBottom,locale));
-        },
-        function() { // mouseleave
-            updatePeripheralDigit('day','month', false, false, 0 , 0);
-        }
-    );
-
-    $('#sign_year_input').hover(
-        function() { // mouseenter
-            let showTop = ($(this).val() == "-");
-            let showBottom = ($(this).val() == "+");
-            updatePeripheralDigit('year','sign',showTop,showBottom,"+","-");
-        },
-        function() { // mouseleave
-            updatePeripheralDigit('year','sign', false, false, 0 ,0);
-        }
-    );
-
-    $('#prefix_time_input').hover(
-        function() { // mouseenter
-            let showTop = ($(this).val() == "AM");
-            let showBottom = ($(this).val() == "PM");
-            updatePeripheralDigit('time','prefix',showTop,showBottom,"PM","AM");
-        },
-        function() { // mouseleave
-            updatePeripheralDigit('time','prefix', false, false, 0 ,0);
-        }
-    );
-
-    $('#sign_year_input').on('paste', function(event) {
-        event.preventDefault();
-        var pasteText = event.originalEvent.clipboardData.getData('text');
-        if (pasteText.length > 1) pasteText = pasteText.substring(0,1);
-        let codeTouche = pasteText.charCodeAt(0);
-        event.key = pasteText;
-        applySign(this,codeTouche,event);
-    });
-
-});
-
 function prepareModalContent() 
 {    
     let month = convertMonthNumberToName(currentModalDate.month,locale);
@@ -513,7 +739,11 @@ function modifyCurrentDate()
     currentDate.minutes = currentModalDate.minutes;
     currentDate.secondes = now.getSeconds();
 
-    setCurrentDateInCookie(currentDate);
+    const personalization = getPersonalizationFromCookie();
+
+    if (personalization != null && personalization == true)
+        updateCookiePart("currentDate",currentDate);
+
 }
 
 function resetCurrentDate() 
@@ -535,37 +765,6 @@ function jsDateToEpoch(d){
 function setCurrentDate() 
 {
     const dateCookie = getCurrentDateFromCookie();
-    if ( dateCookie == null )
-    {
-        setTimeout(function() {
-
-            $( "#bccs-checkbox-necessary" ).prop( "checked", true );
-
-            $('#bccs-options').on('hide.bs.collapse', function (e) {
-                $('#bccs-buttonDoNotAgree').css("display", "block");
-                $('#bccs-buttonAgree').css("display", "block");
-                $('#bccs-buttonSave').css("display", "none");
-                $('#bccs-buttonAgreeAll').css("display", "none");
-            });
-
-            $('#bccs-options').on('show.bs.collapse', function (e) {
-                $('#bccs-buttonDoNotAgree').css("display", "none");
-                $('#bccs-buttonAgree').css("display", "none");
-                $('#bccs-buttonSave').css("display", "block");
-                $('#bccs-buttonAgreeAll').css("display", "block");
-            });
-
-            $('button[id^="bccs-"]').click(function() 
-            {
-                currentDate.cookies = true;
-                setCurrentDateInCookie(currentDate);
-
-                $('#cookieModal').modal('hide');
-            });
-
-            $('#cookieModal').modal('show');
-        }, 3000);
-    }
 
     if ( dateCookie == null || dateCookie.valid == false )
     {

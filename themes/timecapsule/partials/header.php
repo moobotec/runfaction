@@ -223,7 +223,7 @@ use Steampixel\Component;
             </div>
             <div class="control-buttons-spin">
                 <div class="dropdown d-inline-block">
-                    <button type="button" class="btn header-item noti-icon right-bar-toggle waves-effect" data-bs-toggle="modal" data-bs-target="#myModal">
+                    <button type="button" class="btn header-item noti-icon right-bar-toggle waves-effect" data-bs-toggle="modal" data-bs-target="#configurationModal">
                         <i class="bx bx-cog bx-spin"></i>
                     </button>
                 </div>
