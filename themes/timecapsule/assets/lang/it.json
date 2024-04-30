@@ -20,7 +20,7 @@
     "t-ru" : "Russo",
     "modal-datetime-title": "Modifica la data corrente",
     "modal-datetime-utc": "Questa è la data esatta in UTC e la data corrente, aggiornata in tempo reale.",
-    "modal-datetime-current" : "Cambia la data e l'ora correnti scegliendo tra le seguenti opzioni: <code>Anno</code>, <code>Giorno - Mese</code> o <code>Ora - Minuto< /codice>.",
+    "modal-datetime-current" : "Cambia la data e l'ora correnti scegliendo tra le seguenti opzioni: <code>Anno</code>, <code>Giorno - Mese</code> o <code>Ora - Minuto</code>.",
     "modal-datetime-year": "Puoi modificare l'<code>Anno</code> in base alle tue esigenze.",
     "modal-datetime-daymonth": "Puoi modificare il <code>giorno</code> e il <code>mese</code> in base alle tue esigenze.",
     "modal-datetime-time": "Puoi regolare le <code>Ore</code> e i <code>Minuti</code> in base alle tue esigenze.",
