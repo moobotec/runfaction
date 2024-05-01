@@ -273,20 +273,20 @@ $name = "";
                 </div>
                 </div>
                 <div class="pb-3 my-1 row">
-                <div class="d-flex justify-content-around">
-                    <div class="">
-                        <h2 class="pt-3"><i class="bx bx-time-five"></i></h2>
-                    </div>
-                    <div class="">
-                        <h2 class="my-1" id="clockCurrent">[ xxx ][ xx xxxx ][ xx : xx : xx ]</h2>
-                    </div>
-                    <button type="button" id="btClockErase" class="buttons-change p-2 btn header-item waves-effect">
-                        <div class="d-flex justify-content-center">
+                    <div class="d-flex justify-content-around">
                         <div class="">
-                        <h2 class="pt-3"><i class="bx bx-reset"></i></h2>
+                            <h2 class="pt-3"><i class="bx bx-time-five"></i></h2>
                         </div>
-                    </button>
-                </div>
+                        <div class="">
+                            <h2 class="my-1" id="clockCurrent">[ xxx ][ xx xxxx ][ xx : xx : xx ]</h2>
+                        </div>
+                        <button type="button" id="btClockErase" class="buttons-change p-2 btn header-item waves-effect">
+                            <div class="d-flex justify-content-center">
+                            <div class="">
+                            <h2 class="pt-3"><i class="bx bx-reset"></i></h2>
+                            </div>
+                        </button>
+                    </div>
                 </div>
                 <p class="card-title-desc" key="modal-datetime-current" >Modifier la date et l'heure actuelles en choisissant parmi les options suivantes : <code>Année</code>, <code>Jour - Mois</code>, ou <code>Heure - Minute</code>.</p>
                 <div class="my-1 row">
@@ -544,19 +544,32 @@ $name = "";
                     <button type="button" class="close-btn-pre" data-bs-dismiss="modal" >✖</button>
                 </div>
                 <div class="modal-body">
-                  <p>Cras mattis consectetur purus sit amet fermentum.
-                      Cras justo odio, dapibus ac facilisis in,
-                      egestas eget quam. Morbi leo risus, porta ac
-                      consectetur ac, vestibulum at eros.</p>
-                  <p>Praesent commodo cursus magna, vel scelerisque
-                      nisl consectetur et. Vivamus sagittis lacus vel
-                      augue laoreet rutrum faucibus dolor auctor.</p>
-                  <p class="mb-0">Aenean lacinia bibendum nulla sed consectetur.
-                      Praesent commodo cursus magna, vel scelerisque
-                      nisl consectetur et. Donec sed odio dui. Donec
-                      ullamcorper nulla non metus auctor
-                      fringilla.</p>
+
+                <div class="pb-3 my-1 row">
+                    <div class="d-flex justify-content-center">
+                        <div class="">
+                            <h2 class="p-3"><i class="bx bx-street-view"></i></h2>
+                        </div>
+                        <div class="">
+                            <h2 class="p-3" id="posCurrent"> x, x, x, x </h2>
+                        </div>
+                    </div>
                 </div>
+
+
+                    <div class="auto-search-wrapper loupe">
+                    <input
+                        type="text"
+                        autocomplete="off"
+                        id="search"
+                        class="full-width"
+                        placeholder="Rechercher un lieu"
+                    />
+                    </div>
+                    <hr>
+                    <div id="map" class="modal-body leaflet-map"></div>
+                </div>
+
                 <div class="modal-footer">
                     <button type="button" class="buttons-position btn btn-light header-item btn waves-effect waves-light"><h4 key="modal-apply">Appliquer les changements</h4></button>
                 </div>

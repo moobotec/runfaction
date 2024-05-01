@@ -33,7 +33,11 @@ echo '<script src="'.BASEPATH.'themes/'.THEME.'/assets/libs/jquery/jquery.min.js
 <script src="'.BASEPATH.'themes/'.THEME.'/assets/libs/simplebar/simplebar.min.js"></script>
 <script src="'.BASEPATH.'themes/'.THEME.'/assets/libs/node-waves/waves.min.js"></script>
 <script src="'.BASEPATH.'themes/'.THEME.'/assets/libs/toastr/build/toastr.min.js"></script>
-<script src="'.BASEPATH.'themes/'.THEME.'/assets/libs/axios/axios.min.js"></script>';
+<script src="'.BASEPATH.'themes/'.THEME.'/assets/libs/axios/axios.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/gh/tomickigrzegorz/autocomplete@2.0.1/dist/js/autocomplete.min.js"></script>';
 
 echo '<!-- Base js -->
 <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/base.js?='.time().'"></script>';
