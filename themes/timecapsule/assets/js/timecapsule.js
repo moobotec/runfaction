@@ -43,27 +43,41 @@ var default_theme = 'light-mode-switch';
     'use strict';
 
     function setLanguage(lang) {
+        let loc = null;
         if (document.getElementById("header-lang-img")) {
             if (lang == 'fr') {
+                loc = "fr-FR";
                 document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/french.jpg";
             } 
             else if (lang == 'en') {
+                loc = "en-US";
                 document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/us.jpg";
             } 
             else if (lang == 'sp') {
+                loc = "es-ES";
                 document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/spain.jpg";
             }
             else if (lang == 'gr') {
+                loc = "de-DE";
                 document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/germany.jpg";
             }
             else if (lang == 'it') {
+                loc = "it-IT";
                 document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/italy.jpg";
             }
             else if (lang == 'ru') {
+                loc = "ru-RU";
                 document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/russia.jpg";
+            }
+            else{
+                loc = "en-US";
+                lang = 'en';
+                document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/us.jpg";
             }
             language = lang;
             updateCookiePart("language",lang);
+            locale = loc;
+            updateCookiePart("locale",locale);
             getLanguage();
         }
     }
@@ -74,12 +88,9 @@ var default_theme = 'light-mode-switch';
         $.getJSON('themes/'+theme+'/assets/lang/' + language + '.json', function (lang) {
             $('html').attr('lang', language);
             $.each(lang, function (index, val) {
-                if (index === 'locale') {
-                    locale = val;
-                    updateCookiePart("locale",locale);
-                } 
                 $("[key='" + index + "']").html(val);
             });
+            updateCurrentClock();
         });
     }
 
@@ -93,14 +104,56 @@ var default_theme = 'light-mode-switch';
         }
     }
 
+    /*https://stackoverflow.com/questions/1043339/javascript-for-detecting-browser-language-preference*/
+    var getFirstBrowserLanguage = function () {
+        var nav = window.navigator,
+        browserLanguagePropertyKeys = ['language', 'browserLanguage', 'systemLanguage', 'userLanguage'],
+        i,
+        language;
+    
+        // support for HTML 5.1 "navigator.languages"
+        if (Array.isArray(nav.languages)) {
+          for (i = 0; i < nav.languages.length; i++) {
+            language = nav.languages[i];
+            if (language && language.length) {
+              return language;
+            }
+          }
+        }
+    
+        // support for other well known properties in browsers
+        for (i = 0; i < browserLanguagePropertyKeys.length; i++) {
+          language = nav[browserLanguagePropertyKeys[i]];
+          if (language && language.length) {
+            return language;
+          }
+        }
+    
+        return null;
+      };
+
     function initLanguage() {
         // Auto Loader
         locale = getLocalFromCookie();
         language = getLanguageFromCookie();
+
+        //format possible fr ou fr-FR
+        const langueNavigator = getFirstBrowserLanguage().substring(0, 2);
+        
         if (language != null && language !== default_lang)
         {
             setLanguage(language);
         }
+        else  if (language == null && langueNavigator !== default_lang)
+        {
+            setLanguage(langueNavigator);
+        }
+        else if (language == null && langueNavigator == default_lang)
+        {
+            locale = default_loc;
+            language = default_lang;
+        }
+
         $('.language').on('click', function (e) {
             setLanguage($(this).attr('data-lang'));
         });
@@ -277,37 +330,7 @@ var default_theme = 'light-mode-switch';
     
                 $('button[id^="bccs-"]').click(function() 
                 {
-                    let id = $(this).attr('id').replace('bccs-', '');
-                    let necessary = true;
-                    let statistics = false;
-                    let marketing = false;
-                    let personalization = false;
-                    if (id == "buttonAgree" || id == "buttonAgreeAll"  )
-                    {
-                        necessary = true;
-                        statistics = true;
-                        marketing = true;
-                        personalization = true;
-                    }
-                    else if (id == "buttonSave" )
-                    {
-                        necessary = $("#bccs-checkbox-necessary").prop("checked");
-                        statistics = $("#bccs-checkbox-statistics").prop("checked");
-                        marketing = $("#bccs-checkbox-marketing").prop("checked");
-                        personalization = $("#bccs-checkbox-personalization").prop("checked");
-                    }
-                    var cookies = {
-                        "necessary": necessary,
-                        "statistics": statistics,
-                        "marketing": marketing,
-                        "personalization": personalization,
-                        "currentDate" : ( personalization ) ? currentDate : null,
-                        "language" : "fr",
-                        "notation" : "24h",
-                        "locale" : "fr-FR",
-                        "theme" : "light-mode-switch"
-                    }
-                    setMoobotecInCookie(cookies);
+                    setMoobotecInCookie(makeCookie(this));
                     $('#cookieModal').modal('hide');
                 });
     
@@ -333,37 +356,7 @@ var default_theme = 'light-mode-switch';
 
             $('button[id^="bccs-"]').click(function() 
             {
-                let id = $(this).attr('id').replace('bccs-', '');
-                let necessary = true;
-                let statistics = false;
-                let marketing = false;
-                let personalization = false;
-                if (id == "buttonAgree" || id == "buttonAgreeAll"  )
-                {
-                    necessary = true;
-                    statistics = true;
-                    marketing = true;
-                    personalization = true;
-                }
-                else if (id == "buttonSave" )
-                {
-                    necessary = $("#bccs-checkbox-necessary").prop("checked");
-                    statistics = $("#bccs-checkbox-statistics").prop("checked");
-                    marketing = $("#bccs-checkbox-marketing").prop("checked");
-                    personalization = $("#bccs-checkbox-personalization").prop("checked");
-                }
-                var cookies = {
-                    "necessary": necessary,
-                    "statistics": statistics,
-                    "marketing": marketing,
-                    "personalization": personalization,
-                    "currentDate" : ( personalization ) ? currentDate : null,
-                    "language" : language,
-                    "notation" : notation,
-                    "locale" : locale,
-                    "theme" : is_visited
-                }
-                updateMoobotecInCookie(cookies);
+                updateMoobotecInCookie(makeCookie(this));
                 $('#cookieModal').modal('hide');
             });
 
@@ -391,6 +384,41 @@ var default_theme = 'light-mode-switch';
 /*
 * Fonctions de gestion des cookie
 */
+
+function makeCookie(inputElement) 
+{
+    let id = $(inputElement).attr('id').replace('bccs-', '');
+    let necessary = true;
+    let statistics = false;
+    let marketing = false;
+    let personalization = false;
+    if (id == "buttonAgree" || id == "buttonAgreeAll"  )
+    {
+        necessary = true;
+        statistics = true;
+        marketing = true;
+        personalization = true;
+    }
+    else if (id == "buttonSave" )
+    {
+        necessary = $("#bccs-checkbox-necessary").prop("checked");
+        statistics = $("#bccs-checkbox-statistics").prop("checked");
+        marketing = $("#bccs-checkbox-marketing").prop("checked");
+        personalization = $("#bccs-checkbox-personalization").prop("checked");
+    }
+    var cookies = {
+        "necessary": necessary,
+        "statistics": statistics,
+        "marketing": marketing,
+        "personalization": personalization,
+        "currentDate" : ( personalization ) ? currentDate : null,
+        "language" : language,
+        "notation" : notation,
+        "locale" : locale,
+        "theme" : is_visited
+    }
+    return cookies;
+}
 
 // Fonction pour mettre à jour une partie spécifique du cookie JSON
 function updateCookiePart(key, newValue) {
@@ -465,7 +493,7 @@ function getCurrentDateFromCookie() {
 function getLanguageFromCookie() {
     const cookies = getMoobotecFromCookie();
     if (cookies != null) return cookies.language;
-    return default_lang; 
+    return null; 
 }
 
 function getNotationFromCookie() {
@@ -483,7 +511,7 @@ function getThemeFromCookie() {
 function getLocalFromCookie() {
     const cookies = getMoobotecFromCookie();
     if (cookies != null) return cookies.locale;
-    return default_loc; 
+    return null; 
 }
 
 function expandZone(selectedZoneId) {
