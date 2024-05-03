@@ -305,85 +305,91 @@ function displayTimezoneOffset() {
     return displayOffset;
 }
 
+function managingOverrunClock(gap)
+{
+    //l'horloge est suivie
+    currentDate.secondes += gap;
+
+    // Gérer le dépassement des secondes et incrémenter les minutes
+    if (currentDate.secondes >= 60) {
+        currentDate.secondes = 0;
+        currentDate.minutes++;
+    }
+
+    // Gérer le dépassement des minutes et incrémenter les heures
+    if (currentDate.minutes >= 60) {
+        currentDate.minutes = 0;
+        currentDate.hours++;
+    }
+
+    // Gérer le dépassement des heures et incrémenter les jours
+    if (currentDate.hours >= 24) {
+        currentDate.hours = 0;
+        currentDate.day++;
+    }
+
+    // Gérer le dépassement des jours et incrémenter les mois
+    if (currentDate.day > daysInMonth(currentDate.year, currentDate.month)) {
+        currentDate.day = 1;
+        currentDate.month++;
+    }
+
+    // Gérer le dépassement des mois et incrémenter les années
+    if (currentDate.month > 11) {
+        currentDate.month = 0;
+        currentDate.year++;
+    }
+}
+
+function jitterCorrectionClock(gap)
+{
+     // fonction de recalage du temps sur la date courante fixer par l'utlisateur 
+     const ecartJ = Math.floor(gap / (24 * 60 * 60));
+     const totalJ = ecartJ * 24 * 60 * 60;
+     const ecartH = Math.floor((gap - totalJ) / (60 * 60));
+     const totalH = ecartH * 60 * 60;
+     const ecartM = Math.floor((gap - totalH) / 60);
+     const totalM = ecartM * 60;
+     const ecartS = gap - totalM - totalH;
+
+     currentDate.secondes += ecartS;
+     if (currentDate.secondes >= 60) {
+         currentDate.minutes++;
+         currentDate.secondes -= 60;
+     }
+     currentDate.minutes += ecartM;
+     if (currentDate.minutes >= 60) {
+         currentDate.hours++;
+         currentDate.minutes -= 60;
+     }
+     currentDate.hours += ecartH;
+     if (currentDate.hours >= 24) {
+         currentDate.day++;
+         currentDate.hours -= 24;
+     }
+     currentDate.day += ecartJ;
+     daysInM = daysInMonth(currentDate.year, currentDate.month);
+     while ( currentDate.day > daysInM )
+     {
+         currentDate.month++;
+         currentDate.day -= daysInM;
+         if (currentDate.month > 11) {
+             currentDate.month = 0;
+             currentDate.year++;
+         }
+         daysInM =  daysInMonth(currentDate.year, currentDate.month);
+     }
+}
+
 function updateCurrentClock() 
 {
     const now = new Date();
-    const ecart = (jsDateToEpoch(now) - currentDate.epoch);
+    const gap = (jsDateToEpoch(now) - currentDate.epoch);
     currentDate.epoch = jsDateToEpoch(now);
-    if (ecart > 60)
-    {
-        // fonction de recalage du temps sur la date courante fixer par l'utlisateur 
-        const ecartJ = Math.floor(ecart / (24 * 60 * 60));
-        const totalJ = ecartJ * 24 * 60 * 60;
-        const ecartH = Math.floor((ecart - totalJ) / (60 * 60));
-        const totalH = ecartH * 60 * 60;
-        const ecartM = Math.floor((ecart - totalH) / 60);
-        const totalM = ecartM * 60;
-        const ecartS = ecart - totalM - totalH;
-
-        currentDate.secondes += ecartS;
-        if (currentDate.secondes >= 60) {
-            currentDate.minutes++;
-            currentDate.secondes -= 60;
-        }
-        currentDate.minutes += ecartM;
-        if (currentDate.minutes >= 60) {
-            currentDate.hours++;
-            currentDate.minutes -= 60;
-        }
-        currentDate.hours += ecartH;
-        if (currentDate.hours >= 24) {
-            currentDate.day++;
-            currentDate.hours -= 24;
-        }
-        currentDate.day += ecartJ;
-        daysInM = daysInMonth(currentDate.year, currentDate.month);
-        while ( currentDate.day > daysInM )
-        {
-            currentDate.month++;
-            currentDate.day -= daysInM;
-            if (currentDate.month > 11) {
-                currentDate.month = 0;
-                currentDate.year++;
-            }
-            daysInM =  daysInMonth(currentDate.year, currentDate.month);
-        }
-    }
+    if (gap > 60)
+        jitterCorrectionClock(gap)
     else
-    {
-        //l'horloge est suivie
-        currentDate.secondes += ecart;
-
-        // Gérer le dépassement des secondes et incrémenter les minutes
-        if (currentDate.secondes >= 60) {
-            currentDate.secondes = 0;
-            currentDate.minutes++;
-        }
-
-        // Gérer le dépassement des minutes et incrémenter les heures
-        if (currentDate.minutes >= 60) {
-            currentDate.minutes = 0;
-            currentDate.hours++;
-        }
-
-        // Gérer le dépassement des heures et incrémenter les jours
-        if (currentDate.hours >= 24) {
-            currentDate.hours = 0;
-            currentDate.day++;
-        }
-
-        // Gérer le dépassement des jours et incrémenter les mois
-        if (currentDate.day > daysInMonth(currentDate.year, currentDate.month)) {
-            currentDate.day = 1;
-            currentDate.month++;
-        }
-
-        // Gérer le dépassement des mois et incrémenter les années
-        if (currentDate.month > 11) {
-            currentDate.month = 0;
-            currentDate.year++;
-        }
-    }
+        managingOverrunClock(gap)
 
     updateContentClock('clock',currentDate,false);
 }
