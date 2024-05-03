@@ -46,6 +46,8 @@ var language = null;
 var locale = null;
 var notation = null; 
 var is_visited = null;
+var is_sync = null;
+var is_basemap = null;
 var map = null;
 
 // coordinates
@@ -62,31 +64,14 @@ const config = {
     default_loc : 'fr-FR',
     default_not : '24h', // 12h ou 24h
     default_theme : 'light-mode-switch',
-    theme : 'timecapsule',
-    urlCarto : {
-        "OSM-Org": "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        "OSM-Fr": "http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png",
-        "Humanitaire-Fr" : "http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
-        "Outdoors (OSM)": "http://{s}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png",
-        "OSM Roads": "http://openmapsurfer.uni-hd.de/tiles/roads/x={x}&y={y}&z={z}",
-        "Toner": "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png",
-        "OpenStreetMap": "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
-        "MapQuest Open": "http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png",
-        "Watercolor": "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg",
-        "Lyrk": "http://tiles.lyrk.org/ls/{z}/{x}/{y}?apikey=982c82cc765f42cf950a57de0d891076",
-        "OSM-monochrome": "http://www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png",
-        "Hydda": "http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png",
-        "OpenTopoMap": "http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
-        "OpenRiverboatMap": "http://{s}.tile.openstreetmap.fr/openriverboatmap/{z}/{x}/{y}.png",
-        "OSM – Deutschland": "http://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png",
-        "CartoDB": "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png" }
+    default_sync : 'sync',
+    default_basemap : 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    theme : 'timecapsule'
 };
-
 
 /*
 * Fonctions de gestion des cookie
 */
-
 function makeCookie(inputElement) 
 {
     let id = $(inputElement).attr('id').replace('bccs-', '');
@@ -117,7 +102,9 @@ function makeCookie(inputElement)
         "language" : language,
         "notation" : notation,
         "locale" : locale,
-        "theme" : is_visited
+        "theme" : is_visited,
+        "basemap" : is_basemap,
+        "sync" : is_sync
     }
     return cookies;
 }
@@ -125,17 +112,21 @@ function makeCookie(inputElement)
 // Fonction pour mettre à jour une partie spécifique du cookie JSON
 function updateCookiePart(key, newValue) {
     // Récupérer le cookie existant
-    const cookies = document.cookie.split(';');
-    const existingCookie = cookies.find(cookie => cookie.trim().startsWith('moobotecCookies='));
-    if (existingCookie) {
-        const data = existingCookie.split('=')[1];
-        // Analyser le cookie JSON en un objet JavaScript
-        var cookieObject = JSON.parse(data);
+    const personalization = getPersonalizationFromCookie();
+    if (personalization != null && personalization == true)
+    {
+        const cookies = document.cookie.split(';');
+        const existingCookie = cookies.find(cookie => cookie.trim().startsWith('moobotecCookies='));
+        if (existingCookie) {
+            const data = existingCookie.split('=')[1];
+            // Analyser le cookie JSON en un objet JavaScript
+            var cookieObject = JSON.parse(data);
 
-        // Mettre à jour la partie spécifique de l'objet
-        cookieObject[key] = newValue;
+            // Creation ou mise à jour de la partie spécifique de l'objet
+            cookieObject[key] = newValue;
 
-        updateMoobotecInCookie(cookieObject);
+            updateMoobotecInCookie(cookieObject);
+        }
     }
 }
 
@@ -164,61 +155,72 @@ function getMoobotecFromCookie() {
 
 function getStatisticsFromCookie() {
     const cookies = getMoobotecFromCookie();
-    if (cookies != null) return cookies.statistics;
+    if (cookies != null && cookies.statistics !== undefined) return cookies.statistics;
     return null; 
 }
 
 function getPersonalizationFromCookie() {
     const cookies = getMoobotecFromCookie();
-    if (cookies != null) return cookies.personalization;
+    if (cookies != null && cookies.personalization !== undefined ) return cookies.personalization;
     return null; 
 }
 
 function getMarketingFromCookie() {
     const cookies = getMoobotecFromCookie();
-    if (cookies != null) return cookies.marketing;
+    if (cookies != null && cookies.marketing !== undefined ) return cookies.marketing;
     return null; 
 }
 
 function getNecessaryFromCookie() {
     const cookies = getMoobotecFromCookie();
-    if (cookies != null) return cookies.necessary;
+    if (cookies != null && cookies.necessary !== undefined ) return cookies.necessary;
     return null; 
 }
 
 function getCurrentDateFromCookie() {
     const cookies = getMoobotecFromCookie();
-    if (cookies != null) return cookies.currentDate;
+    if (cookies != null && cookies.currentDate !== undefined) return cookies.currentDate;
     return null; 
 }
 
 function getLanguageFromCookie() {
     const cookies = getMoobotecFromCookie();
-    if (cookies != null) return cookies.language;
+    if (cookies != null && cookies.language !== undefined) return cookies.language;
     return null; 
 }
 
 function getNotationFromCookie() {
     const cookies = getMoobotecFromCookie();
-    if (cookies != null) return cookies.notation;
+    if (cookies != null && cookies.notation !== undefined) return cookies.notation;
     return config.default_not; 
 }
 
 function getThemeFromCookie() {
     const cookies = getMoobotecFromCookie();
-    if (cookies != null) return cookies.theme;
+    if (cookies != null && cookies.theme !== undefined) return cookies.theme;
     return config.default_theme; 
 }
 
 function getLocalFromCookie() {
     const cookies = getMoobotecFromCookie();
-    if (cookies != null) return cookies.locale;
+    if (cookies != null && cookies.locale !== undefined) return cookies.locale;
     return null; 
+}
+
+function getSyncFromCookie() {
+    const cookies = getMoobotecFromCookie();
+    if (cookies != null && cookies.sync !== undefined) return cookies.sync;
+    return config.default_sync; 
+}
+
+function getBaseMapFromCookie() {
+    const cookies = getMoobotecFromCookie();
+    if (cookies != null && cookies.basemap !== undefined) return cookies.basemap;
+    return config.default_basemap; 
 }
 
 function expandZone(selectedZoneId) {
     document.getElementById('zoneTitle').style.display = "none";
-    const zoneTitle = document.getElementById('zoneTitle');
     const zones = ['zone1', 'zone2', 'zone3', 'zone4'];
     zones.forEach(zone => {
         const element = document.getElementById(zone);
@@ -350,7 +352,7 @@ function jitterCorrectionClock(gap)
      const totalH = ecartH * 60 * 60;
      const ecartM = Math.floor((gap - totalH) / 60);
      const totalM = ecartM * 60;
-     const ecartS = gap - totalM - totalH;
+     const ecartS = gap - totalM - totalH - totalJ;
 
      currentDate.secondes += ecartS;
      if (currentDate.secondes >= 60) {
@@ -384,13 +386,15 @@ function jitterCorrectionClock(gap)
 function updateCurrentClock() 
 {
     const now = new Date();
-    const gap = (jsDateToEpoch(now) - currentDate.epoch);
+    let gap = (jsDateToEpoch(now) - currentDate.epoch);
     currentDate.epoch = jsDateToEpoch(now);
     if (gap > 60)
-        jitterCorrectionClock(gap)
-    else
-        managingOverrunClock(gap)
-
+    {
+        if(is_sync == "sync") 
+            jitterCorrectionClock(gap);
+        gap = 0;
+    }
+    managingOverrunClock(gap);
     updateContentClock('clock',currentDate,false);
 }
 
@@ -418,7 +422,7 @@ function formatDateTime(date)
 
     hours = hours.toString().padStart(2, '0');
 
-    return `[ ${year} ][ ${day} ${month} ][${suffix}${hours} : ${minutes} : ${secondes} ]`;
+    return ` ${year} / ${day} ${month} /${suffix}${hours} : ${minutes} : ${secondes} `;
 }
 
 function computeSuffixHours(hours) 
@@ -500,11 +504,7 @@ function modifyCurrentDate()
     currentDate.minutes = currentModalDate.minutes;
     currentDate.secondes = now.getSeconds();
 
-    const personalization = getPersonalizationFromCookie();
-
-    if (personalization != null && personalization == true)
-        updateCookiePart("currentDate",currentDate);
-
+    updateCookiePart("currentDate",currentDate);
 }
 
 function resetCurrentDate() 
@@ -1222,7 +1222,7 @@ function prepareModalCookie(isUpdate)
         setCurrentDate();
         // Mise à jour de l'horloge chaque seconde
         setInterval(updateCurrentClock, 1000);
-        updateContentClock('clock',currentDate,false);
+        updateCurrentClock();
 
         $('#datetimeModal').on('show.bs.modal', function(event) {
             copyCurrentDate(false);
@@ -1327,14 +1327,12 @@ function prepareModalCookie(isUpdate)
     }
 
     function initLocation() 
-    {        
+    {
         // calling map
         map = L.map("map", config.mapLeaflet).setView([lat, lng], config.zoom);
         
-        
-
         // Used to load and display tile layers on the map
-        L.tileLayer(`${config.urlCarto["OSM-Org"]}`, {
+        L.tileLayer(`${is_basemap}`, {
             attribution:
             '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }).addTo(map);
@@ -1458,25 +1456,32 @@ function prepareModalCookie(isUpdate)
         getLocation();
     }
 
-    function initNotation() 
+    function initConfiguration()
     {
         notation = getNotationFromCookie();
         is_visited = getThemeFromCookie();
+        is_basemap = getBaseMapFromCookie();   
+        is_sync = getSyncFromCookie();
 
         $('#configurationModal').on('show.bs.modal', function(event) {
             $('#selectNotation').val(notation);
             $('#selectTheme').val(is_visited);
+            $('#selectCarto').val(is_basemap);
+            $('#selectSync').val(is_sync);
         });
 
         $('#btConfigModify').click(function() 
         {
             notation = $('#selectNotation').val();
             is_visited = $('#selectTheme').val();
+            is_basemap = $('#selectCarto').val();
+            is_sync = $('#selectSync').val();
 
             updateCookiePart("theme",is_visited);
-            updateThemeSetting(is_visited);
-
             updateCookiePart("notation",notation);
+            updateCookiePart("basemap",is_basemap);
+            updateCookiePart("sync",is_sync);
+            updateThemeSetting(is_visited);
             updateCurrentClock();
 
             $('#configurationModal').modal('hide');
@@ -1501,7 +1506,7 @@ function prepareModalCookie(isUpdate)
        
         initSettings();
         initLanguage();
-        initNotation();
+        initConfiguration();
         initDate();
         initLocation();
     }
