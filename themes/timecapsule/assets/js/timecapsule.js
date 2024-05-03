@@ -1,5 +1,3 @@
-var theme = 'timecapsule';
-
 var idHover = {
     "year": 0,
     "time": 0,
@@ -28,34 +26,61 @@ var currentModalDate = {
     "epoch":null
 };
 
+var currentPosition = {
+    "valid": false,
+    "latitude": null,
+    "longitude": null,
+    "galaxy": null,
+    "planet": null
+};
+
+var currentModalPosition = {
+    "valid": false,
+    "latitude": null,
+    "longitude": null,
+    "galaxy": null,
+    "planet": null
+};
+
 var language = null;
 var locale = null;
 var notation = null; 
 var is_visited = null;
+var map = null;
 
-var default_lang = 'fr';
-var default_loc = 'fr-FR';
-var default_not = '24h'; // 12h ou 24h
-var default_theme = 'light-mode-switch'; 
-
-// MAP PART
-const config = {
-    minZoom: 1,
-    maxZoom: 18,
-};
-// magnification with which the map will start
-const zoom = 3;
 // coordinates
 const lat = 52.22977;
 const lng = 21.01178;
 
-var map = null;
-
-/*
-* Fonctions de gestion de leaflet
-*/
-
-
+const config = {
+    mapLeaflet : {
+        minZoom: 1,
+        maxZoom: 18,
+    },
+    zoom : 3,
+    default_lang : 'fr',
+    default_loc : 'fr-FR',
+    default_not : '24h', // 12h ou 24h
+    default_theme : 'light-mode-switch',
+    theme : 'timecapsule',
+    urlCarto : {
+        "OSM-Org": "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        "OSM-Fr": "http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png",
+        "Humanitaire-Fr" : "http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+        "Outdoors (OSM)": "http://{s}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png",
+        "OSM Roads": "http://openmapsurfer.uni-hd.de/tiles/roads/x={x}&y={y}&z={z}",
+        "Toner": "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png",
+        "OpenStreetMap": "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+        "MapQuest Open": "http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png",
+        "Watercolor": "http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg",
+        "Lyrk": "http://tiles.lyrk.org/ls/{z}/{x}/{y}?apikey=982c82cc765f42cf950a57de0d891076",
+        "OSM-monochrome": "http://www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png",
+        "Hydda": "http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png",
+        "OpenTopoMap": "http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+        "OpenRiverboatMap": "http://{s}.tile.openstreetmap.fr/openriverboatmap/{z}/{x}/{y}.png",
+        "OSM – Deutschland": "http://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png",
+        "CartoDB": "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png" }
+};
 
 
 /*
@@ -176,13 +201,13 @@ function getLanguageFromCookie() {
 function getNotationFromCookie() {
     const cookies = getMoobotecFromCookie();
     if (cookies != null) return cookies.notation;
-    return default_not; 
+    return config.default_not; 
 }
 
 function getThemeFromCookie() {
     const cookies = getMoobotecFromCookie();
     if (cookies != null) return cookies.theme;
-    return default_theme; 
+    return config.default_theme; 
 }
 
 function getLocalFromCookie() {
@@ -283,37 +308,81 @@ function displayTimezoneOffset() {
 function updateCurrentClock() 
 {
     const now = new Date();
-    currentDate.secondes += (jsDateToEpoch(now) - currentDate.epoch);
+    const ecart = (jsDateToEpoch(now) - currentDate.epoch);
     currentDate.epoch = jsDateToEpoch(now);
+    if (ecart > 60)
+    {
+        // fonction de recalage du temps sur la date courante fixer par l'utlisateur 
+        const ecartJ = Math.floor(ecart / (24 * 60 * 60));
+        const totalJ = ecartJ * 24 * 60 * 60;
+        const ecartH = Math.floor((ecart - totalJ) / (60 * 60));
+        const totalH = ecartH * 60 * 60;
+        const ecartM = Math.floor((ecart - totalH) / 60);
+        const totalM = ecartM * 60;
+        const ecartS = ecart - totalM - totalH;
 
-    // Gérer le dépassement des secondes et incrémenter les minutes
-    if (currentDate.secondes >= 60) {
-        currentDate.secondes = 0;
-        currentDate.minutes++;
+        currentDate.secondes += ecartS;
+        if (currentDate.secondes >= 60) {
+            currentDate.minutes++;
+            currentDate.secondes -= 60;
+        }
+        currentDate.minutes += ecartM;
+        if (currentDate.minutes >= 60) {
+            currentDate.hours++;
+            currentDate.minutes -= 60;
+        }
+        currentDate.hours += ecartH;
+        if (currentDate.hours >= 24) {
+            currentDate.day++;
+            currentDate.hours -= 24;
+        }
+        currentDate.day += ecartJ;
+        daysInM = daysInMonth(currentDate.year, currentDate.month);
+        while ( currentDate.day > daysInM )
+        {
+            currentDate.month++;
+            currentDate.day -= daysInM;
+            if (currentDate.month > 11) {
+                currentDate.month = 0;
+                currentDate.year++;
+            }
+            daysInM =  daysInMonth(currentDate.year, currentDate.month);
+        }
     }
+    else
+    {
+        //l'horloge est suivie
+        currentDate.secondes += ecart;
 
-    // Gérer le dépassement des minutes et incrémenter les heures
-    if (currentDate.minutes >= 60) {
-        currentDate.minutes = 0;
-        currentDate.hours++;
-    }
+        // Gérer le dépassement des secondes et incrémenter les minutes
+        if (currentDate.secondes >= 60) {
+            currentDate.secondes = 0;
+            currentDate.minutes++;
+        }
 
-    // Gérer le dépassement des heures et incrémenter les jours
-    if (currentDate.hours >= 24) {
-        currentDate.hours = 0;
-        currentDate.day++;
-    }
+        // Gérer le dépassement des minutes et incrémenter les heures
+        if (currentDate.minutes >= 60) {
+            currentDate.minutes = 0;
+            currentDate.hours++;
+        }
 
-    // Gérer le dépassement des jours et incrémenter les mois
-    if (currentDate.day > daysInMonth(currentDate.year, currentDate.month)) {
-        currentDate.day = 1;
-        currentDate.month++;
-    }
+        // Gérer le dépassement des heures et incrémenter les jours
+        if (currentDate.hours >= 24) {
+            currentDate.hours = 0;
+            currentDate.day++;
+        }
 
-    // Gérer le dépassement des mois et incrémenter les années
-    if (currentDate.month > 11) {
-        currentDate.month = 0;
-        currentDate.year++;
+        // Gérer le dépassement des jours et incrémenter les mois
+        if (currentDate.day > daysInMonth(currentDate.year, currentDate.month)) {
+            currentDate.day = 1;
+            currentDate.month++;
+        }
+
+        // Gérer le dépassement des mois et incrémenter les années
+        if (currentDate.month > 11) {
+            currentDate.month = 0;
+            currentDate.year++;
+        }
     }
 
     updateContentClock('clock',currentDate,false);
@@ -979,32 +1048,32 @@ function setLanguage(lang) {
     if (document.getElementById("header-lang-img")) {
         if (lang == 'fr') {
             loc = "fr-FR";
-            document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/french.jpg";
+            document.getElementById("header-lang-img").src = "themes/"+config.theme+"/assets/images/flags/french.jpg";
         } 
         else if (lang == 'en') {
             loc = "en-US";
-            document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/us.jpg";
+            document.getElementById("header-lang-img").src = "themes/"+config.theme+"/assets/images/flags/us.jpg";
         } 
         else if (lang == 'sp') {
             loc = "es-ES";
-            document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/spain.jpg";
+            document.getElementById("header-lang-img").src = "themes/"+config.theme+"/assets/images/flags/spain.jpg";
         }
         else if (lang == 'gr') {
             loc = "de-DE";
-            document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/germany.jpg";
+            document.getElementById("header-lang-img").src = "themes/"+config.theme+"/assets/images/flags/germany.jpg";
         }
         else if (lang == 'it') {
             loc = "it-IT";
-            document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/italy.jpg";
+            document.getElementById("header-lang-img").src = "themes/"+config.theme+"/assets/images/flags/italy.jpg";
         }
         else if (lang == 'ru') {
             loc = "ru-RU";
-            document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/russia.jpg";
+            document.getElementById("header-lang-img").src = "themes/"+config.theme+"/assets/images/flags/russia.jpg";
         }
         else{
             loc = "en-US";
             lang = 'en';
-            document.getElementById("header-lang-img").src = "themes/"+theme+"/assets/images/flags/us.jpg";
+            document.getElementById("header-lang-img").src = "themes/"+config.theme+"/assets/images/flags/us.jpg";
         }
         language = lang;
         updateCookiePart("language",lang);
@@ -1016,8 +1085,8 @@ function setLanguage(lang) {
 
 // Multi language setting
 function getLanguage() {
-    (language == null) ? setLanguage(default_lang) : false;
-    $.getJSON('themes/'+theme+'/assets/lang/' + language + '.json', function (lang) {
+    (language == null) ? setLanguage(config.default_lang) : false;
+    $.getJSON('themes/'+config.theme+'/assets/lang/' + language + '.json', function (lang) {
         $('html').attr('lang', language);
         $.each(lang, function (index, val) {
             $("[key='" + index + "']").html(val);
@@ -1028,11 +1097,11 @@ function getLanguage() {
 
 function updateThemeSetting(id) {
     if (id === "light-mode-switch") {
-        $("#bootstrap-style").attr('href', 'themes/'+theme+'/assets/css/bootstrap.min.css');
-        $("#app-style").attr('href', 'themes/'+theme+'/assets/css/app.min.css');
+        $("#bootstrap-style").attr('href', 'themes/'+config.theme+'/assets/css/bootstrap.min.css');
+        $("#app-style").attr('href', 'themes/'+config.theme+'/assets/css/app.min.css');
     } else if ( id === "dark-mode-switch") {
-        $("#bootstrap-style").attr('href', 'themes/'+theme+'/assets/css/bootstrap-dark.min.css');
-        $("#app-style").attr('href', 'themes/'+theme+'/assets/css/app-dark.min.css');
+        $("#bootstrap-style").attr('href', 'themes/'+config.theme+'/assets/css/bootstrap-dark.min.css');
+        $("#app-style").attr('href', 'themes/'+config.theme+'/assets/css/app-dark.min.css');
     }
 }
 
@@ -1114,18 +1183,18 @@ function prepareModalCookie(isUpdate)
         //format possible fr ou fr-FR
         const langueNavigator = getFirstBrowserLanguage().substring(0, 2);
         
-        if (language != null && language !== default_lang)
+        if (language != null && language !== config.default_lang)
         {
             setLanguage(language);
         }
-        else  if (language == null && langueNavigator !== default_lang)
+        else  if (language == null && langueNavigator !== config.default_lang)
         {
             setLanguage(langueNavigator);
         }
-        else if (language == null && langueNavigator == default_lang)
+        else if (language == null && langueNavigator == config.default_lang)
         {
-            locale = default_loc;
-            language = default_lang;
+            locale = config.default_loc;
+            language = config.default_lang;
         }
 
         $('.language').on('click', function (e) {
@@ -1136,7 +1205,7 @@ function prepareModalCookie(isUpdate)
     function initSettings() 
     {
         is_visited = getThemeFromCookie();
-        if (is_visited != null && is_visited !== default_theme)
+        if (is_visited != null && is_visited !== config.default_theme)
         {
             updateThemeSetting(is_visited);
         }
@@ -1254,10 +1323,12 @@ function prepareModalCookie(isUpdate)
     function initLocation() 
     {        
         // calling map
-        map = L.map("map", config).setView([lat, lng], zoom);
-                
+        map = L.map("map", config.mapLeaflet).setView([lat, lng], config.zoom);
+        
+        
+
         // Used to load and display tile layers on the map
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        L.tileLayer(`${config.urlCarto["OSM-Org"]}`, {
             attribution:
             '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }).addTo(map);
@@ -1348,7 +1419,7 @@ function prepareModalCookie(isUpdate)
                     country = countries.pop();
                 }
                                 
-                document.getElementById('posCurrent').innerHTML = `${lat.toFixed(2)}° ${dirLat}, ${lng.toFixed(2)}° ${dirLng}, ${country}, Terre`;
+                document.getElementById('posCurrent').innerHTML = `${lat.toFixed(4)}° ${dirLat}, ${lng.toFixed(4)}° ${dirLng}, ${country}, Terre`;
 
                 const marker = L.marker([lat, lng], {
                 title: display_name,

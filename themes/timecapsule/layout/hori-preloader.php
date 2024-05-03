@@ -551,12 +551,10 @@ $name = "";
                             <h2 class="p-3"><i class="bx bx-street-view"></i></h2>
                         </div>
                         <div class="">
-                            <h2 class="p-3" id="posCurrent"> x, x, x, x </h2>
+                            <h2 class="p-3" id="posCurrent"> 0.000° ?, 0.000° ?, ????, Terre </h2>
                         </div>
                     </div>
                 </div>
-
-
                     <div class="auto-search-wrapper loupe">
                     <input
                         type="text"
