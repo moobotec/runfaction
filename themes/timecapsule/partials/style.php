@@ -65,6 +65,9 @@ echo '<style>
     .buttons-change:hover > h2 {
     text-decoration: underline #88ff88;
     }
+    .buttons-change:hover > h3 {
+    text-decoration: underline #88ff88;
+    }
 
     .active {
         text-decoration: underline #88ff88;

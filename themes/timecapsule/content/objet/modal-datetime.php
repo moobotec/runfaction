@@ -78,7 +78,7 @@
                 </div>
             </div>
 
-            <div id="modifYear" class="my-3" style="display:none">
+            <div id="modifClockYear" class="my-3" style="display:none">
                 <form action="" method="" onsubmit="modifYear(); return false;">
                     <p class="card-title-desc" key="modal-datetime-year">Vous pouvez ajuster l'<code>Année</code> selon vos besoins.</p>
                     <div class="row text-center">
@@ -87,7 +87,7 @@
                                 <div class="hover-text top-text-year-sign"> 0 </div>
                                 <input type="text"
                                     class="form-control form-control-lg text-center h2-like"
-                                    onkeyup="touchSign(this,event)" 
+                                    onkeyup="touchSign(this,event,'year')" 
                                     onwheel="adjustOnScroll(event, this,'sign','year')"
                                     maxLength="1"
                                     id="sign_year_input" name="sign" autocomplete="off" value="+">
@@ -168,7 +168,7 @@
                 </form>
             </div>
 
-            <div id="modifMonthDay" style="display:none">
+            <div id="modifClockMonthDay" style="display:none">
                 <form action="" method="" onsubmit="modifMoisJour(); return false;">
                     <p class="card-title-desc" key="modal-datetime-daymonth">Vous pouvez ajuster le <code>Jour</code> et le <code>Mois</code> selon vos besoins.</p>
                     <div class="row text-center">
@@ -223,7 +223,7 @@
                 </form>
             </div>
 
-            <div id="modifTime" style="display:none">
+            <div id="modifClockTime" style="display:none">
                 <form action="" method="" onsubmit="modifHeureMinute(); return false;">
                     <p class="card-title-desc" key="modal-datetime-time">Vous pouvez ajuster les <code>Heures</code> et les <code>Minute</code> selon vos besoins.</p>
                     <div class="row text-center">

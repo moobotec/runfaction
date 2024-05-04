@@ -1,7 +1,9 @@
 var idHover = {
     "year": 0,
     "time": 0,
-    "day": 0
+    "day": 0,
+    "latitude": 0,
+    "longitude": 0
 };
 
 var currentDate = {
@@ -760,6 +762,34 @@ function updateFinalValue(type)
 
         updateYearMonthDay(year,sign,month,day);
     }
+    else if ( type == 'latitude' )
+    {
+        var numberStringLatitude = '';
+        var cntDigit = 0;
+        $('input[id^=code_'+type+'_input]').each(function() {
+            if (cntDigit==3) numberStringLatitude += '.';
+            numberStringLatitude += $(this).val(); 
+            cntDigit++;
+        });
+
+        let latitude = parseFloat(numberStringLatitude);
+        let sign = $('#sign_'+type+'_input').val();
+        updateLatitude(latitude,sign);
+    }
+    else if ( type == 'longitude' )
+    {
+        var numberStringLongitude = '';
+        var cntDigit = 0;
+        $('input[id^=code_'+type+'_input]').each(function() {
+            if (cntDigit==3) numberStringLongitude += '.';
+            numberStringLongitude += $(this).val(); 
+            cntDigit++;
+        });
+
+        let longitude = parseFloat(numberStringLongitude);
+        let sign = $('#sign_'+type+'_input').val();
+        updateLongitude(longitude,sign);
+    }
 }
 
 function daysInMonth(year,month) 
@@ -799,6 +829,32 @@ function updateYearMonthDay(year,sign,month,day)
     currentModalDate.day = day;
 }
 
+function updateLatitude(latitude,sign)
+{
+    if (parseFloat(latitude) > 180.0) latitude = 180.0;
+
+    const dirLat = ((sign == '+')? "N" : "S" ); 
+    const [integerPart, decimalPart] = latitude.toFixed(4).split('.'); // Séparation en partie entière et décimale
+    const formattedIntegerPart = integerPart.padStart(3, '0'); // Padding pour la partie entière
+    const formattedLatitude = `${formattedIntegerPart}.${decimalPart}`; // Reconstitution du nombre avec la partie décimale
+
+    $('#locationLatitude').html(`[ ${formattedLatitude}° ${dirLat} ]`);
+    currentModalPosition.latitude = parseFloat(latitude) * ((sign == '+')? 1 : -1 );
+}
+
+function updateLongitude(longitude,sign)
+{
+    if (parseFloat(longitude) > 180.0) longitude = 180.0;
+
+    const dirLng = ((sign == '+')? "E" : "O" );
+    const [integerPart, decimalPart] = longitude.toFixed(4).split('.'); // Séparation en partie entière et décimale
+    const formattedIntegerPart = integerPart.padStart(3, '0'); // Padding pour la partie entière
+    const formattedLongitude = `${formattedIntegerPart}.${decimalPart}`; // Reconstitution du nombre avec la partie décimale
+
+    $('#locationLongitude').html(`[ ${formattedLongitude}° ${dirLng} ]`);
+    currentModalPosition.longitude = parseFloat(longitude) * ((sign == '+')? 1 : -1 );
+}
+
 function isLeapYear(year) {
     if ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) {
         return true;  // L'année est bissextile
@@ -827,14 +883,14 @@ function setValueInput(inputElement,value,type)
     }
 }
 
-function setValueInputSign(inputElement,value) 
+function setValueInputSign(inputElement,value,type) 
 {
     inputElement.value = value;
-    updateFinalValue('year');
+    updateFinalValue(type);
 
     let showTop = (value == "-");
     let showBottom = (value == "+");
-    updatePeripheralDigit('year','sign',showTop,showBottom,"+","-");
+    updatePeripheralDigit(type,'sign',showTop,showBottom,"+","-");
 }
 
 function setValueInputPrefix(inputElement,value) 
@@ -921,14 +977,14 @@ function applyCode(inputElement,codeTouche,event,type,pos,max,maxValue)
     }
 }
 
-function applySign(inputElement,codeTouche,event) 
+function applySign(inputElement,codeTouche,event,type) 
 {
     if (event.key === '+' || event.key === '-') {
-        setValueInputSign(inputElement,event.key);
+        setValueInputSign(inputElement,event.key,type);
     } 
     else if (codeTouche != 9)
     {
-        setValueInputSign(inputElement,"+");
+        setValueInputSign(inputElement,"+",type);
         event.preventDefault(); // Empêcher l'action par défaut pour les autres touches
     }
 }
@@ -944,12 +1000,12 @@ function touchCode(inputElement,event,type,pos,max,maxValue)
 }
 
 /* Gestionnaire d'appui sur les touche du clavier pour les touche + et - du clavier */
-function touchSign(inputElement, event) 
+function touchSign(inputElement, event, type) 
 {
     var codeTouche = event.keyCode || event.which;
     if (codeTouche != 16) // Touche "Maj enfoncée"
     {
-        applySign(inputElement,codeTouche,event);
+        applySign(inputElement,codeTouche,event,type);
     }
 }
 
@@ -1015,8 +1071,8 @@ function adjustOnScroll(event, inputElement,base,type)
         currentValue += delta < 0 ? -1 : 1;
 
         // Contrôler les limites de la valeur
-        if (currentValue < 0) setValueInputSign(inputElement,"+");
-        if (currentValue > 1) setValueInputSign(inputElement,"-");
+        if (currentValue < 0) setValueInputSign(inputElement,"+",type);
+        if (currentValue > 1) setValueInputSign(inputElement,"-",type);
     }
     else if (base == 'month')
     {
@@ -1241,7 +1297,7 @@ function prepareModalCookie(isUpdate)
         $('button[id^="btClock"]').click(function() 
         {
             $('h2[id^="clock"]').removeClass('active');
-            $('div[id^="modif"]').css("display", "none");
+            $('div[id^="modifClock"]').css("display", "none");
     
             if ( $(this).attr('id') == "btClockErase" )
             {
@@ -1262,7 +1318,7 @@ function prepareModalCookie(isUpdate)
             else
             {
                 $('#clock'+ $(this).attr('id').replace('btClock', '')).addClass('active');
-                $('#modif'+ $(this).attr('id').replace('btClock', '')).css("display", "block");
+                $('#modifClock'+ $(this).attr('id').replace('btClock', '')).css("display", "block");
             }
         });
     
@@ -1322,12 +1378,81 @@ function prepareModalCookie(isUpdate)
             if (pasteText.length > 1) pasteText = pasteText.substring(0,1);
             let codeTouche = pasteText.charCodeAt(0);
             event.key = pasteText;
-            applySign(this,codeTouche,event);
+            applySign(this,codeTouche,event,'year');
         });
     }
 
     function initLocation() 
     {
+
+        setupHoverHandlers('code_latitude_input', 'latitude');
+        setupHoverHandlers('code_longitude_input', 'longitude');
+    
+        setupPasteHandlers('code_latitude_input', 'latitude');
+        setupPasteHandlers('code_longitude_input', 'longitude');
+
+        $('#sign_latitude_input').hover(
+            function() { // mouseenter
+                let showTop = ($(this).val() == "-");
+                let showBottom = ($(this).val() == "+");
+                updatePeripheralDigit('latitude','sign',showTop,showBottom,"+","-");
+            },
+            function() { // mouseleave
+                updatePeripheralDigit('latitude','sign', false, false, 0 ,0);
+            }
+        );
+
+        $('#sign_latitude_input').on('paste', function(event) {
+            event.preventDefault();
+            var pasteText = event.originalEvent.clipboardData.getData('text');
+            if (pasteText.length > 1) pasteText = pasteText.substring(0,1);
+            let codeTouche = pasteText.charCodeAt(0);
+            event.key = pasteText;
+            applySign(this,codeTouche,event,'latitude');
+        });
+
+        $('#sign_longitude_input').hover(
+            function() { // mouseenter
+                let showTop = ($(this).val() == "-");
+                let showBottom = ($(this).val() == "+");
+                updatePeripheralDigit('longitude','sign',showTop,showBottom,"+","-");
+            },
+            function() { // mouseleave
+                updatePeripheralDigit('longitude','sign', false, false, 0 ,0);
+            }
+        );
+
+        $('#sign_longitude_input').on('paste', function(event) {
+            event.preventDefault();
+            var pasteText = event.originalEvent.clipboardData.getData('text');
+            if (pasteText.length > 1) pasteText = pasteText.substring(0,1);
+            let codeTouche = pasteText.charCodeAt(0);
+            event.key = pasteText;
+            applySign(this,codeTouche,event,'longitude');
+        });
+
+        $('button[id^="btLocation"]').click(function() 
+        {
+            $('h3[id^="location"]').removeClass('active');
+            $('div[id^="modifLocation"]').css("display", "none");
+    
+            if ( $(this).attr('id') == "btLocationLNavigateurReset" )
+            {
+               
+            }
+            else if ( $(this).attr('id') == "btLocationCurrenReset" )
+            {
+                
+            }
+            else
+            {
+                $('#location'+ $(this).attr('id').replace('btLocation', '')).addClass('active');
+                $('#modifLocation'+ $(this).attr('id').replace('btLocation', '')).css("display", "block");
+                map.invalidateSize(true);
+            }
+        });
+
+
         // calling map
         map = L.map("map", config.mapLeaflet).setView([lat, lng], config.zoom);
         
@@ -1450,7 +1575,7 @@ function prepareModalCookie(isUpdate)
 
         $('#positionModal').on('shown.bs.modal', function(event) {
             //resize the map - this is the important part for you
-           map.invalidateSize(true);
+            map.invalidateSize(true);
         });
 
         getLocation();
