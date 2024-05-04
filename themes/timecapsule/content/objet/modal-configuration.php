@@ -27,6 +27,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title" id="myModalLabel" key="modal-configuration-title">Configuration</h3>
+                <small class="px-5">Build_1b9f6a5e_04_05_2024_16_01_v_1_0_0</small>
                 <button type="button" class="close-btn-pre" data-bs-dismiss="modal" >✖</button>
             </div>
             <div class="modal-body">
