@@ -347,42 +347,33 @@ function managingOverrunClock(gap)
 
 function jitterCorrectionClock(gap)
 {
-     // fonction de recalage du temps sur la date courante fixer par l'utlisateur 
-     const ecartJ = Math.floor(gap / (24 * 60 * 60));
-     const totalJ = ecartJ * 24 * 60 * 60;
-     const ecartH = Math.floor((gap - totalJ) / (60 * 60));
-     const totalH = ecartH * 60 * 60;
-     const ecartM = Math.floor((gap - totalH) / 60);
-     const totalM = ecartM * 60;
-     const ecartS = gap - totalM - totalH - totalJ;
-
-     currentDate.secondes += ecartS;
-     if (currentDate.secondes >= 60) {
-         currentDate.minutes++;
-         currentDate.secondes -= 60;
-     }
-     currentDate.minutes += ecartM;
-     if (currentDate.minutes >= 60) {
-         currentDate.hours++;
-         currentDate.minutes -= 60;
-     }
-     currentDate.hours += ecartH;
-     if (currentDate.hours >= 24) {
-         currentDate.day++;
-         currentDate.hours -= 24;
-     }
-     currentDate.day += ecartJ;
-     daysInM = daysInMonth(currentDate.year, currentDate.month);
-     while ( currentDate.day > daysInM )
-     {
-         currentDate.month++;
-         currentDate.day -= daysInM;
-         if (currentDate.month > 11) {
-             currentDate.month = 0;
-             currentDate.year++;
-         }
-         daysInM =  daysInMonth(currentDate.year, currentDate.month);
-     }
+    currentDate.secondes += gap;
+    while ( currentDate.secondes >= 60 )
+    {
+        if (currentDate.secondes >= 60) {
+            currentDate.minutes++;
+            currentDate.secondes -= 60;
+        }
+        if (currentDate.minutes >= 60) {
+            currentDate.hours++;
+            currentDate.minutes -= 60;
+        }
+        if (currentDate.hours >= 24) {
+            currentDate.day++;
+            currentDate.hours -= 24;
+        }
+    }
+    daysInM = daysInMonth(currentDate.year, currentDate.month);
+    while ( currentDate.day > daysInM )
+    {
+        currentDate.month++;
+        currentDate.day -= daysInM;
+        if (currentDate.month > 11) {
+            currentDate.month = 0;
+            currentDate.year++;
+        }
+        daysInM =  daysInMonth(currentDate.year, currentDate.month);
+    }
 }
 
 function updateCurrentClock() 
@@ -397,6 +388,7 @@ function updateCurrentClock()
         gap = 0;
     }
     managingOverrunClock(gap);
+
     updateContentClock('clock',currentDate,false);
 }
 
@@ -691,6 +683,37 @@ function fillInterTime(suffix , hours , minutes)
     $('#clockTime').html('['+ suffix + hours.toString().padStart(2, '0') + ' : '+ minutes.toString().padStart(2, '0') + ' ]'); 
 }
 
+
+function fillDigitsCoordinate(number, prefixCode,prefixSign) 
+{
+    if (isNaN(number)) {
+        return;
+    }
+
+    // Gérer les nombres négatifs en convertissant le nombre en valeur absolue
+    const sign = (number < 0) ? "-" : "+";
+    
+
+    const absNumber = Math.abs(number).toFixed(4);
+    if(absNumber >= 180.0) absNumber = 180.0;
+
+    let entier = absNumber.toString().split('.')[0].padStart(3, '0');
+    let floatant = absNumber.toString().split('.')[1].padStart(4, '0');
+    let digits = entier + floatant;
+    
+    // Initialiser l'index de l'input à partir duquel commencer à remplir
+    let inputIndex = 7;
+
+    // Remplir les champs d'entrée avec les chiffres du nombre en ordre inverse
+    for (let i = digits.length - 1; i >= 0; i--) {
+        document.getElementById(prefixCode + inputIndex).value = digits[i];
+        inputIndex--;
+    }
+
+    // initialisation du signe 
+    document.getElementById(prefixSign).value = sign;
+}
+
 /* Mise à jour du champ année final que l'utilisateur 
 pourra ensuite appliquer à la date courante*/
 function updateFinalValue(type) 
@@ -764,33 +787,30 @@ function updateFinalValue(type)
     }
     else if ( type == 'latitude' )
     {
-        var numberStringLatitude = '';
-        var cntDigit = 0;
-        $('input[id^=code_'+type+'_input]').each(function() {
-            if (cntDigit==3) numberStringLatitude += '.';
-            numberStringLatitude += $(this).val(); 
-            cntDigit++;
-        });
-
-        let latitude = parseFloat(numberStringLatitude);
-        let sign = $('#sign_'+type+'_input').val();
-        updateLatitude(latitude,sign);
+        updateLatitude(computeDigitToFloat(type));
     }
     else if ( type == 'longitude' )
     {
-        var numberStringLongitude = '';
-        var cntDigit = 0;
-        $('input[id^=code_'+type+'_input]').each(function() {
-            if (cntDigit==3) numberStringLongitude += '.';
-            numberStringLongitude += $(this).val(); 
-            cntDigit++;
-        });
-
-        let longitude = parseFloat(numberStringLongitude);
-        let sign = $('#sign_'+type+'_input').val();
-        updateLongitude(longitude,sign);
+        updateLongitude(computeDigitToFloat(type));
     }
 }
+
+function computeDigitToFloat(type) 
+{
+    var numberString = '';
+    var cntDigit = 0;
+    $('input[id^=code_'+type+'_input]').each(function() {
+        if (cntDigit==3) numberString += '.';
+        numberString += $(this).val(); 
+        cntDigit++;
+    });
+
+    let value = parseFloat(numberString);
+    let sign = $('#sign_'+type+'_input').val();
+
+    return value * ((sign == '+')? 1 : -1 );
+}
+
 
 function daysInMonth(year,month) 
 {
@@ -829,30 +849,33 @@ function updateYearMonthDay(year,sign,month,day)
     currentModalDate.day = day;
 }
 
-function updateLatitude(latitude,sign)
+function updateLatitude(latitude)
 {
-    if (parseFloat(latitude) > 180.0) latitude = 180.0;
+    if (latitude > 180.0) latitude = 180.0;
+    if (latitude < -180.0) latitude = -180.0;
 
-    const dirLat = ((sign == '+')? "N" : "S" ); 
-    const [integerPart, decimalPart] = latitude.toFixed(4).split('.'); // Séparation en partie entière et décimale
+    const dirLat = ((latitude >= 0)? "N" : "S" ); 
+    const [integerPart, decimalPart] = Math.abs(latitude).toFixed(4).split('.'); // Séparation en partie entière et décimale
     const formattedIntegerPart = integerPart.padStart(3, '0'); // Padding pour la partie entière
     const formattedLatitude = `${formattedIntegerPart}.${decimalPart}`; // Reconstitution du nombre avec la partie décimale
 
     $('#locationLatitude').html(`[ ${formattedLatitude}° ${dirLat} ]`);
-    currentModalPosition.latitude = parseFloat(latitude) * ((sign == '+')? 1 : -1 );
+    currentModalPosition.latitude = latitude;
 }
 
-function updateLongitude(longitude,sign)
+function updateLongitude(longitude)
 {
-    if (parseFloat(longitude) > 180.0) longitude = 180.0;
+    if (longitude > 180.0) longitude = 180.0;
+    if (longitude < -180.0) longitude = -180.0;
 
-    const dirLng = ((sign == '+')? "E" : "O" );
-    const [integerPart, decimalPart] = longitude.toFixed(4).split('.'); // Séparation en partie entière et décimale
+    const dirLng = ((longitude >= 0)? "E" : "O" );
+    const [integerPart, decimalPart] = Math.abs(longitude).toFixed(4).split('.'); // Séparation en partie entière et décimale
     const formattedIntegerPart = integerPart.padStart(3, '0'); // Padding pour la partie entière
     const formattedLongitude = `${formattedIntegerPart}.${decimalPart}`; // Reconstitution du nombre avec la partie décimale
 
     $('#locationLongitude').html(`[ ${formattedLongitude}° ${dirLng} ]`);
-    currentModalPosition.longitude = parseFloat(longitude) * ((sign == '+')? 1 : -1 );
+    currentModalPosition.longitude = longitude;
+
 }
 
 function isLeapYear(year) {
@@ -1452,6 +1475,55 @@ function prepareModalCookie(isUpdate)
             }
         });
 
+        $('a[id^="updateCoord"]').click(function() 
+        {
+            let latitude = computeDigitToFloat('latitude');
+            let longitude = computeDigitToFloat('longitude');
+            let zoom = 10;
+
+            let path = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&zoom=${zoom}&accept-language=${language}&format=json`;
+
+            axios.get(path).then((response) => {
+                let country = null;
+                var dataObject = response.data;
+                var error = dataObject.error;
+                if (dataObject == null || (response.data.error !== undefined && error != null)) 
+                {
+                    toastr.error("Impossible de trouver une position connue !");
+                    $('#locationPays').html(`[ ... ]`);
+                }
+                else
+                {
+                    if (dataObject != null && response.data.address !== undefined && dataObject.address != null) 
+                        country = dataObject.address.country;
+
+                    if (country == null)
+                    {
+                        if (dataObject != null && dataObject.display_name !== undefined)
+                        {
+                            if (dataObject.display_name.includes(','))
+                            {
+                                let elements = dataObject.display_name.split(',');
+                                country = elements.pop();
+                            }
+                        }
+                    }
+                    if (country != null)
+                    {
+                        $('#locationPays').html(`[ ${country} ]`);
+                    }
+                    else
+                    {
+                        toastr.error("Impossible de trouver une position connue !");
+                        $('#locationPays').html(`[ ... ]`);
+                    }
+                }
+            }).catch((error) => {
+                // Affiche un message d'erreur en cas d'erreur interne
+                toastr.error("Impossible de trouver une position connue !");
+                $('#locationPays').html(`[ ... ]`);
+            });
+        });
 
         // calling map
         map = L.map("map", config.mapLeaflet).setView([lat, lng], config.zoom);
@@ -1537,18 +1609,26 @@ function prepareModalCookie(isUpdate)
                 const { display_name } = object.properties;
                 const [lng, lat] = object.geometry.coordinates;
                
-                const dirLat = ((lat >= 0)? "N" : "S" ); 
-                const dirLng = ((lng >= 0)? "E" : "O" );
+                updateLatitude(lat);
+                fillDigitsCoordinate(lat, "code_latitude_input_","sign_latitude_input");
+
+                updateLongitude(lng);
+                fillDigitsCoordinate(lng, "code_longitude_input_","sign_longitude_input");
 
                 let country = display_name;
-
                 if (display_name.includes(','))
                 {
-                    let countries = display_name.split(',');
-                    country = countries.pop();
+                    let elements = display_name.split(',');
+                    country = elements.pop();
                 }
-                                
-                document.getElementById('posCurrent').innerHTML = `${lat.toFixed(4)}° ${dirLat}, ${lng.toFixed(4)}° ${dirLng}, ${country}, Terre`;
+                if (country != null)
+                {
+                    $('#locationPays').html(`[ ${country} ]`);
+                }
+                else
+                {
+                    $('#locationPays').html(`[ ... ]`);
+                }
 
                 const marker = L.marker([lat, lng], {
                 title: display_name,
