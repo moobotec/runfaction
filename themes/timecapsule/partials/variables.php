@@ -27,15 +27,27 @@ global $param_racine;
 global $param_environement;
 global $param_bdd;
 global $param_version;
-echo '<script> var pathnameMoobotec = "'.$param_racine.'";</script>';
-echo '<script> var environnementMoobotec = "'.$param_environement.'";</script>';
-echo '<script> var baseMoobotec = "'.$param_bdd.'";</script>';
-echo '<script> var versionMoobotec = "'.$param_version.'";</script>';
-echo '<script> var countDownEcart = 300000;</script>';
-echo '<script> var session_id = "'.SessionMoobotec::getSessionId().'";</script>';
-echo '<script> var deleted_time = "'.SessionMoobotec::getValueUserSession('deleted_time').'";</script>';
-echo '<script> var is_cookie = "'.SessionMoobotec::isRememberUser().'";</script>';
-echo '<script> var ip_public = "'.get_public_ip_func().'";</script>';
-echo '<script> var ip_local = "'.get_ip_func().'";</script>';
-echo '<script> var error_reporting = "'.error_reporting().'";</script>';
+
+echo '<script>';
+echo 'var pathnameMoobotec = "'.$param_racine.'";';
+echo 'var environnementMoobotec = "'.$param_environement.'";';
+echo 'var baseMoobotec = "'.$param_bdd.'";';
+echo 'var versionMoobotec = "'.$param_version.'";';
+echo 'var countDownEcart = 300000;';
+echo 'var session_id = "'.SessionMoobotec::getSessionId().'";';
+echo 'var deleted_time = "'.SessionMoobotec::getValueUserSession('deleted_time').'";';
+echo 'var is_cookie = "'.SessionMoobotec::isRememberUser().'";';
+echo 'var ip_public = "'.get_public_ip_func().'";';
+echo 'var ip_local = "'.get_ip_func().'";';
+echo 'var error_reporting = "'.error_reporting().'";';
+echo 'var error_reporting = "'.error_reporting().'";';
+
+$infoNavigateur = get_position();
+$latitude = ( $infoNavigateur['geoplugin_latitude'] != null ) ? $infoNavigateur['geoplugin_latitude'] : null;
+$longitude = ( $infoNavigateur['geoplugin_longitude'] != null ) ? $infoNavigateur['geoplugin_longitude'] : null;
+
+echo 'var latitudeNavigator = '.$latitude.';';
+echo 'var longitudeNavigator = '.$longitude.';';
+
+echo '</script>';
 ?>

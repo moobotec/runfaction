@@ -240,6 +240,20 @@ function fixed_time_zone_from_ip_address()
     return $timezone;
 }
 
+
+function get_position()
+{    
+    $clientsIpAddress = get_ip_func();
+    $local_ip = !validate_ip($clientsIpAddress);
+    if ( $local_ip == true )
+    {
+        $publicIP = get_public_ip_func();
+        if ( validate_ip($publicIP) == true ) $clientsIpAddress = $publicIP;
+    }
+    
+    return unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip='.$clientsIpAddress));
+}
+
 function get_nearest_timezone($cur_lat, $cur_long, $country_code = '') {
     $timezone_ids = ($country_code) ? DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, $country_code)
         : DateTimeZone::listIdentifiers();

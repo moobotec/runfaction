@@ -73,7 +73,7 @@ $name = "";
       </div>
 
     </div>
-    <?=Component::create('partials/variables') ?>
+    <?=Component::create('partials/variables') ?> 
     <?=Component::create('partials/javascript')->assign(['pages'=>$pages]) ?>
     <?=Component::create('partials/execution')->assign(['pages'=>$pages]) ?>
 

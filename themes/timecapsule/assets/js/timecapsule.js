@@ -293,10 +293,6 @@ function closeZone(event, zoneId) {
 
 }
 
-function showPosition(position) {
-    showNavigatorPosition(position.coords.latitude,position.coords.longitude,"France","Terre");
-}
-
 function defaultPosition() {
     showNavigatorPosition(null,null,null,null);
 }
@@ -381,13 +377,15 @@ function modifyCurrentLocation()
 
 function prepareModalLocationContent() 
 {    
-    if (navigator.geolocation) {
-        document.getElementById('posNavigator').innerHTML = "Localisation ...";
-        navigator.geolocation.getCurrentPosition(showPosition,defaultPosition);
-    } else { 
+    if (latitudeNavigator == null && longitudeNavigator == null )
+    {
         defaultPosition();
     }
-
+    else
+    {
+        axiosFindJsonStreetMapByCoordonate(latitudeNavigator,longitudeNavigator,updateNavigatorSuccess,updateNavigatorError);
+    }
+    
     showModalCurrentPosition(currentModalPosition.latitude,currentModalPosition.longitude,currentModalPosition.country,currentModalPosition.planet);
 
     updateLatitude(currentModalPosition.latitude);
@@ -530,16 +528,37 @@ function updateCountrySuccess(dataObject)
     $('#positionModal').modal('hide');
 }
 
+function updateNavigatorError()
+{
+   defaultPosition();
+}
+
+function updateNavigatorSuccess(dataObject,latitude,longitude)
+{
+    let country = null;
+
+    if (dataObject != null && dataObject.address !== undefined && dataObject.address != null) 
+        country = dataObject.address.country;
+
+    if (country == null)
+    {
+        if (dataObject != null && dataObject.display_name !== undefined)
+        {
+            country = dataObject.display_name;
+            if (country.includes(','))
+            {
+                let elements = country.split(',');
+                country = elements.pop();
+            }
+        }
+    }
+    showNavigatorPosition(latitude,longitude,country,"Terre");
+}
+
 function axiosFindJsonStreetMapById(id,callbackSuccess,callbackError)
 {
     let path = `https://nominatim.openstreetmap.org/lookup?osm_ids=${id}&accept-language=${language}&format=json`;
-
-    console.log(path);
-
     axios.get(path).then((response) => {
-
-        console.log(response);
-
         var dataObject = response.data[0];
         var error = dataObject.error;
         if (dataObject == null || (dataObject.error !== undefined && error != null)) {
@@ -556,7 +575,6 @@ function axiosFindJsonStreetMapById(id,callbackSuccess,callbackError)
 function axiosFindJsonStreetMapByCoordonate(latitude,longitude,callbackSuccess,callbackError)
 {
     let path = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&zoom=${config.zoomLoc}&accept-language=${language}&format=json`;
-
     axios.get(path).then((response) => {
         var dataObject = response.data;
         var error = dataObject.error;

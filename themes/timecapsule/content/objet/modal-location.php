@@ -30,7 +30,7 @@
                 <button type="button" class="close-btn-pre" data-bs-dismiss="modal" >✖</button>
             </div>
             <div class="modal-body">
-            <p class="p-0 m-0 card-title-desc" key="modal-location-navigator" >Ceci est votre position exacte et courante, selon les informations fournies par votre navigateur.</p>
+            <p class="p-0 m-0 card-title-desc" key="modal-location-navigator" >Ceci est votre position exacte et courante, selon les informations fournies par votre adresse IP public.</p>
             
             <div class="p-0 m-0 row">
                 <div class="d-flex justify-content-center">
