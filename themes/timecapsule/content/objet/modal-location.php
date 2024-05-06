@@ -40,7 +40,7 @@
                     <div class="p-0 m-0">
                         <h3 class="p-0 m-0" id="posNavigator"> 000.0000° N, 000.0000° E / ... / ... </h3>
                     </div>
-                    <button type="button" id="btLocationLNavigatorReset" class="buttons-change p-2 btn header-item waves-effect">
+                    <button type="button" id="btLocationNavigatorReset" class="buttons-change p-2 btn header-item waves-effect">
                         <div class="d-flex justify-content-center">
                         <div class="p-0 m-0">
                         <h3 class="p-0 m-0"><i class="bx bx-reset"></i></h3>
@@ -303,7 +303,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="buttons-position btn btn-light header-item btn waves-effect waves-light"><h4 key="modal-apply">Appliquer les changements</h4></button>
+                <button type="button" class="buttons-position btn btn-light header-item btn waves-effect waves-light" id="btLocationModify"><h4 key="modal-apply">Appliquer les changements</h4></button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

@@ -30,18 +30,22 @@ var currentModalDate = {
 
 var currentPosition = {
     "valid": false,
+    "galaxy": null,
+    "planet": null,
+    "country": null,
     "latitude": null,
     "longitude": null,
-    "galaxy": null,
-    "planet": null
+    "id":null
 };
 
 var currentModalPosition = {
     "valid": false,
+    "galaxy": null,
+    "planet": null,
+    "country": null,
     "latitude": null,
     "longitude": null,
-    "galaxy": null,
-    "planet": null
+    "id":null
 };
 
 var language = null;
@@ -51,6 +55,8 @@ var is_visited = null;
 var is_sync = null;
 var is_basemap = null;
 var map = null;
+var marker = null;
+var inputAuto = null;
 
 // coordinates
 const lat = 52.22977;
@@ -62,6 +68,7 @@ const config = {
         maxZoom: 18,
     },
     zoom : 3,
+    zoomLoc : 10,
     default_lang : 'fr',
     default_loc : 'fr-FR',
     default_not : '24h', // 12h ou 24h
@@ -101,6 +108,7 @@ function makeCookie(inputElement)
         "marketing": marketing,
         "personalization": personalization,
         "currentDate" : ( personalization ) ? currentDate : null,
+        "currentPosition" : ( personalization ) ? currentPosition : null,
         "language" : language,
         "notation" : notation,
         "locale" : locale,
@@ -182,6 +190,12 @@ function getNecessaryFromCookie() {
 function getCurrentDateFromCookie() {
     const cookies = getMoobotecFromCookie();
     if (cookies != null && cookies.currentDate !== undefined) return cookies.currentDate;
+    return null; 
+}
+
+function getCurrentPositionFromCookie() {
+    const cookies = getMoobotecFromCookie();
+    if (cookies != null && cookies.currentPosition !== undefined) return cookies.currentPosition;
     return null; 
 }
 
@@ -279,21 +293,295 @@ function closeZone(event, zoneId) {
 
 }
 
-function getLocation() {
-    if (navigator.geolocation) {
-        document.getElementById('position').innerHTML = "Localisation ...";
-        navigator.geolocation.getCurrentPosition(showPosition,defaultPosition);
-    } else { 
-        document.getElementById('position').innerHTML = "e, e, e, e";
-    }
-}
-
 function showPosition(position) {
-    document.getElementById('position').innerHTML = position.coords.latitude + ", " + position.coords.longitude + ", France, Terre";
+    showNavigatorPosition(position.coords.latitude,position.coords.longitude,"France","Terre");
 }
 
 function defaultPosition() {
-    document.getElementById('position').innerHTML = "45.8336° N, 1.2611° E, France, Terre";
+    showNavigatorPosition(null,null,null,null);
+}
+
+function convertPositionToString(latitude,longitude,country,planet) 
+{
+    let strLatitude = (latitude == null) ? "000.0000° N" : convertCoordonateFloatToString(latitude,"N","S",false);
+    let strLongitude = (longitude == null) ? "000.0000° N" : convertCoordonateFloatToString(longitude,"E","O",false);
+    let strCountry = (country == null) ? "..." : country;
+    let strPlanet = (planet == null) ? "..." : planet;
+
+    return `${strLatitude}, ${strLongitude} / ${strCountry} / ${strPlanet}`;
+}
+
+function showCurrentPosition(latitude,longitude,country,planet) 
+{
+    document.getElementById('position').innerHTML = convertPositionToString(latitude,longitude,country,planet);
+}
+
+function showModalCurrentPosition(latitude,longitude,country,planet) 
+{
+    document.getElementById('posCurrent').innerHTML = convertPositionToString(latitude,longitude,country,planet);
+}
+
+function showNavigatorPosition(latitude,longitude,country,planet) 
+{
+    document.getElementById('posNavigator').innerHTML = convertPositionToString(latitude,longitude,country,planet);
+}
+
+function setCurrentPosition() 
+{
+    const positionCookie = getCurrentPositionFromCookie();
+
+    if ( positionCookie == null || positionCookie.valid == false )
+    {
+        currentPosition.valid = true;
+        currentPosition.latitude = null;
+        currentPosition.longitude = null;
+        currentPosition.country = null;
+        currentPosition.planet = null;
+        currentPosition.id = null;
+     
+        showCurrentPosition(null,null,null,null);
+    }
+    else
+    {    
+        currentPosition.valid = true;
+        currentPosition.latitude = positionCookie.latitude;
+        currentPosition.longitude = positionCookie.longitude;
+        currentPosition.country = positionCookie.country;
+        currentPosition.planet = positionCookie.planet;
+        currentPosition.id = positionCookie.id;
+
+        showCurrentPosition(positionCookie.latitude,positionCookie.longitude,positionCookie.country,positionCookie.planet);
+    }
+}
+
+function copyCurrentLocation(isForced) 
+{
+    if (( isForced == false && currentModalPosition.valid == false )  || ( isForced == true ) )
+    {
+        currentModalPosition.valid = currentPosition.valid;
+        currentModalPosition.latitude = currentPosition.latitude;
+        currentModalPosition.longitude = currentPosition.longitude;
+        currentModalPosition.country = currentPosition.country;
+        currentModalPosition.planet = currentPosition.planet;
+        currentModalPosition.id = currentPosition.id;
+    }  
+}
+
+function modifyCurrentLocation() 
+{
+    currentPosition.valid = currentModalPosition.valid;
+    currentPosition.latitude = currentModalPosition.latitude;
+    currentPosition.longitude = currentModalPosition.longitude;
+    currentPosition.country = currentModalPosition.country;
+    currentPosition.planet = currentModalPosition.planet;
+    currentPosition.id = currentModalPosition.id;
+
+    updateCookiePart("currentPosition",currentPosition);
+}
+
+function prepareModalLocationContent() 
+{    
+    if (navigator.geolocation) {
+        document.getElementById('posNavigator').innerHTML = "Localisation ...";
+        navigator.geolocation.getCurrentPosition(showPosition,defaultPosition);
+    } else { 
+        defaultPosition();
+    }
+
+    showModalCurrentPosition(currentModalPosition.latitude,currentModalPosition.longitude,currentModalPosition.country,currentModalPosition.planet);
+
+    updateLatitude(currentModalPosition.latitude);
+    fillDigitsCoordinate(currentModalPosition.latitude, "code_latitude_input_","sign_latitude_input");
+
+    updateLongitude(currentModalPosition.longitude);
+    fillDigitsCoordinate(currentModalPosition.longitude, "code_longitude_input_","sign_longitude_input");
+
+    let strCountry = (currentModalPosition.country == null) ? "..." : currentModalPosition.country;
+    $('#locationPays').html(`[ ${strCountry} ]`);
+
+    let strPlanet = (currentModalPosition.planet == null) ? "..." : currentModalPosition.planet;
+    $('#locationPlanet').html(`[ ${strPlanet} ]`);
+
+    updateMarkerToMap([currentModalPosition.latitude, currentModalPosition.longitude],currentModalPosition.country);
+}
+
+function updateId(osm_id,osm_type)
+{
+    if (osm_id != null && osm_type != null)
+    {
+        currentModalPosition.id = osm_type.substring(0, 1).toUpperCase() + osm_id;
+    }
+    else
+    {
+        currentModalPosition.id = null;
+    }
+    console.log(currentModalPosition.id);
+}
+
+function updateCountry(country)
+{
+    if (country != null)
+    {
+        $('#locationPays').html(`[ ${country} ]`);
+        currentModalPosition.country = country;
+    }
+    else
+    {
+        $('#locationPays').html("[ ... ]");
+        currentModalPosition.country = null;
+    }
+}
+
+function updateModalError(error,latitude,longitude)
+{
+    console.log(error);
+    toastr.error("Impossible de trouver une position connue !");
+    updateCountry(null);
+    updateId(null,null);
+    inputAuto.destroy();
+    updateMarkerToMap([latitude, longitude],null);
+}
+
+function updateModalSuccess(dataObject,latitude,longitude)
+{
+    console.log(dataObject);
+
+    let country = null;
+    let osm_id = null;
+    let osm_type = null;
+
+    if (dataObject != null && dataObject.address !== undefined && dataObject.address != null) 
+        country = dataObject.address.country;
+
+    if (dataObject != null && dataObject.osm_id !== undefined && dataObject.osm_id != null) 
+        osm_id = dataObject.osm_id;
+
+    if (dataObject != null && dataObject.osm_type !== undefined && dataObject.osm_type != null) 
+        osm_type = dataObject.osm_type;
+
+    if (country == null)
+    {
+        if (dataObject != null && dataObject.display_name !== undefined)
+        {
+            country = dataObject.display_name;
+            if (country.includes(','))
+            {
+                let elements = country.split(',');
+                country = elements.pop();
+            }
+        }
+    }
+    updateCountry(country);
+    updateId(osm_id,osm_type);
+
+    let display_name = null;
+    if (dataObject != null && dataObject.display_name !== undefined)
+    {
+        display_name = dataObject.display_name ;
+        inputAuto.rerender(display_name);
+    }
+    else
+    {
+        inputAuto.destroy();
+    }
+    updateMarkerToMap([latitude, longitude],display_name);
+}
+
+function updateCountryError()
+{
+    updateCountry(null);
+    modifyCurrentLocation();
+    showCurrentPosition(currentPosition.latitude,currentPosition.longitude,currentPosition.country,currentPosition.planet);
+    $('#positionModal').modal('hide');
+}
+
+function updateCountrySuccess(dataObject)
+{
+    let country = null;
+    let osm_id = null;
+    let osm_type = null;
+
+    if (dataObject != null && dataObject.address !== undefined && dataObject.address != null) 
+        country = dataObject.address.country;
+
+    if (dataObject != null && dataObject.osm_id !== undefined && dataObject.osm_id != null) 
+        osm_id = dataObject.osm_id;
+
+    if (dataObject != null && dataObject.osm_type !== undefined && dataObject.osm_type != null) 
+        osm_type = dataObject.osm_type;
+
+    if (country == null)
+    {
+        if (dataObject != null && dataObject.display_name !== undefined)
+        {
+            country = dataObject.display_name;
+            if (country.includes(','))
+            {
+                let elements = country.split(',');
+                country = elements.pop();
+            }
+        }
+    }
+    updateCountry(country);
+    updateId(osm_id,osm_type);
+
+    modifyCurrentLocation();
+    showCurrentPosition(currentPosition.latitude,currentPosition.longitude,currentPosition.country,currentPosition.planet);
+    $('#positionModal').modal('hide');
+}
+
+function axiosFindJsonStreetMapById(id,callbackSuccess,callbackError)
+{
+    let path = `https://nominatim.openstreetmap.org/lookup?osm_ids=${id}&accept-language=${language}&format=json`;
+
+    console.log(path);
+
+    axios.get(path).then((response) => {
+
+        console.log(response);
+
+        var dataObject = response.data[0];
+        var error = dataObject.error;
+        if (dataObject == null || (dataObject.error !== undefined && error != null)) {
+            callbackError(error,latitude,longitude);
+        } else {
+            callbackSuccess(dataObject);
+        }
+    }).catch((error) => {
+        console.log(error);
+        callbackError(error);
+    });
+}
+
+function axiosFindJsonStreetMapByCoordonate(latitude,longitude,callbackSuccess,callbackError)
+{
+    let path = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&zoom=${config.zoomLoc}&accept-language=${language}&format=json`;
+
+    axios.get(path).then((response) => {
+        var dataObject = response.data;
+        var error = dataObject.error;
+        if (dataObject == null || (dataObject.error !== undefined && error != null)) {
+            callbackError(error,latitude,longitude);
+        } else {
+            callbackSuccess(dataObject,latitude,longitude);
+        }
+    }).catch((error) => {
+        callbackError(error,latitude,longitude);
+    });
+}
+
+function updateMarkerToMap(coord,title)
+{
+    if ( marker != null ) {
+    map.removeLayer(marker)
+    }
+    let popup = (title == null) ? `lat=${coord[0].toFixed(4)} lng=${coord[1].toFixed(4)}` : title;
+    marker = L.marker(coord, {
+    title: popup,
+    });
+    marker.bindPopup(popup);
+    map.addLayer(marker);
+    map.setView(coord, config.zoomLoc);
 }
 
 /*
@@ -454,6 +742,7 @@ function prepareModalContent()
 {    
     let month = convertMonthNumberToName(currentModalDate.month,locale);
 
+    //selecteur d'élement
     document.getElementById('clockYear').textContent = `[ ${currentModalDate.year} ]`;
     document.getElementById('clockMonthDay').textContent = `[ ${currentModalDate.day.toString().padStart(2, '0')} ${month} ]`;
     let hours = currentModalDate.hours;
@@ -467,6 +756,7 @@ function prepareModalContent()
 
     fillInterTime(suffix,hours,currentModalDate.minutes);
 
+    //digit initialisation
     fillDigitsYear(currentModalDate.year,"code_year_input_","sign_year_input", 7 );
     fillDigitsTime(currentModalDate.hours,currentModalDate.minutes,"code_time_input_","prefix_time_input", 4 );
     fillDigitsDay(currentModalDate.day,"code_day_input_", 2 );
@@ -511,14 +801,13 @@ function resetCurrentDate()
     currentModalDate.minutes = now.getMinutes();
 }
 
-function jsDateToEpoch(d){
+function jsDateToEpoch(d) {
     // d = javascript date obj
     // returns epoch timestamp
     return (d.getTime()-d.getMilliseconds())/1000;
 }
 
-function setCurrentDate() 
-{
+function setCurrentDate() {
     const dateCookie = getCurrentDateFromCookie();
 
     if ( dateCookie == null || dateCookie.valid == false )
@@ -544,7 +833,6 @@ function setCurrentDate()
         currentDate.secondes = (currentDate.secondes == null ) ? dateCookie.secondes : currentDate.secondes;
         currentDate.epoch =  (currentDate.epoch == null ) ? dateCookie.epoch : currentDate.epoch;
     }
-
 }
 
 function setupHoverHandlers(prefix, descriptor) {
@@ -788,10 +1076,14 @@ function updateFinalValue(type)
     else if ( type == 'latitude' )
     {
         updateLatitude(computeDigitToFloat(type));
+        updateCountry(null);
+        updateId(null,null);
     }
     else if ( type == 'longitude' )
     {
         updateLongitude(computeDigitToFloat(type));
+        updateCountry(null);
+        updateId(null,null);
     }
 }
 
@@ -849,33 +1141,29 @@ function updateYearMonthDay(year,sign,month,day)
     currentModalDate.day = day;
 }
 
+function convertCoordonateFloatToString(distance,dirA,dirB,encapsulated = true)
+{
+    if (distance > 180.0) distance = 180.0;
+    if (distance < -180.0) distance = -180.0;
+
+    const dir = ((distance >= 0)? dirA : dirB ); 
+    const [integerPart, decimalPart] = Math.abs(distance).toFixed(4).split('.'); // Séparation en partie entière et décimale
+    const formattedIntegerPart = integerPart.padStart(3, '0'); // Padding pour la partie entière
+    const formatted = `${formattedIntegerPart}.${decimalPart}`; // Reconstitution du nombre avec la partie décimale
+
+    return (encapsulated == true) ? `[ ${formatted}° ${dir} ]` :  `${formatted}° ${dir}`;
+}
+
 function updateLatitude(latitude)
 {
-    if (latitude > 180.0) latitude = 180.0;
-    if (latitude < -180.0) latitude = -180.0;
-
-    const dirLat = ((latitude >= 0)? "N" : "S" ); 
-    const [integerPart, decimalPart] = Math.abs(latitude).toFixed(4).split('.'); // Séparation en partie entière et décimale
-    const formattedIntegerPart = integerPart.padStart(3, '0'); // Padding pour la partie entière
-    const formattedLatitude = `${formattedIntegerPart}.${decimalPart}`; // Reconstitution du nombre avec la partie décimale
-
-    $('#locationLatitude').html(`[ ${formattedLatitude}° ${dirLat} ]`);
+    $('#locationLatitude').html(convertCoordonateFloatToString(latitude,"N","S"));
     currentModalPosition.latitude = latitude;
 }
 
 function updateLongitude(longitude)
 {
-    if (longitude > 180.0) longitude = 180.0;
-    if (longitude < -180.0) longitude = -180.0;
-
-    const dirLng = ((longitude >= 0)? "E" : "O" );
-    const [integerPart, decimalPart] = Math.abs(longitude).toFixed(4).split('.'); // Séparation en partie entière et décimale
-    const formattedIntegerPart = integerPart.padStart(3, '0'); // Padding pour la partie entière
-    const formattedLongitude = `${formattedIntegerPart}.${decimalPart}`; // Reconstitution du nombre avec la partie décimale
-
-    $('#locationLongitude').html(`[ ${formattedLongitude}° ${dirLng} ]`);
+    $('#locationLongitude').html(convertCoordonateFloatToString(longitude,"E","O"));
     currentModalPosition.longitude = longitude;
-
 }
 
 function isLeapYear(year) {
@@ -1407,6 +1695,7 @@ function prepareModalCookie(isUpdate)
 
     function initLocation() 
     {
+        setCurrentPosition();
 
         setupHoverHandlers('code_latitude_input', 'latitude');
         setupHoverHandlers('code_longitude_input', 'longitude');
@@ -1459,13 +1748,24 @@ function prepareModalCookie(isUpdate)
             $('h3[id^="location"]').removeClass('active');
             $('div[id^="modifLocation"]').css("display", "none");
     
-            if ( $(this).attr('id') == "btLocationLNavigateurReset" )
+            if ( $(this).attr('id') == "btLocationNavigatorReset" )
             {
                
             }
             else if ( $(this).attr('id') == "btLocationCurrenReset" )
             {
-                
+
+            }
+            else if ( $(this).attr('id') == "btLocationModify" )
+            {
+                if (currentModalPosition.id != null)
+                {
+                    axiosFindJsonStreetMapById(currentModalPosition.id,updateCountrySuccess,updateCountryError);
+                }
+                else
+                {
+                    axiosFindJsonStreetMapByCoordonate(currentModalPosition.latitude,currentModalPosition.longitude,updateCountrySuccess,updateCountryError);
+                }
             }
             else
             {
@@ -1475,54 +1775,10 @@ function prepareModalCookie(isUpdate)
             }
         });
 
-        $('a[id^="updateCoord"]').click(function() 
-        {
+        $('a[id^="updateCoord"]').click(function() {
             let latitude = computeDigitToFloat('latitude');
             let longitude = computeDigitToFloat('longitude');
-            let zoom = 10;
-
-            let path = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&zoom=${zoom}&accept-language=${language}&format=json`;
-
-            axios.get(path).then((response) => {
-                let country = null;
-                var dataObject = response.data;
-                var error = dataObject.error;
-                if (dataObject == null || (response.data.error !== undefined && error != null)) 
-                {
-                    toastr.error("Impossible de trouver une position connue !");
-                    $('#locationPays').html(`[ ... ]`);
-                }
-                else
-                {
-                    if (dataObject != null && response.data.address !== undefined && dataObject.address != null) 
-                        country = dataObject.address.country;
-
-                    if (country == null)
-                    {
-                        if (dataObject != null && dataObject.display_name !== undefined)
-                        {
-                            if (dataObject.display_name.includes(','))
-                            {
-                                let elements = dataObject.display_name.split(',');
-                                country = elements.pop();
-                            }
-                        }
-                    }
-                    if (country != null)
-                    {
-                        $('#locationPays').html(`[ ${country} ]`);
-                    }
-                    else
-                    {
-                        toastr.error("Impossible de trouver une position connue !");
-                        $('#locationPays').html(`[ ... ]`);
-                    }
-                }
-            }).catch((error) => {
-                // Affiche un message d'erreur en cas d'erreur interne
-                toastr.error("Impossible de trouver une position connue !");
-                $('#locationPays').html(`[ ... ]`);
-            });
+            axiosFindJsonStreetMapByCoordonate(latitude,longitude,updateModalSuccess,updateModalError);
         });
 
         // calling map
@@ -1534,7 +1790,7 @@ function prepareModalCookie(isUpdate)
             '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }).addTo(map);
 
-        new Autocomplete("search", {
+        inputAuto = new Autocomplete("search", {
             selectFirst: true,
             insertToInput: true,
             cache: true,
@@ -1607,6 +1863,8 @@ function prepareModalCookie(isUpdate)
                 console.log(object);
 
                 const { display_name } = object.properties;
+                const { osm_id } = object.properties;
+                const { osm_type } = object.properties;
                 const [lng, lat] = object.geometry.coordinates;
                
                 updateLatitude(lat);
@@ -1621,22 +1879,11 @@ function prepareModalCookie(isUpdate)
                     let elements = display_name.split(',');
                     country = elements.pop();
                 }
-                if (country != null)
-                {
-                    $('#locationPays').html(`[ ${country} ]`);
-                }
-                else
-                {
-                    $('#locationPays').html(`[ ... ]`);
-                }
 
-                const marker = L.marker([lat, lng], {
-                title: display_name,
-                });
-        
-                marker.addTo(map).bindPopup(display_name);
-        
-                map.setView([lat, lng], 8);
+                updateCountry(country);
+                updateId(osm_id,osm_type);
+                
+                updateMarkerToMap([lat, lng],display_name);
             },
         
             // get index and data from li element after
@@ -1652,14 +1899,15 @@ function prepareModalCookie(isUpdate)
                 template(`<li>No results found: "${currentValue}"</li>`),
         });
 
-
         $('#positionModal').on('shown.bs.modal', function(event) {
             //resize the map - this is the important part for you
+            copyCurrentLocation(false);
+            prepareModalLocationContent();
             map.invalidateSize(true);
         });
 
-        getLocation();
     }
+
 
     function initConfiguration()
     {
