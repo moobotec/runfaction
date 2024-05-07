@@ -293,12 +293,78 @@ function defaultPosition() {
     showNavigatorPosition(null,null,null,null);
 }
 
+function getPlanetCount()
+{
+    return planets["data"].length;
+}
+
+function getGalaxyCount()
+{
+    return galaxys["data"].length;
+}
+
+function getIdPlanetByString(planet,lang)
+{
+    if (planet == null) return null;
+    for (var i = 0 ; i < getPlanetCount() ; i++)
+    {
+        if ( planets["data"][i][lang] == planet ) return i;
+    }
+    return 0;
+}
+
+function getIdGalaxyByString(galaxy,lang)
+{
+    if (galaxy == null) return null;
+    for (var i = 0 ; i < getGalaxyCount() ; i++)
+    {
+        if ( galaxys["data"][i][lang] == galaxy ) return i;
+    }
+    return 0;
+}
+
+function getPlanetByLangById(id,lang)
+{
+    let pos = parseInt(id);
+    if (!Number.isInteger(pos) || isNaN(pos)) {
+        return "...";
+    }
+    return planets["data"][pos][lang];
+}
+
+function getGalaxyByLangById(id,lang)
+{
+    let pos = parseInt(id);
+    if (!Number.isInteger(pos) || isNaN(pos)) {
+        return "...";
+    }
+    return galaxys["data"][pos][lang];
+}
+
+function getCPUDByLangBySign(sign,lang)
+{
+    const id = ( sign == "+" ) ? 0 : 1;
+    return CPUD["data"][id][lang].substring(0,1);
+}
+
+function getCPLRByLangBySign(sign,lang)
+{
+    const id = ( sign == "+" ) ? 0 : 1;
+    return CPLR["data"][id][lang].substring(0,1);
+}
+
 function convertPositionToString(latitude,longitude,country,planet) 
 {
-    let strLatitude = (latitude == null) ? "000.0000° N" : convertCoordonateFloatToString(latitude,"N","S",false);
-    let strLongitude = (longitude == null) ? "000.0000° N" : convertCoordonateFloatToString(longitude,"E","O",false);
+    const north = getCPUDByLangBySign("+",language);
+    const south = getCPUDByLangBySign("-",language);
+
+    const east = getCPLRByLangBySign("+",language);
+    const west = getCPLRByLangBySign("-",language);
+
+    let strLatitude = (latitude == null) ? "000.0000° N" : convertCoordonateFloatToString(latitude,north,south,false);
+    let strLongitude = (longitude == null) ? "000.0000° N" : convertCoordonateFloatToString(longitude,east,west,false);
     let strCountry = (country == null) ? "..." : country;
-    let strPlanet = (planet == null) ? "..." : planet;
+    let strPlanet = (planet == null) ? "..." : getPlanetByLangById(planet,language);
 
     return `${strLatitude}, ${strLongitude} / ${strCountry} / ${strPlanet}`;
 }
@@ -381,9 +447,7 @@ function prepareModalLocationContent()
     {
         axiosFindJsonStreetMapByCoordonate(navigatorPosition.latitude,navigatorPosition.longitude,updateNavigatorSuccess,updateNavigatorError);
     }
-    
     showModalCurrentPosition(currentModalPosition.latitude,currentModalPosition.longitude,currentModalPosition.country,currentModalPosition.planet);
-
     updateCurrentModalLocationContent(currentModalPosition);
 }
 
@@ -401,8 +465,13 @@ function updateCurrentModalLocationContent(position)
     $('#locationPays').html(`[ ${strCountry} ]`);
     currentModalPosition.country = position.country;
 
-    let strPlanet = (position.planet == null) ? "..." : position.planet;
+    let strPlanet = (position.planet == null) ? "..." : getPlanetByLangById(position.planet,language);
     $('#locationPlanet').html(`[ ${strPlanet} ]`);
+    document.getElementById('planet_univers_input').value = strPlanet;
+
+    let strGalaxy = (position.galaxy == null) ? "..." : getGalaxyByLangById(position.galaxy,language);
+    document.getElementById('galaxy_univers_input').value = strGalaxy;
+    
     currentModalPosition.planet = position.planet;
     currentModalPosition.galaxy = position.galaxy;
     currentModalPosition.id = position.id;
@@ -1075,7 +1144,6 @@ function updateFinalValue(type)
         }
         
         fillInterTime(suffix,hours,minutes);
-      
     }
     else if (type == 'day')
     {  
@@ -1104,6 +1172,18 @@ function updateFinalValue(type)
     else if ( type == 'longitude' )
     {
         updateLongitude(computeDigitToFloat(type));
+        updateCountry(null);
+        updateId(null,null);
+    }
+    else if ( type == 'planet' )
+    {
+        let value = $('#'+type+'_univers_input').val();
+        updatePlanet(value);
+        
+        fillDigitsCoordinate(null, "code_latitude_input_","sign_latitude_input");
+        fillDigitsCoordinate(null, "code_longitude_input_","sign_longitude_input");
+        updateLatitude(null);
+        updateLongitude(null);
         updateCountry(null);
         updateId(null,null);
     }
@@ -1178,14 +1258,27 @@ function convertCoordonateFloatToString(distance,dirA,dirB,encapsulated = true)
 
 function updateLatitude(latitude)
 {
-    $('#locationLatitude').html(convertCoordonateFloatToString(latitude,"N","S"));
+    const north = getCPUDByLangBySign("+",language);
+    const south = getCPUDByLangBySign("-",language);
+
+    $('#locationLatitude').html(convertCoordonateFloatToString(latitude,north,south));
     currentModalPosition.latitude = latitude;
 }
 
 function updateLongitude(longitude)
 {
-    $('#locationLongitude').html(convertCoordonateFloatToString(longitude,"E","O"));
+    const east = getCPLRByLangBySign("+",language);
+    const west = getCPLRByLangBySign("-",language);
+
+    $('#locationLongitude').html(convertCoordonateFloatToString(longitude,east,west));
     currentModalPosition.longitude = longitude;
+}
+
+function updatePlanet(planet)
+{
+    let id = getPlanetByLangById(planet,language);
+    $('#locationPlanet').html(`[ ${planet} ]`);
+    currentModalPosition.planet = id;
 }
 
 function isLeapYear(year) {
@@ -1250,6 +1343,37 @@ function setValueInputMonth(inputElement,value,maxValue)
     updatePeripheralDigit('day','month',showTop,showBottom,
         convertMonthNumberToName(valueTop,locale),
         convertMonthNumberToName(valueBottom,locale));
+}
+
+function setValueInputPlanet(inputElement,value,maxValue) 
+{
+    inputElement.value = getPlanetByLangById(value,language);
+    updateFinalValue('planet');
+
+    let valueTop = parseInt(value) - 1;
+    let valueBottom =  parseInt(value) + 1;
+
+    let showTop = (valueTop >= 0);
+    let showBottom = (valueBottom < (maxValue + 1));
+
+    updatePeripheralDigit('univers','planet',showTop,showBottom,
+        ( showTop ) ? getPlanetByLangById(valueTop,language) : 0,
+        ( showBottom ) ? getPlanetByLangById(valueBottom,language) : 0);
+}
+
+function setValueInputGalaxy(inputElement,value,maxValue) 
+{
+    inputElement.value = getGalaxyByLangById(value,language);
+
+    let valueTop = parseInt(value) - 1;
+    let valueBottom =  parseInt(value) + 1;
+
+    let showTop = (valueTop >= 0);
+    let showBottom = (valueBottom < (maxValue + 1));
+
+    updatePeripheralDigit('univers','galaxy',showTop,showBottom,
+        ( showTop ) ? getGalaxyByLangById(valueTop,language) : 0,
+        ( showBottom ) ? getGalaxyByLangById(valueBottom,language) : 0);
 }
 
 /* Changement de l'effet de persitance des valeur 
@@ -1435,6 +1559,30 @@ function adjustOnScroll(event, inputElement,base,type)
         // Contrôler les limites de la valeur
         if (currentValue < 0) setValueInputPrefix(inputElement,"PM");
         if (currentValue > 1) setValueInputPrefix(inputElement,"AM");
+    }
+    else if (base == 'planet')
+    {
+        let currentValue = getIdPlanetByString(inputElement.value,language);
+
+        // Incrémenter ou décrémenter la valeur en fonction de la direction du scroll
+        currentValue += delta < 0 ? -1 : 1;
+
+        if (currentValue < 0) currentValue = 0;
+        if (currentValue >= getPlanetCount()) currentValue = getPlanetCount()-1;
+
+        setValueInputPlanet(inputElement,currentValue,getPlanetCount()-1);
+    }
+    else if (base == 'galaxy')
+    {
+        let currentValue = getIdGalaxyByString(inputElement.value,language);
+
+        // Incrémenter ou décrémenter la valeur en fonction de la direction du scroll
+        currentValue += delta < 0 ? -1 : 1;
+
+        if (currentValue < 0) currentValue = 0;
+        if (currentValue >= getGalaxyCount()) currentValue = getGalaxyCount()-1;
+
+        setValueInputGalaxy(inputElement,currentValue,getGalaxyCount()-1);
     }
 }
 
@@ -1765,6 +1913,42 @@ function prepareModalCookie(isUpdate)
             applySign(this,codeTouche,event,'longitude');
         });
 
+        $('#planet_univers_input').hover(
+            function() { // mouseenter
+                let currentValue = getIdPlanetByString($(this).val(),language);
+                let valueTop = currentValue - 1;
+                let valueBottom = currentValue + 1;
+
+                let showTop = (valueTop >= 0);
+                let showBottom = (valueBottom < (getPlanetCount()));
+                
+                updatePeripheralDigit('univers','planet',showTop,showBottom,
+                (showTop) ? getPlanetByLangById(valueTop,language) : 0,
+                (showBottom) ? getPlanetByLangById(valueBottom,language) : 0);
+            },
+            function() { // mouseleave
+                updatePeripheralDigit('univers','planet', false, false, 0 ,0);
+            }
+        );
+
+        $('#galaxy_univers_input').hover(
+            function() { // mouseenter
+                let currentValue = getIdGalaxyByString($(this).val(),language);
+                let valueTop = currentValue - 1;
+                let valueBottom = currentValue + 1;
+
+                let showTop = (valueTop >= 0);
+                let showBottom = (valueBottom < (getGalaxyCount()));
+                
+                updatePeripheralDigit('univers','galaxy',showTop,showBottom,
+                ( showTop ) ? getGalaxyByLangById(valueTop,language) : 0,
+                ( showBottom ) ? getGalaxyByLangById(valueBottom,language) : 0);
+            },
+            function() { // mouseleave
+                updatePeripheralDigit('univers','galaxy', false, false, 0 , 0);
+            }
+        );
+
         $('button[id^="btLocation"]').click(function() 
         {
             $('h3[id^="location"]').removeClass('active');
@@ -1796,6 +1980,7 @@ function prepareModalCookie(isUpdate)
                 map.invalidateSize(true);
             }
         });
+        
 
         $('a[id^="updateCoord"]').click(function() {
             let latitude = computeDigitToFloat('latitude');
