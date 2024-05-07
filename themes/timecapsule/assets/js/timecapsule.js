@@ -58,10 +58,6 @@ var map = null;
 var marker = null;
 var inputAuto = null;
 
-// coordinates
-const lat = 52.22977;
-const lng = 21.01178;
-
 const config = {
     mapLeaflet : {
         minZoom: 1,
@@ -377,30 +373,41 @@ function modifyCurrentLocation()
 
 function prepareModalLocationContent() 
 {    
-    if (latitudeNavigator == null && longitudeNavigator == null )
+    if (navigatorPosition != null && navigatorPosition.latitude == null && navigatorPosition.longitude == null )
     {
         defaultPosition();
     }
     else
     {
-        axiosFindJsonStreetMapByCoordonate(latitudeNavigator,longitudeNavigator,updateNavigatorSuccess,updateNavigatorError);
+        axiosFindJsonStreetMapByCoordonate(navigatorPosition.latitude,navigatorPosition.longitude,updateNavigatorSuccess,updateNavigatorError);
     }
     
     showModalCurrentPosition(currentModalPosition.latitude,currentModalPosition.longitude,currentModalPosition.country,currentModalPosition.planet);
 
-    updateLatitude(currentModalPosition.latitude);
-    fillDigitsCoordinate(currentModalPosition.latitude, "code_latitude_input_","sign_latitude_input");
+    updateCurrentModalLocationContent(currentModalPosition);
+}
 
-    updateLongitude(currentModalPosition.longitude);
-    fillDigitsCoordinate(currentModalPosition.longitude, "code_longitude_input_","sign_longitude_input");
+function updateCurrentModalLocationContent(position)
+{
+    if (position == null) return;
 
-    let strCountry = (currentModalPosition.country == null) ? "..." : currentModalPosition.country;
+    updateLatitude(position.latitude);
+    fillDigitsCoordinate(position.latitude, "code_latitude_input_","sign_latitude_input");
+
+    updateLongitude(position.longitude);
+    fillDigitsCoordinate(position.longitude, "code_longitude_input_","sign_longitude_input");
+
+    let strCountry = (position.country == null) ? "..." : position.country;
     $('#locationPays').html(`[ ${strCountry} ]`);
+    currentModalPosition.country = position.country;
 
-    let strPlanet = (currentModalPosition.planet == null) ? "..." : currentModalPosition.planet;
+    let strPlanet = (position.planet == null) ? "..." : position.planet;
     $('#locationPlanet').html(`[ ${strPlanet} ]`);
+    currentModalPosition.planet = position.planet;
+    currentModalPosition.galaxy = position.galaxy;
+    currentModalPosition.id = position.id;
 
-    updateMarkerToMap([currentModalPosition.latitude, currentModalPosition.longitude],currentModalPosition.country);
+    updateMarkerToMap([position.latitude, position.longitude],position.country);
 }
 
 function updateId(osm_id,osm_type)
@@ -413,7 +420,6 @@ function updateId(osm_id,osm_type)
     {
         currentModalPosition.id = null;
     }
-    console.log(currentModalPosition.id);
 }
 
 function updateCountry(country)
@@ -442,8 +448,6 @@ function updateModalError(error,latitude,longitude)
 
 function updateModalSuccess(dataObject,latitude,longitude)
 {
-    console.log(dataObject);
-
     let country = null;
     let osm_id = null;
     let osm_type = null;
@@ -552,7 +556,8 @@ function updateNavigatorSuccess(dataObject,latitude,longitude)
             }
         }
     }
-    showNavigatorPosition(latitude,longitude,country,"Terre");
+    showNavigatorPosition(latitude,longitude,country,navigatorPosition.planet);
+    navigatorPosition.country = country;
 }
 
 function axiosFindJsonStreetMapById(id,callbackSuccess,callbackError)
@@ -567,7 +572,6 @@ function axiosFindJsonStreetMapById(id,callbackSuccess,callbackError)
             callbackSuccess(dataObject);
         }
     }).catch((error) => {
-        console.log(error);
         callbackError(error);
     });
 }
@@ -1768,11 +1772,11 @@ function prepareModalCookie(isUpdate)
     
             if ( $(this).attr('id') == "btLocationNavigatorReset" )
             {
-               
+                updateCurrentModalLocationContent(navigatorPosition);
             }
             else if ( $(this).attr('id') == "btLocationCurrenReset" )
             {
-
+                updateCurrentModalLocationContent(currentPosition);
             }
             else if ( $(this).attr('id') == "btLocationModify" )
             {
@@ -1800,7 +1804,7 @@ function prepareModalCookie(isUpdate)
         });
 
         // calling map
-        map = L.map("map", config.mapLeaflet).setView([lat, lng], config.zoom);
+        map = L.map("map", config.mapLeaflet);/*.setView([lat, lng], config.zoom);*/
         
         // Used to load and display tile layers on the map
         L.tileLayer(`${is_basemap}`, {
@@ -1878,8 +1882,6 @@ function prepareModalCookie(isUpdate)
                 }
                 });
         
-                console.log(object);
-
                 const { display_name } = object.properties;
                 const { osm_id } = object.properties;
                 const { osm_type } = object.properties;
@@ -1908,7 +1910,7 @@ function prepareModalCookie(isUpdate)
             // hovering over li with the mouse or using
             // arrow keys ↓ | ↑
             onSelectedItem: ({ index, element, object }) => {
-                console.log("onSelectedItem:", { index, element, object });
+                //console.log("onSelectedItem:", { index, element, object });
             },
         
             // the method presents no results

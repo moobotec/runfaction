@@ -46,8 +46,7 @@ $infoNavigateur = get_position();
 $latitude = ( $infoNavigateur['geoplugin_latitude'] != null ) ? $infoNavigateur['geoplugin_latitude'] : null;
 $longitude = ( $infoNavigateur['geoplugin_longitude'] != null ) ? $infoNavigateur['geoplugin_longitude'] : null;
 
-echo 'var latitudeNavigator = '.$latitude.';';
-echo 'var longitudeNavigator = '.$longitude.';';
+echo 'var navigatorPosition = { "valid": true , "latitude": '.$latitude.', "longitude": '.$longitude.', "country": null, "id" : null,"galaxy": "Voie lactée","planet": "Terre"  }';
 
 echo '</script>';
 ?>

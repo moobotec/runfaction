@@ -242,8 +242,6 @@ function $axios_getpost(url, data, functionCallbackInit, functionCallbackSuccess
     // Envoi de la requête HTTP POST avec les données spécifiées
     axios.post(path, data).then((response) => {
 
-        console.log(response);
-
         // Si la requête a retourné une erreur
         if (response.data.error) {
             // Affiche un message d'erreur

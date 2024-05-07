@@ -33,7 +33,7 @@
             <p class="p-0 m-0 card-title-desc" key="modal-location-navigator" >Ceci est votre position exacte et courante, selon les informations fournies par votre adresse IP public.</p>
             
             <div class="p-0 m-0 row">
-                <div class="d-flex justify-content-center">
+                <div class="d-flex justify-content-around">
                     <div class="p-0 m-0">
                         <h3 class="p-0 m-0"><i class="bx bx-street-view"></i></h3>
                     </div>
@@ -50,7 +50,7 @@
             </div>
 
             <div class="p-0 m-0 row">
-                <div class="d-flex justify-content-center">
+                <div class="d-flex justify-content-around">
                     <div class="p-0 m-0">
                         <h3 class="p-0 m-0"><i class="bx bx-street-view"></i></h3>
                     </div>
@@ -66,7 +66,7 @@
                 </div>
             </div>
 
-            <p class="p-0 m-0 card-title-desc" key="modal-location-current" >Modifier votre position actuelle en choisissant parmi les options suivantes : <code>Latitude</code>,<code>Longitude</code>, <code>Position</code>, ou <code>Planète</code>.</p>
+            <p class="p-0 m-0 card-title-desc" key="modal-location-current" >Modifier votre position actuelle en choisissant parmi les options suivantes : <code>Latitude</code>,<code>Longitude</code>, <code>Localisation</code>, ou <code>Planète</code>.</p>
             <div class="p-0 m-0 row">
             <div class="d-flex justify-content-around text-center">
                 <button type="button" id="btLocationLatitude" class="buttons-change p-2 btn header-item waves-effect">
@@ -288,7 +288,7 @@
             </div>
 
             <div id="modifLocationPays" class="my-3" style="display:none">
-                <p class="card-title-desc" key="modal-location-pays">Vous pouvez rechercher une <code>Position</code> selon vos besoins.</p>
+                <p class="card-title-desc" key="modal-location-pays">Vous pouvez rechercher une <code>Localisation</code> selon vos besoins.</p>
                 <div class="auto-search-wrapper loupe">
                     <input
                         type="text"
