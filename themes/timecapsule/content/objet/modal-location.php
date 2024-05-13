@@ -86,7 +86,7 @@
             <div id="modifLocationLatitude" class="my-3" style="display:none">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <p class="card-title-desc" key="modal-location-latitude">Vous pouvez ajuster la <code>Latitude</code> selon vos besoins.</p>
+                        <p class="card-title-desc" key="modal-location-latitude">Vous pouvez ajuster la <code>Latitude</code> selon vos besoins. <button type="button" class="btn btn-tool" id="btn-modal-info-coordinate-lat"><i class="fas fa-info-circle"></i></button></p>
                     </div>
                     <div> 
                         <a id="updateCoordLatitude" href="#" class="btn btn-light waves-effect waves-light" key="modal-update-latitude"><i class="p-1 mdi mdi-earth-arrow-right"></i>Trouver la position</a>
@@ -186,7 +186,7 @@
             <div id="modifLocationLongitude" class="my-3" style="display:none">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <p class="card-title-desc" key="modal-location-longitude">Vous pouvez ajuster la <code>Longitude</code> selon vos besoins.</p>
+                        <p class="card-title-desc" key="modal-location-longitude">Vous pouvez ajuster la <code>Longitude</code> selon vos besoins. <button type="button" class="btn btn-tool" id="btn-modal-info-coordinate-lng"><i class="fas fa-info-circle"></i></button></p>
                     </div>
                     <div>
                         <a id="updateCoordLongitude" href="#" class="btn btn-light waves-effect waves-light" key="modal-update-longitude"><i class="p-1 mdi mdi-earth-arrow-right"></i>Trouver la position</a>

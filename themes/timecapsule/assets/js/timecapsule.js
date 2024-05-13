@@ -323,6 +323,15 @@ function getIdGalaxyByString(galaxy,lang)
     return 0;
 }
 
+function hasCartoPlanetByLangById(id)
+{
+    let pos = parseInt(id);
+    if (!Number.isInteger(pos) || isNaN(pos)) {
+        return 'false';
+    }
+    return planets["data"][pos]["carto"];
+}
+
 function getPlanetByLangById(id,lang)
 {
     let pos = parseInt(id);
@@ -355,11 +364,11 @@ function getCPLRByLangBySign(sign,lang)
 
 function convertPositionToString(latitude,longitude,country,planet) 
 {
-    const north = getCPUDByLangBySign("+",language);
-    const south = getCPUDByLangBySign("-",language);
+    const north = getCPUDByLangBySign("+",language); // N ou S
+    const south = getCPUDByLangBySign("-",language); // N ou S
 
-    const east = getCPLRByLangBySign("+",language);
-    const west = getCPLRByLangBySign("-",language);
+    const east = getCPLRByLangBySign("+",language); // E ou W
+    const west = getCPLRByLangBySign("-",language); // E ou W
 
     let strLatitude = (latitude == null) ? "000.0000° N" : convertCoordonateFloatToString(latitude,north,south,false);
     let strLongitude = (longitude == null) ? "000.0000° N" : convertCoordonateFloatToString(longitude,east,west,false);
@@ -395,6 +404,7 @@ function setCurrentPosition()
         currentPosition.longitude = null;
         currentPosition.country = null;
         currentPosition.planet = null;
+        currentPosition.galaxy = null;
         currentPosition.id = null;
      
         showCurrentPosition(null,null,null,null);
@@ -406,6 +416,7 @@ function setCurrentPosition()
         currentPosition.longitude = positionCookie.longitude;
         currentPosition.country = positionCookie.country;
         currentPosition.planet = positionCookie.planet;
+        currentPosition.galaxy = positionCookie.galaxy;
         currentPosition.id = positionCookie.id;
 
         showCurrentPosition(positionCookie.latitude,positionCookie.longitude,positionCookie.country,positionCookie.planet);
@@ -421,6 +432,7 @@ function copyCurrentLocation(isForced)
         currentModalPosition.longitude = currentPosition.longitude;
         currentModalPosition.country = currentPosition.country;
         currentModalPosition.planet = currentPosition.planet;
+        currentModalPosition.galaxy = currentPosition.galaxy;
         currentModalPosition.id = currentPosition.id;
     }  
 }
@@ -432,6 +444,7 @@ function modifyCurrentLocation()
     currentPosition.longitude = currentModalPosition.longitude;
     currentPosition.country = currentModalPosition.country;
     currentPosition.planet = currentModalPosition.planet;
+    currentPosition.galaxy = currentModalPosition.galaxy;
     currentPosition.id = currentModalPosition.id;
 
     updateCookiePart("currentPosition",currentPosition);
@@ -631,48 +644,64 @@ function updateNavigatorSuccess(dataObject,latitude,longitude)
 
 function axiosFindJsonStreetMapById(id,callbackSuccess,callbackError)
 {
-    let path = `https://nominatim.openstreetmap.org/lookup?osm_ids=${id}&accept-language=${language}&format=json`;
-    axios.get(path).then((response) => {
-        var dataObject = response.data[0];
-        var error = dataObject.error;
-        if (dataObject == null || (dataObject.error !== undefined && error != null)) {
-            callbackError(error,latitude,longitude);
-        } else {
-            callbackSuccess(dataObject);
-        }
-    }).catch((error) => {
-        callbackError(error);
-    });
+    if (id != null)
+    {
+        let path = `https://nominatim.openstreetmap.org/lookup?osm_ids=${id}&accept-language=${language}&format=json`;
+        axios.get(path).then((response) => {
+            var dataObject = response.data[0];
+            var error = dataObject.error;
+            if (dataObject == null || (dataObject.error !== undefined && error != null)) {
+                callbackError(error,latitude,longitude);
+            } else {
+                callbackSuccess(dataObject);
+            }
+        }).catch((error) => {
+            callbackError(error);
+        });
+        return true;
+    }
+    return false;
 }
 
 function axiosFindJsonStreetMapByCoordonate(latitude,longitude,callbackSuccess,callbackError)
 {
-    let path = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&zoom=${config.zoomLoc}&accept-language=${language}&format=json`;
-    axios.get(path).then((response) => {
-        var dataObject = response.data;
-        var error = dataObject.error;
-        if (dataObject == null || (dataObject.error !== undefined && error != null)) {
+    if (latitude != null && longitude != null)
+    {
+        let path = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&zoom=${config.zoomLoc}&accept-language=${language}&format=json`;
+        axios.get(path).then((response) => {
+            var dataObject = response.data;
+            var error = dataObject.error;
+            if (dataObject == null || (dataObject.error !== undefined && error != null)) {
+                callbackError(error,latitude,longitude);
+            } else {
+                callbackSuccess(dataObject,latitude,longitude);
+            }
+        }).catch((error) => {
             callbackError(error,latitude,longitude);
-        } else {
-            callbackSuccess(dataObject,latitude,longitude);
-        }
-    }).catch((error) => {
-        callbackError(error,latitude,longitude);
-    });
+        });
+        return true;
+    }
+    return false;
 }
 
 function updateMarkerToMap(coord,title)
 {
-    if ( marker != null ) {
-    map.removeLayer(marker)
+    if (coord != null && title != null)
+    {
+        const lat = coord[0].toFixed(4);
+        const lng = coord[1].toFixed(4);
+
+        if ( marker != null ) {
+        map.removeLayer(marker)
+        }
+        let popup = (title == null) ? `lat=${lat} lng=${lng}` : title;
+        marker = L.marker(coord, {
+        title: popup,
+        });
+        marker.bindPopup(popup);
+        map.addLayer(marker);
+        map.setView(coord, config.zoomLoc);
     }
-    let popup = (title == null) ? `lat=${coord[0].toFixed(4)} lng=${coord[1].toFixed(4)}` : title;
-    marker = L.marker(coord, {
-    title: popup,
-    });
-    marker.bindPopup(popup);
-    map.addLayer(marker);
-    map.setView(coord, config.zoomLoc);
 }
 
 /*
@@ -1072,9 +1101,10 @@ function fillDigitsCoordinate(number, prefixCode,prefixSign)
     // Gérer les nombres négatifs en convertissant le nombre en valeur absolue
     const sign = (number < 0) ? "-" : "+";
     
-
-    const absNumber = Math.abs(number).toFixed(4);
+    let absNumber = Math.abs(number);
     if(absNumber >= 180.0) absNumber = 180.0;
+
+    absNumber = absNumber.toFixed(4);
 
     let entier = absNumber.toString().split('.')[0].padStart(3, '0');
     let floatant = absNumber.toString().split('.')[1].padStart(4, '0');
@@ -1175,10 +1205,17 @@ function updateFinalValue(type)
         updateCountry(null);
         updateId(null,null);
     }
-    else if ( type == 'planet' )
+    else if ( type == 'planet' || type == 'galaxy' )
     {
         let value = $('#'+type+'_univers_input').val();
-        updatePlanet(value);
+        if (type == 'planet')
+        {
+            updatePlanet(value);
+        }
+        else
+        {
+            updateGalaxy(value);
+        }
         
         fillDigitsCoordinate(null, "code_latitude_input_","sign_latitude_input");
         fillDigitsCoordinate(null, "code_longitude_input_","sign_longitude_input");
@@ -1276,9 +1313,15 @@ function updateLongitude(longitude)
 
 function updatePlanet(planet)
 {
-    let id = getPlanetByLangById(planet,language);
+    let id = getIdPlanetByString(planet,language);
     $('#locationPlanet').html(`[ ${planet} ]`);
     currentModalPosition.planet = id;
+}
+
+function updateGalaxy(galaxy)
+{
+    let id = getIdGalaxyByString(galaxy,language);
+    currentModalPosition.galaxy = id;
 }
 
 function isLeapYear(year) {
@@ -1364,6 +1407,7 @@ function setValueInputPlanet(inputElement,value,maxValue)
 function setValueInputGalaxy(inputElement,value,maxValue) 
 {
     inputElement.value = getGalaxyByLangById(value,language);
+    updateFinalValue('galaxy');
 
     let valueTop = parseInt(value) - 1;
     let valueBottom =  parseInt(value) + 1;
@@ -1949,6 +1993,12 @@ function prepareModalCookie(isUpdate)
             }
         );
 
+        $('button[id^="btn-modal-info-coordinate"]').click(function() 
+        {
+            $('#positionModal').modal('hide');
+            $('#modal-info-coordinate').modal('show');
+        });
+
         $('button[id^="btLocation"]').click(function() 
         {
             $('h3[id^="location"]').removeClass('active');
@@ -1966,30 +2016,51 @@ function prepareModalCookie(isUpdate)
             {
                 if (currentModalPosition.id != null)
                 {
-                    axiosFindJsonStreetMapById(currentModalPosition.id,updateCountrySuccess,updateCountryError);
+                    let ret = axiosFindJsonStreetMapById(currentModalPosition.id,updateCountrySuccess,updateCountryError);
+                    if ( ret == false) updateCountryError();
                 }
                 else
                 {
-                    axiosFindJsonStreetMapByCoordonate(currentModalPosition.latitude,currentModalPosition.longitude,updateCountrySuccess,updateCountryError);
+                    let ret = axiosFindJsonStreetMapByCoordonate(currentModalPosition.latitude,currentModalPosition.longitude,updateCountrySuccess,updateCountryError);
+                    if ( ret == false) updateCountryError();
                 }
             }
             else
             {
-                $('#location'+ $(this).attr('id').replace('btLocation', '')).addClass('active');
-                $('#modifLocation'+ $(this).attr('id').replace('btLocation', '')).css("display", "block");
-                map.invalidateSize(true);
+                const mode = $(this).attr('id').replace('btLocation', '');
+                if (mode == 'Pays')
+                {
+                    const hasCarto = hasCartoPlanetByLangById(currentModalPosition.planet);
+                    if (hasCarto == 'true')
+                    {
+                        $('#location'+ mode).addClass('active');
+                        $('#modifLocation'+ mode).css("display", "block");
+                        map.invalidateSize(true);
+                    }
+                    else
+                    {
+                        toastr.warning("Il n'est pas possible de rechercher une localisation pour cette planète")
+                    }
+                }
+                else
+                {
+                    $('#location'+ mode).addClass('active');
+                    $('#modifLocation'+ mode).css("display", "block");
+                }
+                    
             }
         });
         
-
         $('a[id^="updateCoord"]').click(function() {
             let latitude = computeDigitToFloat('latitude');
             let longitude = computeDigitToFloat('longitude');
             axiosFindJsonStreetMapByCoordonate(latitude,longitude,updateModalSuccess,updateModalError);
         });
 
+        const lat = (currentPosition.latitude == null) ? 0.0 : currentPosition.latitude; 
+        const lng = (currentPosition.longitude == null) ? 0.0 : currentPosition.longitude; 
         // calling map
-        map = L.map("map", config.mapLeaflet);/*.setView([lat, lng], config.zoom);*/
+        map = L.map("map", config.mapLeaflet).setView([lat, lng], config.zoom);
         
         // Used to load and display tile layers on the map
         L.tileLayer(`${is_basemap}`, {
