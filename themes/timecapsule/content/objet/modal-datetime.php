@@ -37,7 +37,7 @@
                     <h2 class="pt-3"><i class="bx bx-time-five"></i></h2>
                 </div>
                 <div class="">
-                    <h2 class="my-1" id="clockUtcGmt">[ xxx ][ xx xxxx ][ xx : xx : xx ]</h2>
+                    <h2 class="my-1" id="clockUtc">[ xxx ][ xx xxxx ][ xx : xx : xx ]</h2>
                 </div>
                 <button type="button" id="btClockReset" class="buttons-change p-2 btn header-item waves-effect">
                     <div class="d-flex justify-content-center">

@@ -712,7 +712,7 @@ function displayTimezoneOffset() {
     const timezoneOffset = now.getTimezoneOffset(); // Récupère le décalage en minutes
     const offsetHours = timezoneOffset / 60; // Convertit le décalage en heures
     const sign = offsetHours > 0 ? "-" : "+"; // Déterminer le signe (inverse car getTimezoneOffset est inversé)
-    const displayOffset = ` GMT [${sign}${Math.abs(offsetHours).toFixed(0)}]`; // Formate l'affichage
+    const displayOffset = `/ UTC [${sign}${Math.abs(offsetHours).toFixed(0)}]`; // Formate l'affichage
 
     return displayOffset;
 }
@@ -854,7 +854,7 @@ function updateUniversalTimeClock()
         "epoch" : jsDateToEpoch(nowUtc)
     };
 
-    updateContentClock('clockUtcGmt',utcClock,true)
+    updateContentClock('clockUtc',utcClock,true)
     updateContentClock('clockCurrent',currentDate,false);
 }
 
@@ -1786,6 +1786,13 @@ function prepareModalCookie(isUpdate)
 
         $('.language').on('click', function (e) {
             setLanguage($(this).attr('data-lang'));
+
+            $('button[id^="btn-modal-info-coordinate"]').click(function() 
+            {
+                $('#positionModal').modal('hide');
+                $('#modal-info-coordinate').modal('show');
+            });
+
         });
     }
 

@@ -56,10 +56,10 @@ $name = "";
     <div class="modal-dialog modal-dialog-centered modal-lg">
           <div class="modal-content">
               <div class="modal-header">
-                  <h3 class="modal-title"> Information sur les coordonnées cartographiques </h3>
+                  <h3 class="modal-title" key="modal-info-coord-title">Informations sur les coordonnées cartographiques</h3>
                   <button type="button" class="close-btn-pre" data-bs-dismiss="modal" >✖</button>
               </div>
-              <div class="modal-body">
+              <div class="modal-body" key="modal-info-coord-body">
                   <i class="fa fa-search-plus" aria-hidden="true"></i> Le système cartographique choisi pour représenter les coordonnées est le <a target="_blank" href="https://fr.wikipedia.org/wiki/WGS_84">WGS84</a>.
                   <br>
                   <i class="fa fa-search-plus" aria-hidden="true"></i> Les limites imposées par le système <a target="_blank" href="https://fr.wikipedia.org/wiki/WGS_84">WGS84</a> sont de [-180.0° à 180.0°].
