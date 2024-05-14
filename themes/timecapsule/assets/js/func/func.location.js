@@ -281,8 +281,25 @@ function updateCountry(country)
 
 function updateModalError(error,latitude,longitude)
 {
-    console.log(error);
-    toastr.error("Impossible de trouver une position connue !");
+    if (language == 'fr') {
+        toastr.error("Impossible de trouver une position connue !");
+    } 
+    else if (language == 'sp') {
+        toastr.error("¡No se puede encontrar una posición conocida!");
+    }
+    else if (language == 'gr') {
+        toastr.error("Es konnte keine bekannte Position gefunden werden!");
+    }
+    else if (language == 'it') {
+        toastr.error("Impossibile trovare una posizione nota!");
+    }
+    else if (language == 'ru') {
+        toastr.error("Невозможно найти известную позицию!");
+    }
+    else{
+        toastr.error("Unable to find a known position!");
+    }
+
     updateCountry(null);
     updateId(null,null);
     inputAuto.destroy();
@@ -333,6 +350,33 @@ function updateModalSuccess(dataObject,latitude,longitude)
     
     updateMarkerToMap([latitude, longitude],display_name);
 }
+
+function updateCurrentModalLocation(object)
+{
+    const { display_name } = object.properties;
+    const { osm_id } = object.properties;
+    const { osm_type } = object.properties;
+    const [lng, lat] = object.geometry.coordinates;
+
+    updateLatitude(lat);
+    fillDigitsCoordinate(lat, "code_latitude_input_","sign_latitude_input");
+
+    updateLongitude(lng);
+    fillDigitsCoordinate(lng, "code_longitude_input_","sign_longitude_input");
+
+    let country = display_name;
+    if (display_name.includes(','))
+    {
+        let elements = display_name.split(',');
+        country = elements.pop();
+    }
+
+    updateCountry(country);
+    updateId(osm_id,osm_type);
+
+    updateMarkerToMap([lat, lng],display_name);
+}
+
 
 function updateCountryError()
 {

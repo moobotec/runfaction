@@ -307,7 +307,24 @@ function setupClickButtonLocation()
                 }
                 else
                 {
-                    toastr.warning("Il n'est pas possible de rechercher une localisation pour cette planète")
+                    if (language == 'fr') {
+                        toastr.warning("Il n'est pas possible de rechercher une localisation pour cette planète.");
+                    } 
+                    else if (language == 'sp') {
+                        toastr.warning("No es posible buscar una ubicación para este planeta.");
+                    }
+                    else if (language == 'gr') {
+                        toastr.warning("Eine Standortsuche für diesen Planeten ist nicht möglich.");
+                    }
+                    else if (language == 'it') {
+                        toastr.warning("Non è possibile cercare una posizione per questo pianeta.");
+                    }
+                    else if (language == 'ru') {
+                        toastr.warning("Невозможно найти местоположение этой планеты.");
+                    }
+                    else{
+                        toastr.warning("It is not possible to search for a location for this planet.");
+                    }
                 }
             }
             else
@@ -369,15 +386,24 @@ function setupAutocomplete()
         // nominatim GeoJSON format
         onResults: ({ currentValue, matches, template }) => {
             const regex = new RegExp(currentValue, "gi");
-    
             if (matches == 0)
             {
-                if (language == "fr")
-                {
-                    noresult = template.replace("No results found:","Aucun résultat:");
+                if (language == 'fr') {
+                    noresult = template.replace("No results found:","Aucun résultat trouvé:");
+                } 
+                else if (language == 'sp') {
+                    noresult = template.replace("No results found:","No se han encontrado resultados:");
                 }
-                else
-                {
+                else if (language == 'gr') {
+                    noresult = template.replace("No results found:","Keine Ergebnisse gefunden:");
+                }
+                else if (language == 'it') {
+                    noresult = template.replace("No results found:","Nessun risultato trovato:");
+                }
+                else if (language == 'ru') {
+                    noresult = template.replace("No results found:","Результатов не найдено:");
+                }
+                else{
                     noresult = template;
                 }
             }
@@ -409,28 +435,7 @@ function setupAutocomplete()
             }
             });
     
-            const { display_name } = object.properties;
-            const { osm_id } = object.properties;
-            const { osm_type } = object.properties;
-            const [lng, lat] = object.geometry.coordinates;
-           
-            updateLatitude(lat);
-            fillDigitsCoordinate(lat, "code_latitude_input_","sign_latitude_input");
-
-            updateLongitude(lng);
-            fillDigitsCoordinate(lng, "code_longitude_input_","sign_longitude_input");
-
-            let country = display_name;
-            if (display_name.includes(','))
-            {
-                let elements = display_name.split(',');
-                country = elements.pop();
-            }
-
-            updateCountry(country);
-            updateId(osm_id,osm_type);
-            
-            updateMarkerToMap([lat, lng],display_name);
+            updateCurrentModalLocation(object);
         },
     
         // get index and data from li element after
@@ -495,7 +500,6 @@ function setupClickButtonConfiModify()
     });
 }
 
-
 (function ($) {
 
     'use strict';
@@ -540,7 +544,6 @@ function setupClickButtonConfiModify()
     function initDate() 
     {
         setCurrentDate();
-        // Mise à jour de l'horloge chaque seconde
         setInterval(updateCurrentClock, 1000);
         updateCurrentClock();
         setupShowBsModalDatetime();
@@ -604,7 +607,6 @@ function setupClickButtonConfiModify()
             prepareModalCookie(true);
         });
     }
-
 
     function init() 
     {
