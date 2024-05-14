@@ -47,6 +47,26 @@ function getLanguage() {
         $.each(lang, function (index, val) {
             $("[key='" + index + "']").html(val);
         });
+
+        if (language == 'fr') {
+            $("#search").attr("placeholder", "Rechercher une position");
+        } 
+        else if (language == 'sp') {
+            $("#search").attr("placeholder", "Encontrar una ubicación");
+        }
+        else if (language == 'gr') {
+            $("#search").attr("placeholder", "Finden Sie einen Standort");
+        }
+        else if (language == 'it') {
+            $("#search").attr("placeholder", "Trova una posizione");
+        }
+        else if (language == 'ru') {
+            $("#search").attr("placeholder", "Найти местоположение");
+        }
+        else{
+            $("#search").attr("placeholder", "Find a location");
+        }
+
         updateCurrentClock();
         updateCurrentPosition();
     });
