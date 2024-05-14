@@ -423,8 +423,8 @@ function updateFinalValue(type)
         
         fillDigitsCoordinate(null, "code_latitude_input_","sign_latitude_input");
         fillDigitsCoordinate(null, "code_longitude_input_","sign_longitude_input");
-        updateLatitude(null);
-        updateLongitude(null);
+        //updateLatitude(null);
+        //updateLongitude(null);
         updateCountry(null);
         updateId(null,null);
     }

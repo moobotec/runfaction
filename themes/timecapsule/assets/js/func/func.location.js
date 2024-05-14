@@ -404,6 +404,14 @@ function updateCurrentModalLocation(object)
 
     updateCountry(country);
     updateId(osm_id,osm_type);
+    
+    const strGalaxy = getGalaxyByLangById(getIdGalaxyByString('Voie lactée','fr'),language);
+    updateGalaxy(strGalaxy);
+    document.getElementById('galaxy_univers_input').value = strGalaxy;
+   
+    const strPlanet = getPlanetByLangById(getIdPlanetByString('Terre','fr'),language);
+    updatePlanet(strPlanet);
+    document.getElementById('planet_univers_input').value = strPlanet;
 
     updateMarkerToMap([lat, lng],display_name);
 }
