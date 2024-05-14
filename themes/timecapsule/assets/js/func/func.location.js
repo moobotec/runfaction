@@ -5,7 +5,8 @@ function defaultPosition() {
 
 function getPlanetCount()
 {
-    return planets["data"].length;
+    return getPlanetCountByIdGalaxy(currentModalPosition.galaxy);
+    //return planets["data"].length;
 }
 
 function getGalaxyCount()
@@ -58,6 +59,36 @@ function getGalaxyByLangById(id,lang)
         return def_suspension_points;
     }
     return galaxys["data"][pos][lang];
+}
+
+function getPlanetCountByIdGalaxy(id)
+{    
+    const dataList = galaxyPlanets.data;
+    for (let i = 0; i < dataList.length; i++) {
+        const data = dataList[i];
+        if (data.hasOwnProperty(id)) {
+            const list = data[id];
+            return list.length;
+        }
+    }
+    return null;
+}
+
+function getFirstPlanetByIdGalaxy(id)
+{    
+    const firstPosition = 0;
+    const dataList = galaxyPlanets.data;
+    for (let i = 0; i < dataList.length; i++) {
+        const data = dataList[i];
+        if (data.hasOwnProperty(id)) {
+            const list = data[id];
+            const size = list.length;
+            if (firstPosition >= 0 && firstPosition < size) {
+                return list[firstPosition];
+            }
+        }
+    }
+    return null;
 }
 
 function getCPUDByLangBySign(sign,lang)

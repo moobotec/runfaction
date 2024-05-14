@@ -322,6 +322,8 @@ function adjustOnScroll(event, inputElement,base,type)
         if (currentValue >= getGalaxyCount()) currentValue = getGalaxyCount()-1;
 
         setValueInputGalaxy(inputElement,currentValue,getGalaxyCount()-1);
+        const firstValue = getFirstPlanetByIdGalaxy(currentValue);
+        setValueInputPlanet(document.getElementById('planet_univers_input'),firstValue,getPlanetCount()-1);
     }
 }
 
