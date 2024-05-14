@@ -58,6 +58,8 @@ var map = null;
 var marker = null;
 var inputAuto = null;
 
+var def_suspension_points = "...";
+
 const config = {
     mapLeaflet : {
         minZoom: 1,
@@ -336,7 +338,7 @@ function getPlanetByLangById(id,lang)
 {
     let pos = parseInt(id);
     if (!Number.isInteger(pos) || isNaN(pos)) {
-        return "...";
+        return def_suspension_points;
     }
     return planets["data"][pos][lang];
 }
@@ -345,7 +347,7 @@ function getGalaxyByLangById(id,lang)
 {
     let pos = parseInt(id);
     if (!Number.isInteger(pos) || isNaN(pos)) {
-        return "...";
+        return def_suspension_points;
     }
     return galaxys["data"][pos][lang];
 }
@@ -372,8 +374,8 @@ function convertPositionToString(latitude,longitude,country,planet)
 
     let strLatitude = (latitude == null) ? "000.0000° N" : convertCoordonateFloatToString(latitude,north,south,false);
     let strLongitude = (longitude == null) ? "000.0000° N" : convertCoordonateFloatToString(longitude,east,west,false);
-    let strCountry = (country == null) ? "..." : country;
-    let strPlanet = (planet == null) ? "..." : getPlanetByLangById(planet,language);
+    let strCountry = (country == null) ? def_suspension_points : country;
+    let strPlanet = (planet == null) ? def_suspension_points : getPlanetByLangById(planet,language);
 
     return `${strLatitude}, ${strLongitude} / ${strCountry} / ${strPlanet}`;
 }
@@ -393,21 +395,70 @@ function showNavigatorPosition(latitude,longitude,country,planet)
     document.getElementById('posNavigator').innerHTML = convertPositionToString(latitude,longitude,country,planet);
 }
 
+function updateCurrentPosition() 
+{
+    if ( ( currentPosition != null && currentPosition.valid == false ) || currentPosition == null  )
+    {
+        showCurrentPosition(null,null,null,null);
+    }
+    else
+    {
+        const hasCarto = hasCartoPlanetByLangById(currentPosition.planet);
+        if (hasCarto == 'true')
+        {
+            console.log(currentPosition);
+            let ret = axiosFindJsonStreetMapById(currentPosition.id,updateSuccess,updateError);
+            if ( ret == false) updateError();
+        }
+        else
+        {
+            
+            showCurrentPosition(currentPosition.latitude,currentPosition.longitude,currentPosition.country,currentPosition.planet);
+        }
+    }
+}
+
+function updateSuccess(dataObject)
+{
+    let country = null;
+
+    if (dataObject != null && dataObject.address !== undefined && dataObject.address != null) 
+        country = dataObject.address.country;
+
+    if (country == null)
+    {
+        if (dataObject != null && dataObject.display_name !== undefined)
+        {
+            country = dataObject.display_name;
+            if (country.includes(','))
+            {
+                let elements = country.split(',');
+                country = elements.pop();
+            }
+        }
+    }
+    showCurrentPosition(currentPosition.latitude,currentPosition.longitude,country,currentPosition.planet);
+    currentPosition.country = country;
+}
+
+function updateError()
+{
+    showCurrentPosition(currentPosition.latitude,currentPosition.longitude,null,currentPosition.planet);
+}
+
 function setCurrentPosition() 
 {
     const positionCookie = getCurrentPositionFromCookie();
 
     if ( positionCookie == null || positionCookie.valid == false )
     {
-        currentPosition.valid = true;
+        currentPosition.valid = false;
         currentPosition.latitude = null;
         currentPosition.longitude = null;
         currentPosition.country = null;
         currentPosition.planet = null;
         currentPosition.galaxy = null;
         currentPosition.id = null;
-     
-        showCurrentPosition(null,null,null,null);
     }
     else
     {    
@@ -418,9 +469,18 @@ function setCurrentPosition()
         currentPosition.planet = positionCookie.planet;
         currentPosition.galaxy = positionCookie.galaxy;
         currentPosition.id = positionCookie.id;
-
-        showCurrentPosition(positionCookie.latitude,positionCookie.longitude,positionCookie.country,positionCookie.planet);
     }
+}
+
+function resetCurrentLocation() 
+{
+    currentModalPosition.valid = true;
+    currentModalPosition.latitude = navigatorPosition.latitude;
+    currentModalPosition.longitude = navigatorPosition.longitude;
+    currentModalPosition.country = navigatorPosition.country;
+    currentModalPosition.planet = navigatorPosition.planet;
+    currentModalPosition.galaxy = navigatorPosition.galaxy;
+    currentModalPosition.id = navigatorPosition.id;
 }
 
 function copyCurrentLocation(isForced) 
@@ -434,12 +494,12 @@ function copyCurrentLocation(isForced)
         currentModalPosition.planet = currentPosition.planet;
         currentModalPosition.galaxy = currentPosition.galaxy;
         currentModalPosition.id = currentPosition.id;
-    }  
+    }
 }
 
 function modifyCurrentLocation() 
 {
-    currentPosition.valid = currentModalPosition.valid;
+    currentPosition.valid = true;
     currentPosition.latitude = currentModalPosition.latitude;
     currentPosition.longitude = currentModalPosition.longitude;
     currentPosition.country = currentModalPosition.country;
@@ -452,7 +512,8 @@ function modifyCurrentLocation()
 
 function prepareModalLocationContent() 
 {    
-    if (navigatorPosition != null && navigatorPosition.latitude == null && navigatorPosition.longitude == null )
+    if (navigatorPosition != null && 
+        ( (navigatorPosition.latitude == null && navigatorPosition.longitude == null) || navigatorPosition.valid == false ) )
     {
         defaultPosition();
     }
@@ -460,36 +521,29 @@ function prepareModalLocationContent()
     {
         axiosFindJsonStreetMapByCoordonate(navigatorPosition.latitude,navigatorPosition.longitude,updateNavigatorSuccess,updateNavigatorError);
     }
-    showModalCurrentPosition(currentModalPosition.latitude,currentModalPosition.longitude,currentModalPosition.country,currentModalPosition.planet);
-    updateCurrentModalLocationContent(currentModalPosition);
+    showModalCurrentPosition(currentPosition.latitude,currentPosition.longitude,currentPosition.country,currentPosition.planet);
+    updateCurrentModalLocationContent();
 }
 
-function updateCurrentModalLocationContent(position)
+function updateCurrentModalLocationContent()
 {
-    if (position == null) return;
+    updateLatitude(currentModalPosition.latitude);
+    fillDigitsCoordinate(currentModalPosition.latitude, "code_latitude_input_","sign_latitude_input");
 
-    updateLatitude(position.latitude);
-    fillDigitsCoordinate(position.latitude, "code_latitude_input_","sign_latitude_input");
+    updateLongitude(currentModalPosition.longitude);
+    fillDigitsCoordinate(currentModalPosition.longitude, "code_longitude_input_","sign_longitude_input");
 
-    updateLongitude(position.longitude);
-    fillDigitsCoordinate(position.longitude, "code_longitude_input_","sign_longitude_input");
-
-    let strCountry = (position.country == null) ? "..." : position.country;
+    let strCountry = (currentModalPosition.country == null) ? def_suspension_points : currentModalPosition.country;
     $('#locationPays').html(`[ ${strCountry} ]`);
-    currentModalPosition.country = position.country;
 
-    let strPlanet = (position.planet == null) ? "..." : getPlanetByLangById(position.planet,language);
+    let strPlanet = (currentModalPosition.planet == null) ? def_suspension_points : getPlanetByLangById(currentModalPosition.planet,language);
     $('#locationPlanet').html(`[ ${strPlanet} ]`);
     document.getElementById('planet_univers_input').value = strPlanet;
 
-    let strGalaxy = (position.galaxy == null) ? "..." : getGalaxyByLangById(position.galaxy,language);
+    let strGalaxy = (currentModalPosition.galaxy == null) ? def_suspension_points : getGalaxyByLangById(currentModalPosition.galaxy,language);
     document.getElementById('galaxy_univers_input').value = strGalaxy;
-    
-    currentModalPosition.planet = position.planet;
-    currentModalPosition.galaxy = position.galaxy;
-    currentModalPosition.id = position.id;
 
-    updateMarkerToMap([position.latitude, position.longitude],position.country);
+    updateMarkerToMap([currentModalPosition.latitude, currentModalPosition.longitude],currentModalPosition.country);
 }
 
 function updateId(osm_id,osm_type)
@@ -513,7 +567,7 @@ function updateCountry(country)
     }
     else
     {
-        $('#locationPays').html("[ ... ]");
+        $('#locationPays').html(`[ ${def_suspension_points} ]`);
         currentModalPosition.country = null;
     }
 }
@@ -555,6 +609,7 @@ function updateModalSuccess(dataObject,latitude,longitude)
             }
         }
     }
+
     updateCountry(country);
     updateId(osm_id,osm_type);
 
@@ -568,6 +623,7 @@ function updateModalSuccess(dataObject,latitude,longitude)
     {
         inputAuto.destroy();
     }
+    
     updateMarkerToMap([latitude, longitude],display_name);
 }
 
@@ -646,12 +702,16 @@ function axiosFindJsonStreetMapById(id,callbackSuccess,callbackError)
 {
     if (id != null)
     {
-        let path = `https://nominatim.openstreetmap.org/lookup?osm_ids=${id}&accept-language=${language}&format=json`;
+        let eLang = null;
+        if (language  == "sp") eLang = "es";
+        else if (language  == "gr") eLang = "de";
+        else eLang = language;
+        let path = `https://nominatim.openstreetmap.org/lookup?osm_ids=${id}&accept-language=${eLang}&format=json`;
         axios.get(path).then((response) => {
             var dataObject = response.data[0];
             var error = dataObject.error;
             if (dataObject == null || (dataObject.error !== undefined && error != null)) {
-                callbackError(error,latitude,longitude);
+                callbackError(error);
             } else {
                 callbackSuccess(dataObject);
             }
@@ -667,7 +727,11 @@ function axiosFindJsonStreetMapByCoordonate(latitude,longitude,callbackSuccess,c
 {
     if (latitude != null && longitude != null)
     {
-        let path = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&zoom=${config.zoomLoc}&accept-language=${language}&format=json`;
+        let eLang = null;
+        if (language  == "sp") eLang = "es";
+        else if (language  == "gr") eLang = "de";
+        else eLang = language;
+        let path = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&zoom=${config.zoomLoc}&accept-language=${eLang}&format=json`;        
         axios.get(path).then((response) => {
             var dataObject = response.data;
             var error = dataObject.error;
@@ -1679,6 +1743,7 @@ function getLanguage() {
             $("[key='" + index + "']").html(val);
         });
         updateCurrentClock();
+        updateCurrentPosition();
     });
 }
 
@@ -1786,13 +1851,6 @@ function prepareModalCookie(isUpdate)
 
         $('.language').on('click', function (e) {
             setLanguage($(this).attr('data-lang'));
-
-            $('button[id^="btn-modal-info-coordinate"]').click(function() 
-            {
-                $('#positionModal').modal('hide');
-                $('#modal-info-coordinate').modal('show');
-            });
-
         });
     }
 
@@ -1819,13 +1877,6 @@ function prepareModalCookie(isUpdate)
             updateUniversalTimeClock();
         });
     
-        $('#datetimeModal').on('show.bs.modal', function(event) {
-            copyCurrentDate(false);
-            prepareModalContent();
-            setInterval(updateUniversalTimeClock, 1000);
-            updateUniversalTimeClock();
-        });
-
         $('button[id^="btClock"]').click(function() 
         {
             $('h2[id^="clock"]').removeClass('active');
@@ -1917,6 +1968,7 @@ function prepareModalCookie(isUpdate)
     function initLocation() 
     {
         setCurrentPosition();
+        updateCurrentPosition();
 
         setupHoverHandlers('code_latitude_input', 'latitude');
         setupHoverHandlers('code_longitude_input', 'longitude');
@@ -2013,11 +2065,13 @@ function prepareModalCookie(isUpdate)
     
             if ( $(this).attr('id') == "btLocationNavigatorReset" )
             {
-                updateCurrentModalLocationContent(navigatorPosition);
+                resetCurrentLocation();
+                updateCurrentModalLocationContent();
             }
             else if ( $(this).attr('id') == "btLocationCurrenReset" )
             {
-                updateCurrentModalLocationContent(currentPosition);
+                copyCurrentLocation(true);
+                updateCurrentModalLocationContent();
             }
             else if ( $(this).attr('id') == "btLocationModify" )
             {
@@ -2083,7 +2137,13 @@ function prepareModalCookie(isUpdate)
             // onSearch
             onSearch: ({ currentValue }) => {
                 // api
-                const api = `https://nominatim.openstreetmap.org/search?format=geojson&limit=5&accept-language=${language}&city=${encodeURI(
+
+                let eLang = null;
+                if (language  == "sp") eLang = "es";
+                else if (language  == "gr") eLang = "de";
+                else eLang = language;
+
+                const api = `https://nominatim.openstreetmap.org/search?format=geojson&limit=5&accept-language=${eLang}&city=${encodeURI(
                 currentValue
                 )}`;
 
@@ -2183,14 +2243,12 @@ function prepareModalCookie(isUpdate)
         });
 
         $('#positionModal').on('shown.bs.modal', function(event) {
-            //resize the map - this is the important part for you
             copyCurrentLocation(false);
             prepareModalLocationContent();
             map.invalidateSize(true);
         });
 
     }
-
 
     function initConfiguration()
     {

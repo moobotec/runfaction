@@ -203,7 +203,7 @@ h1,h2
             </div>
             <div class="row">
             <button type="button" class="buttons-position btn header-item waves-effect" data-bs-toggle="modal" data-bs-target="#positionModal">
-            <h3 class="pt-3"><i class="bx bx-street-view"></i></h3><h3 class="p-1 my-2 "id="position" ></i>x, x, x, x</h3>
+            <h3 class="pt-3"><i class="bx bx-street-view"></i></h3><h3 class="p-1 my-2 "id="position" ></i></h3>
             </button>
             </div>
         </div>
