@@ -337,13 +337,87 @@ function setupClickButtonLocation()
     });
 }
 
+function updateMapSuccess(dataObject,latitude,longitude)
+{
+    let country = null;
+    let osm_id = null;
+    let osm_type = null;
+
+    if (dataObject != null && dataObject.address !== undefined && dataObject.address != null) 
+        country = dataObject.address.country;
+
+    if (dataObject != null && dataObject.osm_id !== undefined && dataObject.osm_id != null) 
+        osm_id = dataObject.osm_id;
+
+    if (dataObject != null && dataObject.osm_type !== undefined && dataObject.osm_type != null) 
+        osm_type = dataObject.osm_type;
+
+    if (country == null)
+    {
+        if (dataObject != null && dataObject.display_name !== undefined)
+        {
+            country = dataObject.display_name;
+            if (country.includes(','))
+            {
+                let elements = country.split(',');
+                country = elements.pop();
+            }
+        }
+    }
+
+    updateCountry(country);
+    updateId(osm_id,osm_type);
+
+    let display_name = `latitude=${latitude} longitude=${longitude}`;
+    if (dataObject != null && dataObject.display_name !== undefined)
+    {
+        display_name = dataObject.display_name ;
+    }
+    updateMarkerToMap([latitude, longitude],display_name);
+}
+
+function updateMapError(dataObject,latitude,longitude)
+{
+    let country = null;
+    let osm_id = null;
+    let osm_type = null;
+
+    updateCountry(country);
+    updateId(osm_id,osm_type);
+
+    let display_name = `latitude=${latitude} longitude=${longitude}`;
+    updateMarkerToMap([latitude, longitude],display_name);
+}
+
+function addMarker(e)
+{
+    const lat = e.latlng.lat;
+    const lng = e.latlng.lng;
+
+    updateLatitude(lat);
+    fillDigitsCoordinate(lat, "code_latitude_input_","sign_latitude_input");
+
+    updateLongitude(lng);
+    fillDigitsCoordinate(lng, "code_longitude_input_","sign_longitude_input");
+
+    axiosFindJsonStreetMapByCoordonate(lat,lng,updateMapSuccess,updateMapError);
+}
+
 function setupAutocomplete()
 {
+    currentZoom = config.zoomLoc;
+
     const lat = (currentPosition.latitude == null) ? 0.0 : currentPosition.latitude; 
     const lng = (currentPosition.longitude == null) ? 0.0 : currentPosition.longitude; 
-    // calling map
+
     map = L.map("map", config.mapLeaflet).setView([lat, lng], config.zoom);
     
+    map.on('click', addMarker);
+
+    map.on('zoomend', function (e) {
+        currentZoom = e.target._zoom;
+    });
+
     // Used to load and display tile layers on the map
     L.tileLayer(`${is_basemap}`, {
         attribution:
@@ -461,15 +535,6 @@ function setupShowBsModalPosition()
     });
 }
 
-function setupClickArefUpdateCoord()
-{   
-    $('a[id^="updateCoord"]').click(function() {
-        let latitude = computeDigitToFloat('latitude');
-        let longitude = computeDigitToFloat('longitude');
-        axiosFindJsonStreetMapByCoordonate(latitude,longitude,updateModalSuccess,updateModalError);
-    });
-}
-
 function setupShowBsModalConfiguration()
 {
     $('#configurationModal').on('show.bs.modal', function(event) {
@@ -576,7 +641,6 @@ function setupClickButtonConfiModify()
         setupHoverGalaxyUniversInput();
         setupClickButtonModalInfoCoordinate();
         setupClickButtonLocation();
-        setupClickArefUpdateCoord();
         setupAutocomplete();
         setupShowBsModalPosition();
     }

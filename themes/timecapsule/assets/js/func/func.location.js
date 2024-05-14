@@ -312,25 +312,6 @@ function updateCountry(country)
 
 function updateModalError(error,latitude,longitude)
 {
-    if (language == 'fr') {
-        toastr.error("Impossible de trouver une position connue !");
-    } 
-    else if (language == 'sp') {
-        toastr.error("¡No se puede encontrar una posición conocida!");
-    }
-    else if (language == 'gr') {
-        toastr.error("Es konnte keine bekannte Position gefunden werden!");
-    }
-    else if (language == 'it') {
-        toastr.error("Impossibile trovare una posizione nota!");
-    }
-    else if (language == 'ru') {
-        toastr.error("Невозможно найти известную позицию!");
-    }
-    else{
-        toastr.error("Unable to find a known position!");
-    }
-
     updateCountry(null);
     updateId(null,null);
     inputAuto.destroy();
@@ -554,7 +535,7 @@ function updateMarkerToMap(coord,title)
         });
         marker.bindPopup(popup);
         map.addLayer(marker);
-        map.setView(coord, config.zoomLoc);
+        map.setView(coord, currentZoom);
     }
 }
 

@@ -57,6 +57,8 @@ var is_basemap = null;
 var map = null;
 var marker = null;
 var inputAuto = null;
+var currentZoom = null;
+var timerUpdateCountry = null;
 
 var def_suspension_points = "...";
 

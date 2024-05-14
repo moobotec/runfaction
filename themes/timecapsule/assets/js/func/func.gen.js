@@ -400,14 +400,12 @@ function updateFinalValue(type)
     else if ( type == 'latitude' )
     {
         updateLatitude(computeDigitToFloat(type));
-        updateCountry(null);
-        updateId(null,null);
+        updateCountryTimeOut();
     }
     else if ( type == 'longitude' )
     {
         updateLongitude(computeDigitToFloat(type));
-        updateCountry(null);
-        updateId(null,null);
+        updateCountryTimeOut();
     }
     else if ( type == 'planet' || type == 'galaxy' )
     {
@@ -423,9 +421,19 @@ function updateFinalValue(type)
         
         fillDigitsCoordinate(null, "code_latitude_input_","sign_latitude_input");
         fillDigitsCoordinate(null, "code_longitude_input_","sign_longitude_input");
-        //updateLatitude(null);
-        //updateLongitude(null);
         updateCountry(null);
         updateId(null,null);
     }
+}
+
+function updateCountryTimeOut() {
+    // Initialiser le timer
+    if (timerUpdateCountry != null)
+    {
+        clearTimeout(timerUpdateCountry);
+    }
+    timerUpdateCountry = setTimeout(function() {
+        timerUpdateCountry = null;
+        axiosFindJsonStreetMapByCoordonate(currentModalPosition.latitude,currentModalPosition.longitude,updateModalSuccess,updateModalError);
+    }, 1000);
 }
