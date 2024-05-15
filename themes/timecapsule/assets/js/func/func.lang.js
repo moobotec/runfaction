@@ -20,7 +20,7 @@ function setLanguage(lang) {
         }
         else if (lang == 'it') {
             loc = "it-IT";
-            document.getElementById("header-lang-img").src = "themes/"+config.theme+"/assets/images/flags/italy.jpg";
+            document.getElementById("header-lang-img").src = "themes/"+gConfig.theme+"/assets/images/flags/italy.jpg";
         }
         else if (lang == 'ru') {
             loc = "ru-RU";
