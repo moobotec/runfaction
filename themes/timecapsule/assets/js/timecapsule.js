@@ -282,15 +282,22 @@ function setupClickButtonLocation()
         }
         else if ( $(this).attr('id') == "btLocationModify" )
         {
-            if (gCurrentModalPosition.id != null)
+            let ret = false;
+            const hasCarto = hasCartoPlanetByLangById(gCurrentModalPosition.planet);
+            if (hasCarto == 'true')
             {
-                let ret = axiosFindJsonStreetMapById(gCurrentModalPosition.id,updateCountrySuccess,updateCountryError);
-                if ( ret == false) updateCountryError();
+                if (gCurrentModalPosition.id != null)
+                {
+                    ret = axiosFindJsonStreetMapById(gCurrentModalPosition.id,updateCountrySuccess,updateCountryError);
+                }
+                else
+                {
+                    let ret = axiosFindJsonStreetMapByCoordonate(gCurrentModalPosition.latitude,gCurrentModalPosition.longitude,updateCountrySuccess,updateCountryError);
+                }
             }
-            else
+            if ( hasCarto == 'false' || ret == false )
             {
-                let ret = axiosFindJsonStreetMapByCoordonate(gCurrentModalPosition.latitude,gCurrentModalPosition.longitude,updateCountrySuccess,updateCountryError);
-                if ( ret == false) updateCountryError();
+                updateCountryError();
             }
         }
         else
