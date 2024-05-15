@@ -13,84 +13,84 @@ function displayTimezoneOffset() {
 function managingOverrunClock(gap)
 {
     //l'horloge est suivie
-    currentDate.secondes += gap;
+    gCurrentDate.secondes += gap;
 
     // Gérer le dépassement des secondes et incrémenter les minutes
-    if (currentDate.secondes >= 60) {
-        currentDate.secondes = 0;
-        currentDate.minutes++;
+    if (gCurrentDate.secondes >= 60) {
+        gCurrentDate.secondes = 0;
+        gCurrentDate.minutes++;
     }
 
     // Gérer le dépassement des minutes et incrémenter les heures
-    if (currentDate.minutes >= 60) {
-        currentDate.minutes = 0;
-        currentDate.hours++;
+    if (gCurrentDate.minutes >= 60) {
+        gCurrentDate.minutes = 0;
+        gCurrentDate.hours++;
     }
 
     // Gérer le dépassement des heures et incrémenter les jours
-    if (currentDate.hours >= 24) {
-        currentDate.hours = 0;
-        currentDate.day++;
+    if (gCurrentDate.hours >= 24) {
+        gCurrentDate.hours = 0;
+        gCurrentDate.day++;
     }
 
     // Gérer le dépassement des jours et incrémenter les mois
-    if (currentDate.day > daysInMonth(currentDate.year, currentDate.month)) {
-        currentDate.day = 1;
-        currentDate.month++;
+    if (gCurrentDate.day > daysInMonth(gCurrentDate.year, gCurrentDate.month)) {
+        gCurrentDate.day = 1;
+        gCurrentDate.month++;
     }
 
     // Gérer le dépassement des mois et incrémenter les années
-    if (currentDate.month > 11) {
-        currentDate.month = 0;
-        currentDate.year++;
+    if (gCurrentDate.month > 11) {
+        gCurrentDate.month = 0;
+        gCurrentDate.year++;
     }
 }
 
 function jitterCorrectionClock(gap)
 {
-    currentDate.secondes += gap;
-    while ( currentDate.secondes >= 60 )
+    gCurrentDate.secondes += gap;
+    while ( gCurrentDate.secondes >= 60 )
     {
-        if (currentDate.secondes >= 60) {
-            currentDate.minutes++;
-            currentDate.secondes -= 60;
+        if (gCurrentDate.secondes >= 60) {
+            gCurrentDate.minutes++;
+            gCurrentDate.secondes -= 60;
         }
-        if (currentDate.minutes >= 60) {
-            currentDate.hours++;
-            currentDate.minutes -= 60;
+        if (gCurrentDate.minutes >= 60) {
+            gCurrentDate.hours++;
+            gCurrentDate.minutes -= 60;
         }
-        if (currentDate.hours >= 24) {
-            currentDate.day++;
-            currentDate.hours -= 24;
+        if (gCurrentDate.hours >= 24) {
+            gCurrentDate.day++;
+            gCurrentDate.hours -= 24;
         }
     }
-    daysInM = daysInMonth(currentDate.year, currentDate.month);
-    while ( currentDate.day > daysInM )
+    daysInM = daysInMonth(gCurrentDate.year, gCurrentDate.month);
+    while ( gCurrentDate.day > daysInM )
     {
-        currentDate.month++;
-        currentDate.day -= daysInM;
-        if (currentDate.month > 11) {
-            currentDate.month = 0;
-            currentDate.year++;
+        gCurrentDate.month++;
+        gCurrentDate.day -= daysInM;
+        if (gCurrentDate.month > 11) {
+            gCurrentDate.month = 0;
+            gCurrentDate.year++;
         }
-        daysInM =  daysInMonth(currentDate.year, currentDate.month);
+        daysInM =  daysInMonth(gCurrentDate.year, gCurrentDate.month);
     }
 }
 
 function updateCurrentClock() 
 {
     const now = new Date();
-    let gap = (jsDateToEpoch(now) - currentDate.epoch);
-    currentDate.epoch = jsDateToEpoch(now);
+    let gap = (jsDateToEpoch(now) - gCurrentDate.epoch);
+    gCurrentDate.epoch = jsDateToEpoch(now);
     if (gap > 60)
     {
-        if(is_sync == "sync") 
+        if(gIsSync == "sync") 
             jitterCorrectionClock(gap);
         gap = 0;
     }
     managingOverrunClock(gap);
 
-    updateContentClock('clock',currentDate,false);
+    updateContentClock('clock',gCurrentDate,false);
 }
 
 function updateContentClock(id,date,isGmt) 
@@ -101,7 +101,7 @@ function updateContentClock(id,date,isGmt)
 function formatDateTime(date) 
 {
     const year = date.year;
-    const month = convertMonthNumberToName(date.month,locale);
+    const month = convertMonthNumberToName(date.month,gLocale);
     const day = date.day.toString().padStart(2, '0');
     
     let hours = date.hours;
@@ -109,7 +109,7 @@ function formatDateTime(date)
     const secondes = date.secondes.toString().padStart(2, '0');
 
     let suffix = ' ';  // Suffixe AM/PM pour le format 12 heures
-    if ( notation == "12h" )
+    if ( gNotation == "12h" )
     {
         suffix = "<small> "+ computeSuffixHours(hours) + " </small>";
         hours = computeHours(hours);
@@ -148,70 +148,70 @@ function updateUniversalTimeClock()
     };
 
     updateContentClock('clockUtc',utcClock,true)
-    updateContentClock('clockCurrent',currentDate,false);
+    updateContentClock('clockCurrent',gCurrentDate,false);
 }
 
 function prepareModalContent() 
 {    
-    let month = convertMonthNumberToName(currentModalDate.month,locale);
+    let month = convertMonthNumberToName(gCurrentModalDate.month,gLocale);
 
     //selecteur d'élement
-    document.getElementById('clockYear').textContent = `[ ${currentModalDate.year} ]`;
-    document.getElementById('clockMonthDay').textContent = `[ ${currentModalDate.day.toString().padStart(2, '0')} ${month} ]`;
-    let hours = currentModalDate.hours;
+    document.getElementById('clockYear').textContent = `[ ${gCurrentModalDate.year} ]`;
+    document.getElementById('clockMonthDay').textContent = `[ ${gCurrentModalDate.day.toString().padStart(2, '0')} ${month} ]`;
+    let hours = gCurrentModalDate.hours;
     let suffix = ' ';  // Suffixe AM/PM pour le format 12 heures
-    if ( notation == "12h" )
+    if ( gNotation == "12h" )
     {
         suffix = "<small> "+ computeSuffixHours(hours) + " </small>";
         hours = computeHours(hours);
     }
     hours = hours.toString().padStart(2, '0');
 
-    fillInterTime(suffix,hours,currentModalDate.minutes);
+    fillInterTime(suffix,hours,gCurrentModalDate.minutes);
 
     //digit initialisation
-    fillDigitsYear(currentModalDate.year,"code_year_input_","sign_year_input", 7 );
-    fillDigitsTime(currentModalDate.hours,currentModalDate.minutes,"code_time_input_","prefix_time_input", 4 );
-    fillDigitsDay(currentModalDate.day,"code_day_input_", 2 );
+    fillDigitsYear(gCurrentModalDate.year,"code_year_input_","sign_year_input", 7 );
+    fillDigitsTime(gCurrentModalDate.hours,gCurrentModalDate.minutes,"code_time_input_","prefix_time_input", 4 );
+    fillDigitsDay(gCurrentModalDate.day,"code_day_input_", 2 );
     fillDigitsMonth(month,"month_day_input");
 }
 
 function copyCurrentDate(isForced) 
 {
-    if (( isForced == false && currentModalDate.valid == false )  || ( isForced == true ) )
+    if (( isForced == false && gCurrentModalDate.valid == false )  || ( isForced == true ) )
     {
-        currentModalDate.valid = currentDate.valid;
-        currentModalDate.year = currentDate.year;
-        currentModalDate.month = currentDate.month;
-        currentModalDate.day = currentDate.day;
-        currentModalDate.hours = currentDate.hours;
-        currentModalDate.minutes = currentDate.minutes;
-        currentModalDate.secondes = currentDate.secondes;
+        gCurrentModalDate.valid = gCurrentDate.valid;
+        gCurrentModalDate.year = gCurrentDate.year;
+        gCurrentModalDate.month = gCurrentDate.month;
+        gCurrentModalDate.day = gCurrentDate.day;
+        gCurrentModalDate.hours = gCurrentDate.hours;
+        gCurrentModalDate.minutes = gCurrentDate.minutes;
+        gCurrentModalDate.secondes = gCurrentDate.secondes;
     }  
 }
 
 function modifyCurrentDate() 
 {
     const now = new Date();
-    currentDate.valid = currentModalDate.valid;
-    currentDate.year = currentModalDate.year;
-    currentDate.month = currentModalDate.month;
-    currentDate.day = currentModalDate.day;
-    currentDate.hours = currentModalDate.hours;
-    currentDate.minutes = currentModalDate.minutes;
-    currentDate.secondes = now.getSeconds();
+    gCurrentDate.valid = gCurrentModalDate.valid;
+    gCurrentDate.year = gCurrentModalDate.year;
+    gCurrentDate.month = gCurrentModalDate.month;
+    gCurrentDate.day = gCurrentModalDate.day;
+    gCurrentDate.hours = gCurrentModalDate.hours;
+    gCurrentDate.minutes = gCurrentModalDate.minutes;
+    gCurrentDate.secondes = now.getSeconds();
 
-    updateCookiePart("currentDate",currentDate);
+    updateCookiePart("currentDate",gCurrentDate);
 }
 
 function resetCurrentDate() 
 {
     const now = new Date();
-    currentModalDate.year = now.getFullYear();
-    currentModalDate.month = now.getMonth();
-    currentModalDate.day = now.getDate();
-    currentModalDate.hours = now.getHours();
-    currentModalDate.minutes = now.getMinutes();
+    gCurrentModalDate.year = now.getFullYear();
+    gCurrentModalDate.month = now.getMonth();
+    gCurrentModalDate.day = now.getDate();
+    gCurrentModalDate.hours = now.getHours();
+    gCurrentModalDate.minutes = now.getMinutes();
 }
 
 function jsDateToEpoch(d) {
@@ -226,25 +226,25 @@ function setCurrentDate() {
     if ( dateCookie == null || dateCookie.valid == false )
     {
         const now = new Date();
-        currentDate.valid = true;
-        currentDate.year = (currentDate.year == null ) ? now.getFullYear() :  currentDate.year ;
-        currentDate.month = (currentDate.month == null ) ? now.getMonth() : currentDate.month;
-        currentDate.day = (currentDate.day == null ) ? now.getDate() : currentDate.day;
-        currentDate.hours = (currentDate.hours == null ) ? now.getHours() : currentDate.hours;
-        currentDate.minutes = (currentDate.minutes == null ) ? now.getMinutes() : currentDate.minutes;
-        currentDate.secondes = (currentDate.secondes == null ) ? now.getSeconds() : currentDate.secondes;
-        currentDate.epoch = (currentDate.epoch == null ) ? jsDateToEpoch(now) : currentDate.epoch; ;
+        gCurrentDate.valid = true;
+        gCurrentDate.year = (gCurrentDate.year == null ) ? now.getFullYear() :  gCurrentDate.year ;
+        gCurrentDate.month = (gCurrentDate.month == null ) ? now.getMonth() : gCurrentDate.month;
+        gCurrentDate.day = (gCurrentDate.day == null ) ? now.getDate() : gCurrentDate.day;
+        gCurrentDate.hours = (gCurrentDate.hours == null ) ? now.getHours() : gCurrentDate.hours;
+        gCurrentDate.minutes = (gCurrentDate.minutes == null ) ? now.getMinutes() : gCurrentDate.minutes;
+        gCurrentDate.secondes = (gCurrentDate.secondes == null ) ? now.getSeconds() : gCurrentDate.secondes;
+        gCurrentDate.epoch = (gCurrentDate.epoch == null ) ? jsDateToEpoch(now) : gCurrentDate.epoch; ;
     }
     else
     {
-        currentDate.valid = true;
-        currentDate.year = (currentDate.year == null ) ? dateCookie.year :  currentDate.year ;
-        currentDate.month = (currentDate.month == null ) ? dateCookie.month : currentDate.month;
-        currentDate.day = (currentDate.day == null ) ? dateCookie.day : currentDate.day;
-        currentDate.hours = (currentDate.hours == null ) ? dateCookie.hours : currentDate.hours;
-        currentDate.minutes = (currentDate.minutes == null ) ? dateCookie.minutes : currentDate.minutes;
-        currentDate.secondes = (currentDate.secondes == null ) ? dateCookie.secondes : currentDate.secondes;
-        currentDate.epoch =  (currentDate.epoch == null ) ? dateCookie.epoch : currentDate.epoch;
+        gCurrentDate.valid = true;
+        gCurrentDate.year = (gCurrentDate.year == null ) ? dateCookie.year :  gCurrentDate.year ;
+        gCurrentDate.month = (gCurrentDate.month == null ) ? dateCookie.month : gCurrentDate.month;
+        gCurrentDate.day = (gCurrentDate.day == null ) ? dateCookie.day : gCurrentDate.day;
+        gCurrentDate.hours = (gCurrentDate.hours == null ) ? dateCookie.hours : gCurrentDate.hours;
+        gCurrentDate.minutes = (gCurrentDate.minutes == null ) ? dateCookie.minutes : gCurrentDate.minutes;
+        gCurrentDate.secondes = (gCurrentDate.secondes == null ) ? dateCookie.secondes : gCurrentDate.secondes;
+        gCurrentDate.epoch =  (gCurrentDate.epoch == null ) ? dateCookie.epoch : gCurrentDate.epoch;
     }
 }
 
@@ -291,7 +291,7 @@ function fillDigitsTime(numberHours,numberMinutes, prefixCode, prefixSuffix , ma
     if (numberMinutes >= 60 || numberHours < 0) numberMinutes = 0;
   
     let suffix = ' ';  // Suffixe AM/PM pour le format 12 heures
-    if ( notation == "12h" )
+    if ( gNotation == "12h" )
     {
         suffix = computeSuffixHours(numberHours);
         numberHours = computeHours(numberHours);
@@ -363,7 +363,7 @@ function daysInMonth(year,month)
 
 function updateYearMonthDay(year,sign,month,day) 
 {
-    let monthValue = getMonthNumberFromName(month,locale) ;
+    let monthValue = getMonthNumberFromName(month,gLocale) ;
     let lastDayOfMonth = daysInMonth(year,monthValue);
     if (day > lastDayOfMonth) day = lastDayOfMonth;
     if (day == 0) days = 1;
@@ -373,14 +373,14 @@ function updateYearMonthDay(year,sign,month,day)
     if (sign == "-") year *= -1; 
     $('#clockYear').html('[ '+ parseInt(year) + ' ]');
 
-    currentModalDate.year = parseInt(year);
-    currentModalDate.month = monthValue;
-    currentModalDate.day = day;
+    gCurrentModalDate.year = parseInt(year);
+    gCurrentModalDate.month = monthValue;
+    gCurrentModalDate.day = day;
 }
 
 function setValueInputMonth(inputElement,value,maxValue) 
 {
-    inputElement.value = convertMonthNumberToName(value,locale);
+    inputElement.value = convertMonthNumberToName(value,gLocale);
     updateFinalValue('day');
 
     let valueTop = parseInt(value) - 1;
@@ -390,16 +390,16 @@ function setValueInputMonth(inputElement,value,maxValue)
     let showBottom = (valueBottom < (maxValue + 1));
 
     updatePeripheralDigit('day','month',showTop,showBottom,
-        convertMonthNumberToName(valueTop,locale),
-        convertMonthNumberToName(valueBottom,locale));
+        convertMonthNumberToName(valueTop,gLocale),
+        convertMonthNumberToName(valueBottom,gLocale));
 }
 
 
-function getMonthNumberFromName(monthName, locale) {
+function getMonthNumberFromName(monthName, gLocale) {
     // Essayer tous les mois de l'année jusqu'à ce que le nom correspondant soit trouvé
     for (let month = 0; month < 12; month++) {
         let date = new Date(2020, month, 1);
-        let formatter = new Intl.DateTimeFormat(locale, { month: "long" });
+        let formatter = new Intl.DateTimeFormat(gLocale, { month: "long" });
         if (formatter.format(date).toLowerCase() === monthName.toLowerCase()) {
             return month; 
         }
@@ -407,12 +407,12 @@ function getMonthNumberFromName(monthName, locale) {
     return undefined; // Retourner undefined si aucun mois ne correspond
 }
 
-function convertMonthNumberToName(monthNumber, locale) {
+function convertMonthNumberToName(monthNumber, gLocale) {
     // Créer une date avec l'année arbitraire 2020 et le mois spécifié (mois - 1 car Date utilise des indices de mois de 0 à 11)
     let date = new Date(2020, monthNumber, 1);
 
     // Créer un formateur de date avec la locale spécifiée et le format long pour le mois
-    let formatter = new Intl.DateTimeFormat(locale, { month: 'long' });
+    let formatter = new Intl.DateTimeFormat(gLocale, { month: 'long' });
 
     // Retourner le mois formaté selon la locale
     return formatter.format(date).toLowerCase();

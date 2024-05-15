@@ -26,14 +26,14 @@ function makeCookie(inputElement)
         "statistics": statistics,
         "marketing": marketing,
         "personalization": personalization,
-        "currentDate" : ( personalization ) ? currentDate : null,
-        "currentPosition" : ( personalization ) ? currentPosition : null,
-        "language" : language,
-        "notation" : notation,
-        "locale" : locale,
-        "theme" : is_visited,
-        "basemap" : is_basemap,
-        "sync" : is_sync
+        "currentDate" : ( personalization ) ? gCurrentDate : null,
+        "currentPosition" : ( personalization ) ? gCurrentPosition : null,
+        "language" : gLanguage,
+        "notation" : gNotation,
+        "locale" : gLocale,
+        "theme" : gIsVisited,
+        "basemap" : gIsBasemap,
+        "sync" : gIsSync
     }
     return cookies;
 }
@@ -127,13 +127,13 @@ function getLanguageFromCookie() {
 function getNotationFromCookie() {
     const cookies = getMoobotecFromCookie();
     if (cookies != null && cookies.notation !== undefined) return cookies.notation;
-    return config.default_not; 
+    return gConfig.default_not; 
 }
 
 function getThemeFromCookie() {
     const cookies = getMoobotecFromCookie();
     if (cookies != null && cookies.theme !== undefined) return cookies.theme;
-    return config.default_theme; 
+    return gConfig.default_theme; 
 }
 
 function getLocalFromCookie() {
@@ -145,13 +145,13 @@ function getLocalFromCookie() {
 function getSyncFromCookie() {
     const cookies = getMoobotecFromCookie();
     if (cookies != null && cookies.sync !== undefined) return cookies.sync;
-    return config.default_sync; 
+    return gConfig.default_sync; 
 }
 
 function getBaseMapFromCookie() {
     const cookies = getMoobotecFromCookie();
     if (cookies != null && cookies.basemap !== undefined) return cookies.basemap;
-    return config.default_basemap; 
+    return gConfig.default_basemap; 
 }
 
 function prepareModalCookie(isUpdate) 

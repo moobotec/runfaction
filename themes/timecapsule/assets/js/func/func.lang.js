@@ -4,19 +4,19 @@ function setLanguage(lang) {
     if (document.getElementById("header-lang-img")) {
         if (lang == 'fr') {
             loc = "fr-FR";
-            document.getElementById("header-lang-img").src = "themes/"+config.theme+"/assets/images/flags/french.jpg";
+            document.getElementById("header-lang-img").src = "themes/"+gConfig.theme+"/assets/images/flags/french.jpg";
         } 
         else if (lang == 'en') {
             loc = "en-US";
-            document.getElementById("header-lang-img").src = "themes/"+config.theme+"/assets/images/flags/us.jpg";
+            document.getElementById("header-lang-img").src = "themes/"+gConfig.theme+"/assets/images/flags/us.jpg";
         } 
         else if (lang == 'sp') {
             loc = "es-ES";
-            document.getElementById("header-lang-img").src = "themes/"+config.theme+"/assets/images/flags/spain.jpg";
+            document.getElementById("header-lang-img").src = "themes/"+gConfig.theme+"/assets/images/flags/spain.jpg";
         }
         else if (lang == 'gr') {
             loc = "de-DE";
-            document.getElementById("header-lang-img").src = "themes/"+config.theme+"/assets/images/flags/germany.jpg";
+            document.getElementById("header-lang-img").src = "themes/"+gConfig.theme+"/assets/images/flags/germany.jpg";
         }
         else if (lang == 'it') {
             loc = "it-IT";
@@ -24,43 +24,43 @@ function setLanguage(lang) {
         }
         else if (lang == 'ru') {
             loc = "ru-RU";
-            document.getElementById("header-lang-img").src = "themes/"+config.theme+"/assets/images/flags/russia.jpg";
+            document.getElementById("header-lang-img").src = "themes/"+gConfig.theme+"/assets/images/flags/russia.jpg";
         }
         else{
             loc = "en-US";
             lang = 'en';
-            document.getElementById("header-lang-img").src = "themes/"+config.theme+"/assets/images/flags/us.jpg";
+            document.getElementById("header-lang-img").src = "themes/"+gConfig.theme+"/assets/images/flags/us.jpg";
         }
-        language = lang;
+        gLanguage = lang;
         updateCookiePart("language",lang);
-        locale = loc;
-        updateCookiePart("locale",locale);
+        gLocale = loc;
+        updateCookiePart("locale",gLocale);
         getLanguage();
     }
 }
 
 // Multi language setting
 function getLanguage() {
-    (language == null) ? setLanguage(config.default_lang) : false;
-    $.getJSON('themes/'+config.theme+'/assets/lang/' + language + '.json', function (lang) {
-        $('html').attr('lang', language);
+    (gLanguage == null) ? setLanguage(gConfig.default_lang) : false;
+    $.getJSON('themes/'+gConfig.theme+'/assets/lang/' + gLanguage + '.json', function (lang) {
+        $('html').attr('lang', gLanguage);
         $.each(lang, function (index, val) {
             $("[key='" + index + "']").html(val);
         });
 
-        if (language == 'fr') {
+        if (gLanguage == 'fr') {
             $("#search").attr("placeholder", "Rechercher une position");
         } 
-        else if (language == 'sp') {
+        else if (gLanguage == 'sp') {
             $("#search").attr("placeholder", "Encontrar una ubicación");
         }
-        else if (language == 'gr') {
+        else if (gLanguage == 'gr') {
             $("#search").attr("placeholder", "Finden Sie einen Standort");
         }
-        else if (language == 'it') {
+        else if (gLanguage == 'it') {
             $("#search").attr("placeholder", "Trova una posizione");
         }
-        else if (language == 'ru') {
+        else if (gLanguage == 'ru') {
             $("#search").attr("placeholder", "Найти местоположение");
         }
         else{
@@ -78,23 +78,23 @@ var getFirstBrowserLanguage = function ()
     var nav = window.navigator,
     browserLanguagePropertyKeys = ['language', 'browserLanguage', 'systemLanguage', 'userLanguage'],
     i,
-    language;
+    lLanguage;
 
     // support for HTML 5.1 "navigator.languages"
     if (Array.isArray(nav.languages)) {
         for (i = 0; i < nav.languages.length; i++) {
-        language = nav.languages[i];
-        if (language && language.length) {
-            return language;
-        }
+            lLanguage = nav.languages[i];
+            if (lLanguage && lLanguage.length) {
+                return lLanguage;
+            }
         }
     }
 
     // support for other well known properties in browsers
     for (i = 0; i < browserLanguagePropertyKeys.length; i++) {
-        language = nav[browserLanguagePropertyKeys[i]];
-        if (language && language.length) {
-        return language;
+        lLanguage = nav[browserLanguagePropertyKeys[i]];
+        if (lLanguage && lLanguage.length) {
+            return lLanguage;
         }
     }
 

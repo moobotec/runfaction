@@ -1,4 +1,4 @@
-var idHover = {
+var gIdHover = {
     "year": 0,
     "time": 0,
     "day": 0,
@@ -6,7 +6,7 @@ var idHover = {
     "longitude": 0
 };
 
-var currentDate = {
+var gCurrentDate = {
     "valid": false,
     "year": null,
     "month": null,
@@ -17,7 +17,7 @@ var currentDate = {
     "epoch":null
 };
 
-var currentModalDate = {
+var gCurrentModalDate = {
     "valid": false,
     "year": null,
     "month": null,
@@ -28,7 +28,7 @@ var currentModalDate = {
     "epoch":null
 };
 
-var currentPosition = {
+var gCurrentPosition = {
     "valid": false,
     "galaxy": null,
     "planet": null,
@@ -38,7 +38,7 @@ var currentPosition = {
     "id":null
 };
 
-var currentModalPosition = {
+var gCurrentModalPosition = {
     "valid": false,
     "galaxy": null,
     "planet": null,
@@ -48,21 +48,19 @@ var currentModalPosition = {
     "id":null
 };
 
-var language = null;
-var locale = null;
-var notation = null; 
-var is_visited = null;
-var is_sync = null;
-var is_basemap = null;
-var map = null;
-var marker = null;
-var inputAuto = null;
-var currentZoom = null;
-var timerUpdateCountry = null;
+var gLanguage = null;
+var gLocale = null;
+var gNotation = null; 
+var gIsVisited = null;
+var gIsSync = null;
+var gIsBasemap = null;
+var gMap = null;
+var gMarker = null;
+var gInputAuto = null;
+var gCurrentZoom = null;
+var gTimerUpdateCountry = null;
 
-var def_suspension_points = "...";
-
-const config = {
+const gConfig = {
     mapLeaflet : {
         minZoom: 1,
         maxZoom: 18,
@@ -75,5 +73,7 @@ const config = {
     default_theme : 'light-mode-switch',
     default_sync : 'sync',
     default_basemap : 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    theme : 'timecapsule'
+    default_nominatim : 'https://nominatim.openstreetmap.org/',
+    theme : 'timecapsule',
+    default_suspension_points : '...'
 };

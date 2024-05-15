@@ -86,7 +86,7 @@ function setupClickButtonClock()
         else if ( $(this).attr('id') == "btClockModify" )
         {
             modifyCurrentDate();
-            updateContentClock('clock',currentDate,false);
+            updateContentClock('clock',gCurrentDate,false);
             $('#datetimeModal').modal('hide');
         }
         else
@@ -103,7 +103,7 @@ function setupHoverMonthDayInput()
         function() { // mouseenter
 
             let valueMax= parseInt($(this).attr('data-max'));
-            let currentValue = getMonthNumberFromName($(this).val(),locale) ;
+            let currentValue = getMonthNumberFromName($(this).val(),gLocale) ;
             let valueTop = currentValue - 1;
             let valueBottom = currentValue + 1;
         
@@ -111,8 +111,8 @@ function setupHoverMonthDayInput()
             let showBottom = (valueBottom < (valueMax + 1));
         
             updatePeripheralDigit('day','month',showTop,showBottom,
-                convertMonthNumberToName(valueTop,locale),
-                convertMonthNumberToName(valueBottom,locale));
+                convertMonthNumberToName(valueTop,gLocale),
+                convertMonthNumberToName(valueBottom,gLocale));
         },
         function() { // mouseleave
             updatePeripheralDigit('day','month', false, false, 0 , 0);
@@ -216,7 +216,7 @@ function setupHoverPlanetUniversInput()
 {
     $('#planet_univers_input').hover(
         function() { // mouseenter
-            let currentValue = getIdPlanetByString($(this).val(),language);
+            let currentValue = getIdPlanetByString($(this).val(),gLanguage);
             let valueTop = currentValue - 1;
             let valueBottom = currentValue + 1;
 
@@ -224,8 +224,8 @@ function setupHoverPlanetUniversInput()
             let showBottom = (valueBottom < (getPlanetCount()));
             
             updatePeripheralDigit('univers','planet',showTop,showBottom,
-            (showTop) ? getPlanetByLangById(valueTop,language) : 0,
-            (showBottom) ? getPlanetByLangById(valueBottom,language) : 0);
+            (showTop) ? getPlanetByLangById(valueTop,gLanguage) : 0,
+            (showBottom) ? getPlanetByLangById(valueBottom,gLanguage) : 0);
         },
         function() { // mouseleave
             updatePeripheralDigit('univers','planet', false, false, 0 ,0);
@@ -237,7 +237,7 @@ function setupHoverGalaxyUniversInput()
 {
     $('#galaxy_univers_input').hover(
         function() { // mouseenter
-            let currentValue = getIdGalaxyByString($(this).val(),language);
+            let currentValue = getIdGalaxyByString($(this).val(),gLanguage);
             let valueTop = currentValue - 1;
             let valueBottom = currentValue + 1;
 
@@ -245,8 +245,8 @@ function setupHoverGalaxyUniversInput()
             let showBottom = (valueBottom < (getGalaxyCount()));
             
             updatePeripheralDigit('univers','galaxy',showTop,showBottom,
-            ( showTop ) ? getGalaxyByLangById(valueTop,language) : 0,
-            ( showBottom ) ? getGalaxyByLangById(valueBottom,language) : 0);
+            ( showTop ) ? getGalaxyByLangById(valueTop,gLanguage) : 0,
+            ( showBottom ) ? getGalaxyByLangById(valueBottom,gLanguage) : 0);
         },
         function() { // mouseleave
             updatePeripheralDigit('univers','galaxy', false, false, 0 , 0);
@@ -282,14 +282,14 @@ function setupClickButtonLocation()
         }
         else if ( $(this).attr('id') == "btLocationModify" )
         {
-            if (currentModalPosition.id != null)
+            if (gCurrentModalPosition.id != null)
             {
-                let ret = axiosFindJsonStreetMapById(currentModalPosition.id,updateCountrySuccess,updateCountryError);
+                let ret = axiosFindJsonStreetMapById(gCurrentModalPosition.id,updateCountrySuccess,updateCountryError);
                 if ( ret == false) updateCountryError();
             }
             else
             {
-                let ret = axiosFindJsonStreetMapByCoordonate(currentModalPosition.latitude,currentModalPosition.longitude,updateCountrySuccess,updateCountryError);
+                let ret = axiosFindJsonStreetMapByCoordonate(gCurrentModalPosition.latitude,gCurrentModalPosition.longitude,updateCountrySuccess,updateCountryError);
                 if ( ret == false) updateCountryError();
             }
         }
@@ -298,28 +298,28 @@ function setupClickButtonLocation()
             const mode = $(this).attr('id').replace('btLocation', '');
             if (mode == 'Pays')
             {
-                const hasCarto = hasCartoPlanetByLangById(currentModalPosition.planet);
+                const hasCarto = hasCartoPlanetByLangById(gCurrentModalPosition.planet);
                 if (hasCarto == 'true')
                 {
                     $('#location'+ mode).addClass('active');
                     $('#modifLocation'+ mode).css("display", "block");
-                    map.invalidateSize(true);
+                    gMap.invalidateSize(true);
                 }
                 else
                 {
-                    if (language == 'fr') {
+                    if (gLanguage == 'fr') {
                         toastr.warning("Il n'est pas possible de rechercher une localisation pour cette planète.");
                     } 
-                    else if (language == 'sp') {
+                    else if (gLanguage == 'sp') {
                         toastr.warning("No es posible buscar una ubicación para este planeta.");
                     }
-                    else if (language == 'gr') {
+                    else if (gLanguage == 'gr') {
                         toastr.warning("Eine Standortsuche für diesen Planeten ist nicht möglich.");
                     }
-                    else if (language == 'it') {
+                    else if (gLanguage == 'it') {
                         toastr.warning("Non è possibile cercare una posizione per questo pianeta.");
                     }
-                    else if (language == 'ru') {
+                    else if (gLanguage == 'ru') {
                         toastr.warning("Невозможно найти местоположение этой планеты.");
                     }
                     else{
@@ -405,48 +405,38 @@ function addMarker(e)
 
 function setupAutocomplete()
 {
-    currentZoom = config.zoomLoc;
+    gCurrentZoom = gConfig.zoomLoc;
 
-    const lat = (currentPosition.latitude == null) ? 0.0 : currentPosition.latitude; 
-    const lng = (currentPosition.longitude == null) ? 0.0 : currentPosition.longitude; 
+    const lat = (gCurrentPosition.latitude == null) ? 0.0 : gCurrentPosition.latitude; 
+    const lng = (gCurrentPosition.longitude == null) ? 0.0 : gCurrentPosition.longitude; 
 
-    map = L.map("map", config.mapLeaflet).setView([lat, lng], config.zoom);
+    gMap = L.map("map", gConfig.mapLeaflet).setView([lat, lng], gConfig.zoom);
     
-    map.on('click', addMarker);
+    gMap.on('click', addMarker);
 
-    map.on('zoomend', function (e) {
-        currentZoom = e.target._zoom;
+    gMap.on('zoomend', function (e) {
+        gCurrentZoom = e.target._zoom;
     });
 
     // Used to load and display tile layers on the map
-    L.tileLayer(`${is_basemap}`, {
+    L.tileLayer(`${gIsBasemap}`, {
         attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map);
+    }).addTo(gMap);
 
-    inputAuto = new Autocomplete("search", {
+    gInputAuto = new Autocomplete("search", {
         selectFirst: true,
         insertToInput: true,
         cache: true,
         howManyCharacters: 2,
         // onSearch
         onSearch: ({ currentValue }) => {
-            // api
-
-            let eLang = null;
-            if (language  == "sp") eLang = "es";
-            else if (language  == "gr") eLang = "de";
-            else eLang = language;
-
-            const api = `https://nominatim.openstreetmap.org/search?format=geojson&limit=5&accept-language=${eLang}&city=${encodeURI(
-            currentValue
-            )}`;
-
+            
             /**
              * Promise
              */
             return new Promise((resolve) => {
-                fetch(api)
+                fetch(makePathSearch(currentValue))
                 .then((response) => response.json())
                 .then((data) => {
                     resolve(data.features);
@@ -462,19 +452,19 @@ function setupAutocomplete()
             const regex = new RegExp(currentValue, "gi");
             if (matches == 0)
             {
-                if (language == 'fr') {
+                if (gLanguage == 'fr') {
                     noresult = template.replace("No results found:","Aucun résultat trouvé:");
                 } 
-                else if (language == 'sp') {
+                else if (gLanguage == 'sp') {
                     noresult = template.replace("No results found:","No se han encontrado resultados:");
                 }
-                else if (language == 'gr') {
+                else if (gLanguage == 'gr') {
                     noresult = template.replace("No results found:","Keine Ergebnisse gefunden:");
                 }
-                else if (language == 'it') {
+                else if (gLanguage == 'it') {
                     noresult = template.replace("No results found:","Nessun risultato trovato:");
                 }
-                else if (language == 'ru') {
+                else if (gLanguage == 'ru') {
                     noresult = template.replace("No results found:","Результатов не найдено:");
                 }
                 else{
@@ -503,9 +493,9 @@ function setupAutocomplete()
     
         onSubmit: ({ object }) => {
             // remove all layers from the map
-            map.eachLayer(function (layer) {
+            gMap.eachLayer(function (layer) {
             if (!!layer.toGeoJSON) {
-                map.removeLayer(layer);
+                gMap.removeLayer(layer);
             }
             });
     
@@ -531,17 +521,17 @@ function setupShowBsModalPosition()
     $('#positionModal').on('shown.bs.modal', function(event) {
         copyCurrentLocation(false);
         prepareModalLocationContent();
-        map.invalidateSize(true);
+        gMap.invalidateSize(true);
     });
 }
 
 function setupShowBsModalConfiguration()
 {
     $('#configurationModal').on('show.bs.modal', function(event) {
-        $('#selectNotation').val(notation);
-        $('#selectTheme').val(is_visited);
-        $('#selectCarto').val(is_basemap);
-        $('#selectSync').val(is_sync);
+        $('#selectNotation').val(gNotation);
+        $('#selectTheme').val(gIsVisited);
+        $('#selectCarto').val(gIsBasemap);
+        $('#selectSync').val(gIsSync);
     });
 }
 
@@ -549,16 +539,16 @@ function setupClickButtonConfiModify()
 {
     $('#btConfigModify').click(function() 
     {
-        notation = $('#selectNotation').val();
-        is_visited = $('#selectTheme').val();
-        is_basemap = $('#selectCarto').val();
-        is_sync = $('#selectSync').val();
+        gNotation = $('#selectNotation').val();
+        gIsVisited = $('#selectTheme').val();
+        gIsBasemap = $('#selectCarto').val();
+        gIsSync = $('#selectSync').val();
 
-        updateCookiePart("theme",is_visited);
-        updateCookiePart("notation",notation);
-        updateCookiePart("basemap",is_basemap);
-        updateCookiePart("sync",is_sync);
-        updateThemeSetting(is_visited);
+        updateCookiePart("theme",gIsVisited);
+        updateCookiePart("notation",gNotation);
+        updateCookiePart("basemap",gIsBasemap);
+        updateCookiePart("sync",gIsSync);
+        updateThemeSetting(gIsVisited);
         updateCurrentClock();
 
         $('#configurationModal').modal('hide');
@@ -572,24 +562,24 @@ function setupClickButtonConfiModify()
     function initLanguage() 
     {
         // Auto Loader
-        locale = getLocalFromCookie();
-        language = getLanguageFromCookie();
+        gLocale = getLocalFromCookie();
+        gLanguage = getLanguageFromCookie();
 
         //format possible fr ou fr-FR
         const langueNavigator = getFirstBrowserLanguage().substring(0, 2);
         
-        if (language != null && language !== config.default_lang)
+        if (gLanguage != null && gLanguage !== gConfig.default_lang)
         {
-            setLanguage(language);
+            setLanguage(gLanguage);
         }
-        else  if (language == null && langueNavigator !== config.default_lang)
+        else  if (gLanguage == null && langueNavigator !== gConfig.default_lang)
         {
             setLanguage(langueNavigator);
         }
-        else if (language == null && langueNavigator == config.default_lang)
+        else if (gLanguage == null && langueNavigator == gConfig.default_lang)
         {
-            locale = config.default_loc;
-            language = config.default_lang;
+            gLocale = gConfig.default_loc;
+            gLanguage = gConfig.default_lang;
         }
 
         $('.language').on('click', function (e) {
@@ -599,10 +589,10 @@ function setupClickButtonConfiModify()
 
     function initSettings() 
     {
-        is_visited = getThemeFromCookie();
-        if (is_visited != null && is_visited !== config.default_theme)
+        gIsVisited = getThemeFromCookie();
+        if (gIsVisited != null && gIsVisited !== gConfig.default_theme)
         {
-            updateThemeSetting(is_visited);
+            updateThemeSetting(gIsVisited);
         }
     }
 
@@ -647,10 +637,10 @@ function setupClickButtonConfiModify()
 
     function initConfiguration()
     {
-        notation = getNotationFromCookie();
-        is_visited = getThemeFromCookie();
-        is_basemap = getBaseMapFromCookie();   
-        is_sync = getSyncFromCookie();
+        gNotation = getNotationFromCookie();
+        gIsVisited = getThemeFromCookie();
+        gIsBasemap = getBaseMapFromCookie();   
+        gIsSync = getSyncFromCookie();
         setupShowBsModalConfiguration();
         setupClickButtonConfiModify();
     }

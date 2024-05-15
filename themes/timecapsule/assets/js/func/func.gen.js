@@ -29,7 +29,7 @@ function hoverMouseEnter(inputElement,type)
     let valueBottom =  parseInt($(inputElement).val()) + 1;
     let id = $(inputElement).attr('id').replace('code_'+type+'_input_', '');
     let valueMax= parseInt($(inputElement).attr('data-max'));
-    idHover[type] = id;
+    gIdHover[type] = id;
     let showTop = (valueTop >= 0);
     let showBottom = (valueBottom < (valueMax + 1));
     updatePeripheralDigit(type,id, showTop, showBottom, valueTop ,valueBottom);
@@ -38,7 +38,7 @@ function hoverMouseEnter(inputElement,type)
 function hoverMouseLeave(inputElement,type) 
 {
     let id = $(inputElement).attr('id').replace('code_'+type+'_input_', '');
-    idHover[type]  = 0;
+    gIdHover[type]  = 0;
     updatePeripheralDigit(type,id, false, false, 0 ,0);
 }
 
@@ -78,7 +78,7 @@ function setValueInput(inputElement,value,type)
     let valueBottom =  parseInt(value) + 1;
     let id = $(inputElement).attr('id').replace('code_'+type+'_input_', '');
     let valueMax =  parseInt($(inputElement).attr('data-max'));
-    if (id == idHover[type])
+    if (id == gIdHover[type])
     {
         let showTop = (valueTop >= 0);
         let showBottom = (valueBottom < (valueMax + 1));
@@ -198,7 +198,7 @@ function touchSign(inputElement, event, type)
 
 function setValueInputPlanet(inputElement,value,maxValue) 
 {
-    inputElement.value = getPlanetByLangById(value,language);
+    inputElement.value = getPlanetByLangById(value,gLanguage);
     updateFinalValue('planet');
 
     let valueTop = parseInt(value) - 1;
@@ -208,13 +208,13 @@ function setValueInputPlanet(inputElement,value,maxValue)
     let showBottom = (valueBottom < (maxValue + 1));
 
     updatePeripheralDigit('univers','planet',showTop,showBottom,
-        ( showTop ) ? getPlanetByLangById(valueTop,language) : 0,
-        ( showBottom ) ? getPlanetByLangById(valueBottom,language) : 0);
+        ( showTop ) ? getPlanetByLangById(valueTop,gLanguage) : 0,
+        ( showBottom ) ? getPlanetByLangById(valueBottom,gLanguage) : 0);
 }
 
 function setValueInputGalaxy(inputElement,value,maxValue) 
 {
-    inputElement.value = getGalaxyByLangById(value,language);
+    inputElement.value = getGalaxyByLangById(value,gLanguage);
     updateFinalValue('galaxy');
 
     let valueTop = parseInt(value) - 1;
@@ -224,8 +224,8 @@ function setValueInputGalaxy(inputElement,value,maxValue)
     let showBottom = (valueBottom < (maxValue + 1));
 
     updatePeripheralDigit('univers','galaxy',showTop,showBottom,
-        ( showTop ) ? getGalaxyByLangById(valueTop,language) : 0,
-        ( showBottom ) ? getGalaxyByLangById(valueBottom,language) : 0);
+        ( showTop ) ? getGalaxyByLangById(valueTop,gLanguage) : 0,
+        ( showBottom ) ? getGalaxyByLangById(valueBottom,gLanguage) : 0);
 }
 
 /* Gestionnaire de modification de la mollette de la souris */
@@ -272,7 +272,7 @@ function adjustOnScroll(event, inputElement,base,type)
     }
     else if (base == 'month')
     {
-        let currentValue = getMonthNumberFromName(inputElement.value,locale) ;
+        let currentValue = getMonthNumberFromName(inputElement.value,gLocale) ;
 
         // Incrémenter ou décrémenter la valeur en fonction de la direction du scroll
         currentValue += delta < 0 ? -1 : 1;
@@ -301,7 +301,7 @@ function adjustOnScroll(event, inputElement,base,type)
     }
     else if (base == 'planet')
     {
-        let currentValue = getIdPlanetByString(inputElement.value,language);
+        let currentValue = getIdPlanetByString(inputElement.value,gLanguage);
 
         // Incrémenter ou décrémenter la valeur en fonction de la direction du scroll
         currentValue += delta < 0 ? -1 : 1;
@@ -313,7 +313,7 @@ function adjustOnScroll(event, inputElement,base,type)
     }
     else if (base == 'galaxy')
     {
-        let currentValue = getIdGalaxyByString(inputElement.value,language);
+        let currentValue = getIdGalaxyByString(inputElement.value,gLanguage);
 
         // Incrémenter ou décrémenter la valeur en fonction de la direction du scroll
         currentValue += delta < 0 ? -1 : 1;
@@ -360,21 +360,21 @@ function updateFinalValue(type)
         hours = parseInt(numberString.substring(0,2));
         let minutes = parseInt(numberString.substring(2,4));
         if (minutes >= 60) minutes = 59;
-        currentModalDate.minutes = minutes;
+        gCurrentModalDate.minutes = minutes;
 
         let suffix = ' '; 
-        if ( notation == "12h" )
+        if ( gNotation == "12h" )
         {
             suffix = "<small> "+ $('#prefix_time_input').val() + " </small>";
             hours = computeHours(hours);
-            currentModalDate.hours = hours + (($('#prefix_time_input').val() == "PM") ? 12 : -12 );
-            if (currentModalDate.hours >= 24) currentModalDate.hours -= 12;
-            if (currentModalDate.hours < 0) currentModalDate.hours += 12;
+            gCurrentModalDate.hours = hours + (($('#prefix_time_input').val() == "PM") ? 12 : -12 );
+            if (gCurrentModalDate.hours >= 24) gCurrentModalDate.hours -= 12;
+            if (gCurrentModalDate.hours < 0) gCurrentModalDate.hours += 12;
         }
         else
         {
             if (hours >= 24) hours = 23;
-            currentModalDate.hours = hours;
+            gCurrentModalDate.hours = hours;
         }
         
         fillInterTime(suffix,hours,minutes);
@@ -428,12 +428,46 @@ function updateFinalValue(type)
 
 function updateCountryTimeOut() {
     // Initialiser le timer
-    if (timerUpdateCountry != null)
+    if (gTimerUpdateCountry != null)
     {
-        clearTimeout(timerUpdateCountry);
+        clearTimeout(gTimerUpdateCountry);
     }
-    timerUpdateCountry = setTimeout(function() {
-        timerUpdateCountry = null;
-        axiosFindJsonStreetMapByCoordonate(currentModalPosition.latitude,currentModalPosition.longitude,updateModalSuccess,updateModalError);
+    gTimerUpdateCountry = setTimeout(function() {
+        gTimerUpdateCountry = null;
+        axiosFindJsonStreetMapByCoordonate(gCurrentModalPosition.latitude,gCurrentModalPosition.longitude,updateModalSuccess,updateModalError);
     }, 1000);
+}
+
+function adaptLanguageForPath() 
+{
+    let lLang = null;
+    if (gLanguage == "sp") {
+        lLang = "es";
+    } else if (gLanguage == "gr") {
+        lLang = "de";
+    } else {
+        lLang = gLanguage;
+    }
+    return lLang;
+}
+
+function makePathLookup(osmIds) 
+{
+    const lLang = adaptLanguageForPath();
+    const path = `${gConfig.default_nominatim}lookup?osm_ids=${osmIds}&accept-language=${lLang}&format=json`;
+    return path;
+}
+
+function makePathSearch(city) 
+{
+    const lLang = adaptLanguageForPath();
+    const path = `${gConfig.default_nominatim}search?format=geojson&limit=5&accept-language=${lLang}&city=${encodeURI(city)}`;
+    return path;
+}
+
+function makePathReverse(latitude,longitude) 
+{
+    const lLang = adaptLanguageForPath();
+    const path = `${gConfig.default_nominatim}reverse?lat=${latitude}&lon=${longitude}&zoom=${gCurrentZoom}&accept-language=${lLang}&format=json`;
+    return path;
 }
