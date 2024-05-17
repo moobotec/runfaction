@@ -147,6 +147,11 @@ h1,h2,h3
     justify-content: center; /* Centre les éléments horizontalement */
 }
 
+#zone1, #zone2, #zone3, #zone4  {
+    transition: all 0.5s ease-in-out;
+    overflow: hidden;
+}
+
 .close-btn {
     position: absolute;
     top: 10px;
@@ -458,6 +463,31 @@ textarea {
   max-width: 100%;
 }
 
+.my-image {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.content-success {
+    padding: 10px;
+    margin-top: 5px;
+    border: 2px solid #88ff88;
+    border-radius: 4px;
+    background-color: #A9D3E0;
+    font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
+}
+
+.content-success input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #88ff88;
+    border-radius: 4px;
+    background-color: #A9D3E0;
+    font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
+}
+
 </style>
 
 <div class="d-flex justify-content-between">
@@ -549,7 +579,7 @@ textarea {
                         <button type="button" class="buttons-step btn btn-light waves-effect waves-light" id="nextThrow" >Etape suivante <i class="p-2 mdi mdi-arrow-right-bold-outline"></i></button>
                     </div>    
                 </div> 
-                <div id="secondeStepThrow" >
+                <div id="secondStepThrow">
                     <div class="content m-auto">
                         <div class="left-side">
                             <form>
@@ -562,22 +592,58 @@ textarea {
                         <div id="leaflet-map-popup" class="leaflet-map-custom"></div>
                         </div>
                     </div>
-                    
                     <div class="file-upload pb-3">
-                    <div class="drop-zone-2">
-                    <div class="p-4 form-group row"><div class="col-sm-12">
-                        <ul class="mailbox-attachments" id="listFile_1" style="display:block">   
-                            <li id="indexFile_1_1"><span class="mailbox-attachment-icon" style="background-color:#F8F9FA;"><i class="far fa-file-pdf"></i></span><div class="mailbox-attachment-info"><span class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> 2024-OJS063-00185709-fr-ts.pdf</span><span class="mailbox-attachment-size clearfix mt-1"><span>99.82 KiB</span></div></li>    
-                            <li id="indexFile_1_1"><span class="mailbox-attachment-icon" style="background-color:#F8F9FA;"><i class="far fa-file-pdf"></i></span><div class="mailbox-attachment-info"><span class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> 2024-OJS063-00185709-fr-ts.pdf</span><span class="mailbox-attachment-size clearfix mt-1"><span>99.82 KiB</span></div></li>    
-                        </ul>
-                    </div>
-                    </div>    
-                </div>
+                        <div class="drop-zone-2">
+                            <div class="p-4 form-group row">
+                                <div class="col-sm-12">
+                                <ul class="mailbox-attachments" id="listFile_1" style="display:block">   
+                                    <li id="indexFile_1_1"><span class="mailbox-attachment-icon" style="background-color:#F8F9FA;"><i class="far fa-file-pdf"></i></span><div class="mailbox-attachment-info"><span class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> 2024-OJS063-00185709-fr-ts.pdf</span><span class="mailbox-attachment-size clearfix mt-1"><span>99.82 KiB</span></div></li>    
+                                    <li id="indexFile_1_1"><span class="mailbox-attachment-icon" style="background-color:#F8F9FA;"><i class="far fa-file-pdf"></i></span><div class="mailbox-attachment-info"><span class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> 2024-OJS063-00185709-fr-ts.pdf</span><span class="mailbox-attachment-size clearfix mt-1"><span>99.82 KiB</span></div></li>    
+                                </ul>
+                                </div>
+                            </div>    
+                        </div>
                     </div>
                     <div class="d-flex justify-content-between p-1">
                         <button type="button" class="buttons-step btn btn-light waves-effect waves-light" id="previousThrow"><i class="p-2 mdi mdi-arrow-left-bold-outline"></i> Etape précédente</button>
                         <button type="button" class="buttons-step btn btn-light waves-effect waves-light" id="validThrow">Jeter <i class="p-2 mdi mdi-email-send-outline"></i></button>
                     </div>    
+                </div> 
+                <div id="endStepThrow">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8 col-lg-6 col-xl-5">
+                            <div class="content-success m-auto">
+                                <div class=""> 
+                                    <div class="p-2">
+                                        <div class="text-center">
+                                            <div class="avatar-md mx-auto">
+                                                <div class="avatar-title rounded-circle bg-light">
+                                                    <i class="bx bx-mail-send h1 mb-0 text-primary"></i>
+                                                </div>
+                                            </div>
+                                            <div class=" mt-2 pr-1" >
+                                                <h4>Partager le avec vos amis ! </h4>
+                                                <h4 class="pb-2">Scanner le QrCode ! </h4>
+                                                <img  class="my-image p-2" src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/qrcode1.png';?>" alt="qrcode">
+                                                <h4 class="pt-2">Ou bien copier ce lien ! </h4>
+                                                <input type="text" value="http://otot/1254545454g54dgqsddsfdsf" disabled />
+                                            </div>
+                                            
+                                            <div class="mt-2">
+                                            <hr>
+                                                <p class="text-muted">Dans le ballet infini des vagues, une bouteille, abandonnée à son sort, danse au gré des courants, voguant vers l'inconnu. Elle est le messager muet des hommes, porteur d'un secret enfoui dans son ventre de verre. Lancée à la mer, elle entame un voyage poétique, une odyssée solitaire à travers les océans.</p>
+                                                <div class="d-flex justify-content-center mt-2">
+                                                    <button type="button" class="buttons-step btn btn-light waves-effect waves-light" >Recommencer</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div> 
             </div>
             <div class="content-zone-text m-auto"><h2 key="t-sea">&Agrave; la mer.</h2></div>

@@ -701,17 +701,26 @@ function setupClickButtonConfiModify()
         initDate();
         initLocation();
 
-        $('#secondeStepThrow').css("display", "none");
+        $('#secondStepThrow').css("display", "none");
+        $('#endStepThrow').css("display", "none");
+
         $('#nextThrow').click(function() {
             $('#firstStepThrow').css("display", "none");
-            $('#secondeStepThrow').css("display", "block");
+            $('#secondStepThrow').css("display", "block");
             updateThrowMarkerToMap([gCurrentPosition.latitude, gCurrentPosition.longitude],null);
             gThrowMap.invalidateSize(true);
         });
         $('#previousThrow').click(function() {
             $('#firstStepThrow').css("display", "block");
-            $('#secondeStepThrow').css("display", "none");
+            $('#secondStepThrow').css("display", "none");
         });
+
+        $('#validThrow').click(function() {
+            $('#firstStepThrow').css("display", "none");
+            $('#secondStepThrow').css("display", "none");
+            $('#endStepThrow').css("display", "block");
+        });
+
     }
 
     init();
