@@ -3,6 +3,7 @@ function expandZone(selectedZoneId) {
     const zones = ['zone1', 'zone2', 'zone3', 'zone4'];
     zones.forEach(zone => {
         const element = document.getElementById(zone);
+        const throwMessage = element.querySelector('.throw-message');
         const closeButton = element.querySelector('.close-btn');
         const content = element.querySelector('.content-zone-text');
         const h2 = element.querySelector('h2');
@@ -12,7 +13,8 @@ function expandZone(selectedZoneId) {
             element.classList.remove('col-6');
             element.style.height = "75vh";
             closeButton.style.display = 'block'; // Show close button
-            content.classList.add('hidden-content-zone-text');
+            if (typeof throwMessage != 'undefined' && throwMessage != null) throwMessage.style.display = 'block';
+            content.style.display = 'none';
             document.getElementById('zoneTitle-'+selectedZoneId).style.display = "block";
         } else {
             document.getElementById('zoneTitle-'+zone).style.display = "none";
@@ -20,8 +22,8 @@ function expandZone(selectedZoneId) {
             element.style.height = "0";
             element.style.opacity = "0";
             closeButton.style.display = 'none'; // Hide close button
-            content.classList.add('hidden-content-zone-text');
         }
+        content.style.display = 'none';
     });
 }
 
@@ -30,9 +32,9 @@ function closeZone(event, zoneId) {
     const zones = ['zone1', 'zone2', 'zone3', 'zone4'];
     const zoneTitle = document.getElementById('zoneTitle');
     zoneTitle.style.display = "block";
-   
     zones.forEach(zone => {
         const element = document.getElementById(zone);
+        const throwMessage = element.querySelector('.throw-message');
         const closeButton = element.querySelector('.close-btn');
         const content = element.querySelector('.content-zone-text');
         if (zone === zoneId) {
@@ -42,14 +44,14 @@ function closeZone(event, zoneId) {
             element.style.flex = "0 0 50%";
             element.style.height = "38vh";
             closeButton.style.display = 'none'; // Hide close button
-            content.classList.remove('hidden-content-zone-text');
+            if (typeof throwMessage != 'undefined' && throwMessage != null) throwMessage.style.display = 'none';
         } else {
             document.getElementById('zoneTitle-'+zone).style.display = "none";
             element.style.width = "50%";
             element.style.height = "38vh";
             element.style.opacity = "1";
-            content.classList.remove('hidden-content-zone-text');
         }
+        content.style.display = 'block';
     });
 
     event.stopPropagation(); // Prevent the expandZone event
@@ -375,7 +377,7 @@ function updateMapSuccess(dataObject,latitude,longitude)
     updateCountry(country);
     updateId(osm_id,osm_type);
 
-    let display_name = `latitude=${latitude} longitude=${longitude}`;
+    let display_name = null;
     if (dataObject != null && dataObject.display_name !== undefined)
     {
         display_name = dataObject.display_name ;
@@ -392,8 +394,7 @@ function updateMapError(dataObject,latitude,longitude)
     updateCountry(country);
     updateId(osm_id,osm_type);
 
-    let display_name = `latitude=${latitude} longitude=${longitude}`;
-    updateMarkerToMap([latitude, longitude],display_name);
+    updateMarkerToMap([latitude, longitude],null);
 }
 
 function addMarker(e)
@@ -416,6 +417,28 @@ function setupAutocomplete()
 
     const lat = (gCurrentPosition.latitude == null) ? 0.0 : gCurrentPosition.latitude; 
     const lng = (gCurrentPosition.longitude == null) ? 0.0 : gCurrentPosition.longitude; 
+
+
+    /*gThrowMap = L.map('leaflet-map-popup').setView([51.505, -0.09], 13);
+
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        maxZoom: 18,
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+            '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1
+    }).addTo(gThrowMap);*/
+
+    gThrowMap = L.map('leaflet-map-popup', gConfig.mapLeaflet).setView([lat, lng], gConfig.zoom);
+    
+    // Used to load and display tile layers on the map
+    L.tileLayer(`${gIsBasemap}`, {
+        attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(gThrowMap);
+
 
     gMap = L.map("map", gConfig.mapLeaflet).setView([lat, lng], gConfig.zoom);
     
@@ -677,6 +700,18 @@ function setupClickButtonConfiModify()
         initConfiguration();
         initDate();
         initLocation();
+
+        $('#secondeStepThrow').css("display", "none");
+        $('#nextThrow').click(function() {
+            $('#firstStepThrow').css("display", "none");
+            $('#secondeStepThrow').css("display", "block");
+            updateThrowMarkerToMap([gCurrentPosition.latitude, gCurrentPosition.longitude],null);
+            gThrowMap.invalidateSize(true);
+        });
+        $('#previousThrow').click(function() {
+            $('#firstStepThrow').css("display", "block");
+            $('#secondeStepThrow').css("display", "none");
+        });
     }
 
     init();

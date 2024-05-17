@@ -512,19 +512,37 @@ function axiosFindJsonStreetMapByCoordonate(latitude,longitude,callbackSuccess,c
 
 function updateMarkerToMap(coord,title)
 {
-    if (coord != null && title != null)
+    if (coord != null)
     {
         const lat = coord[0].toFixed(4);
         const lng = coord[1].toFixed(4);
 
         if ( gMarker != null ) {
-            gMap.removeLayer(gMarker)
+            gMap.removeLayer(gMarker);
         }
         let popup = (title == null) ? `lat=${lat} lng=${lng}` : title;
         gMarker = L.marker(coord, { title: popup, });
         gMarker.bindPopup(popup);
         gMap.addLayer(gMarker);
         gMap.setView(coord, gCurrentZoom);
+    }
+}
+
+function updateThrowMarkerToMap(coord,title)
+{
+    if (coord != null)
+    {
+        const lat = coord[0].toFixed(4);
+        const lng = coord[1].toFixed(4);
+
+        if ( gThrowMarker != null ) {
+            gThrowMap.removeLayer(gThrowMarker);
+        }
+        let popup = (title == null) ? `lat=${lat} lng=${lng}` : title;
+        gThrowMarker = L.marker(coord, { title: popup, });
+        gThrowMarker.bindPopup(popup);
+        gThrowMap.addLayer(gThrowMarker);
+        gThrowMap.setView(coord, 3);
     }
 }
 
