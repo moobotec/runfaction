@@ -23,11 +23,41 @@
 /** @file  */
 use Steampixel\Component;
 
-?>
+$pages = $this->prop('pages', [
+'type' => 'string',
+'required' => true
+]);
 
+if (str_contains($pages,"index")  || str_contains($pages,"throw")  )
+{
+    $class_select_throw = "buttons-selected";
+}
+else
+{
+    $class_select_throw = "";
+}
+
+if (str_contains($pages,"find")  )
+{
+    $class_select_find = "buttons-selected";
+}
+else
+{
+    $class_select_find = "";
+}
+
+if (str_contains($pages,"about")  )
+{
+    $class_select_about = "buttons-selected";
+}
+else
+{
+    $class_select_about = "";
+}
+
+?>
 <style>
 
-    
 #page-topbar {
     align-items: center; /* Centrer les éléments verticalement */
     justify-content: space-between; /* Répartir l'espace entre les éléments */
@@ -158,18 +188,19 @@ use Steampixel\Component;
             </a>
         </div>
 
+
         <div class="center-buttons" style="border-right:  2px solid black;">
-            <button type="button" class="buttons-selected buttons-jeter text-uppercase btn header-item waves-effect " key="t-throw">
+            <button type="button" class="<?=$class_select_throw?> buttons-jeter text-uppercase btn header-item waves-effect" onclick="<?php echo 'window.location.href=\''.BASEPATH.'throw.php\'';?>;" key="t-throw">
                 Jeter
             </button>
         </div>
         <div class="center-buttons" style="border-right:  2px solid black;">
-            <button type="button" class="buttons-trouver text-uppercase btn header-item waves-effect" key="t-find">
+            <button type="button" class="<?=$class_select_find?> buttons-trouver text-uppercase btn header-item waves-effect" onclick="<?php echo 'window.location.href=\''.BASEPATH.'find.php\'';?>;" key="t-find">
                 Trouver
             </button>
         </div>
         <div class="center-buttons">
-            <button type="button" class="buttons-propos text-uppercase btn header-item waves-effect" key="t-about">
+            <button type="button" class="<?=$class_select_about?> buttons-propos text-uppercase btn header-item waves-effect" onclick="<?php echo 'window.location.href=\''.BASEPATH.'about.php\'';?>;" key="t-about">
                 &Agrave; propos
             </button>
         </div>

@@ -34,4 +34,16 @@ Route::add('/index.php', function() {
     Component::create('guest/index')->print();
 }, 'get');
 
+Route::add('/throw.php', function() {
+    Component::create('guest/throw')->print();
+}, 'get');
+
+Route::add('/find.php', function() {
+    Component::create('guest/find')->print();
+}, 'get');
+
+Route::add('/about.php', function() {
+    Component::create('guest/about')->print();
+}, 'get');
+
 ?>

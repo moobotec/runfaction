@@ -42,25 +42,28 @@ echo '<script src="'.BASEPATH.'themes/'.THEME.'/assets/libs/jquery/jquery.min.js
 echo '<!-- Base js -->
 <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/base.js?='.time().'"></script>';
 
-echo '<!-- func.global js -->
-<script src="'.BASEPATH.'themes/'.THEME.'/assets/js/func/func.global.js?='.time().'"></script>
-<!-- func.time js -->
-<script src="'.BASEPATH.'themes/'.THEME.'/assets/js/func/func.time.js?='.time().'"></script>
-<!-- func.location js -->
-<script src="'.BASEPATH.'themes/'.THEME.'/assets/js/func/func.location.js?='.time().'"></script>
-<!-- func.lang js -->
-<script src="'.BASEPATH.'themes/'.THEME.'/assets/js/func/func.lang.js?='.time().'"></script>
-<!-- func.gen js -->
-<script src="'.BASEPATH.'themes/'.THEME.'/assets/js/func/func.gen.js?='.time().'"></script>
-<!-- func.cookie js -->
-<script src="'.BASEPATH.'themes/'.THEME.'/assets/js/func/func.cookie.js?='.time().'"></script>
-<!-- func.theme js -->
-<script src="'.BASEPATH.'themes/'.THEME.'/assets/js/func/func.theme.js?='.time().'"></script>
-';
+if (str_contains($pages,"index") || str_contains($pages,"find") )
+{
+     echo '<!-- func.global js -->
+     <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/func/func.global.js?='.time().'"></script>
+     <!-- func.time js -->
+     <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/func/func.time.js?='.time().'"></script>
+     <!-- func.location js -->
+     <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/func/func.location.js?='.time().'"></script>
+     <!-- func.lang js -->
+     <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/func/func.lang.js?='.time().'"></script>
+     <!-- func.gen js -->
+     <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/func/func.gen.js?='.time().'"></script>
+     <!-- func.cookie js -->
+     <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/func/func.cookie.js?='.time().'"></script>
+     <!-- func.theme js -->
+     <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/func/func.theme.js?='.time().'"></script>
+     ';
+     echo '<!-- Timecapsule js -->
+     <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/timecapsule.js?='.time().'"></script>';
+}
 
 
-echo '<!-- Timecapsule js -->
-<script src="'.BASEPATH.'themes/'.THEME.'/assets/js/timecapsule.js?='.time().'"></script>';
 
 echo '<!-- App js -->
 <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/app.js"></script>';
