@@ -4,8 +4,16 @@ function expandZone(selectedZoneId) {
     zones.forEach(zone => {
         const element = document.getElementById(zone);
         const throwMessage = element.querySelector('.throw-message');
+        const digMessage = element.querySelector('.dig-message');
+        const spaceMessage = element.querySelector('.space-message');
+        const timeMessage = element.querySelector('.time-message');
         const closeButton = element.querySelector('.close-btn');
         const content = element.querySelector('.content-zone-text');
+
+        element.querySelectorAll('.corner-image-bottom-right, .corner-image-bottom-left, .corner-image-top-right, .corner-image-top-left').forEach(function(element) {
+            $(element).css('display', 'none');
+        });
+
         const h2 = element.querySelector('h2');
         if (zone === selectedZoneId) {
             element.style.flex = "1 1 100%";
@@ -14,6 +22,9 @@ function expandZone(selectedZoneId) {
             element.style.height = "75vh";
             closeButton.style.display = 'block'; // Show close button
             if (typeof throwMessage != 'undefined' && throwMessage != null) throwMessage.style.display = 'block';
+            if (typeof digMessage != 'undefined' && digMessage != null) digMessage.style.display = 'block';
+            if (typeof spaceMessage != 'undefined' && spaceMessage != null) spaceMessage.style.display = 'block';
+            if (typeof timeMessage != 'undefined' && timeMessage != null) timeMessage.style.display = 'block';
             content.style.display = 'none';
             document.getElementById('zoneTitle-'+selectedZoneId).style.display = "block";
         } else {
@@ -35,8 +46,16 @@ function closeZone(event, zoneId) {
     zones.forEach(zone => {
         const element = document.getElementById(zone);
         const throwMessage = element.querySelector('.throw-message');
+        const digMessage = element.querySelector('.dig-message');
+        const spaceMessage = element.querySelector('.space-message');
+        const timeMessage = element.querySelector('.time-message');
         const closeButton = element.querySelector('.close-btn');
         const content = element.querySelector('.content-zone-text');
+
+        element.querySelectorAll('.corner-image-bottom-right, .corner-image-bottom-left, .corner-image-top-right, .corner-image-top-left').forEach(function(element) {
+            $(element).css('display', 'block');
+        });
+
         if (zone === zoneId) {
             document.getElementById('zoneTitle-'+zone).style.display = "none";
             element.classList.remove('col-12');
@@ -45,6 +64,9 @@ function closeZone(event, zoneId) {
             element.style.height = "38vh";
             closeButton.style.display = 'none'; // Hide close button
             if (typeof throwMessage != 'undefined' && throwMessage != null) throwMessage.style.display = 'none';
+            if (typeof digMessage != 'undefined' && digMessage != null) digMessage.style.display = 'none';
+            if (typeof spaceMessage != 'undefined' && spaceMessage != null) spaceMessage.style.display = 'none';
+            if (typeof timeMessage != 'undefined' && timeMessage != null) timeMessage.style.display = 'none';
         } else {
             document.getElementById('zoneTitle-'+zone).style.display = "none";
             element.style.width = "50%";
@@ -703,6 +725,7 @@ function setupClickButtonConfiModify()
 
         $('#secondStepThrow').css("display", "none");
         $('#endStepThrow').css("display", "none");
+        $('#delayStepThrow').css("display", "none");
 
         $('#nextThrow').click(function() {
             $('#firstStepThrow').css("display", "none");
@@ -710,6 +733,7 @@ function setupClickButtonConfiModify()
             updateThrowMarkerToMap([gCurrentPosition.latitude, gCurrentPosition.longitude],null);
             gThrowMap.invalidateSize(true);
         });
+
         $('#previousThrow').click(function() {
             $('#firstStepThrow').css("display", "block");
             $('#secondStepThrow').css("display", "none");
@@ -718,9 +742,31 @@ function setupClickButtonConfiModify()
         $('#validThrow').click(function() {
             $('#firstStepThrow').css("display", "none");
             $('#secondStepThrow').css("display", "none");
-            $('#endStepThrow').css("display", "block");
+            $('#delayStepThrow').css("display", "block");
+
+            let progress = 0;
+            $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress).text(progress + '%');
+
+            const interval = setInterval(function() {
+                progress += 1;
+                $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress).text(progress + '%');
+                if (progress >= 100) {
+                    clearInterval(interval);
+
+                    setTimeout(function() {
+                        $('#delayStepThrow').css("display", "none");
+                        $('#endStepThrow').css("display", "block");
+                    }, 800);
+                   
+                }
+            }, 100);
         });
 
+        $('#resetThrow').click(function() {
+           $('#firstStepThrow').css("display", "block");
+            $('#secondStepThrow').css("display", "none");
+            $('#endStepThrow').css("display", "none");
+        });
     }
 
     init();

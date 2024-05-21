@@ -183,6 +183,13 @@ h1,h2,h3
     height: auto;
 }
 
+.dig-message,
+.space-message,
+.time-message
+{
+    display: none; /* Initially hidden */
+}
+
 .content {
     display: flex;
     justify-content: space-between;
@@ -488,6 +495,58 @@ textarea {
     font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
 }
 
+.corner-image-bottom-right {
+    position: absolute;
+    bottom: 1px; /* Distance du bas du div */
+    right: 1px;  /* Distance du côté droit du div */
+    width: 20%;   /* Largeur relative au div parent */
+    height: auto; /* Maintenir le ratio d'aspect */
+    max-width: 100px; /* Taille maximale de l'image */
+    max-height: 100px; /* Hauteur maximale de l'image */
+    opacity: 0; /* Rendre l'image invisible par défaut */
+    transition: opacity 0.3s ease; /* Transition douce pour l'opacité */
+}
+
+.corner-image-bottom-left {
+    position: absolute;
+    bottom: 1px; /* Distance du bas du div */
+    left: 1px;  /* Distance du côté droit du div */
+    width: 20%;   /* Largeur relative au div parent */
+    height: auto; /* Maintenir le ratio d'aspect */
+    max-width: 100px; /* Taille maximale de l'image */
+    max-height: 100px; /* Hauteur maximale de l'image */
+    opacity: 0; /* Rendre l'image invisible par défaut */
+    transition: opacity 0.3s ease; /* Transition douce pour l'opacité */
+}
+
+.corner-image-top-right {
+    position: absolute;
+    top: 1px; /* Distance du bas du div */
+    right: 1px;  /* Distance du côté droit du div */
+    width: 20%;   /* Largeur relative au div parent */
+    height: auto; /* Maintenir le ratio d'aspect */
+    max-width: 100px; /* Taille maximale de l'image */
+    max-height: 100px; /* Hauteur maximale de l'image */
+    opacity: 0; /* Rendre l'image invisible par défaut */
+    transition: opacity 0.3s ease; /* Transition douce pour l'opacité */
+}
+
+.corner-image-top-left {
+    position: absolute;
+    top: 1px; /* Distance du bas du div */
+    left: 1px;  /* Distance du côté droit du div */
+    width: 20%;   /* Largeur relative au div parent */
+    height: auto; /* Maintenir le ratio d'aspect */
+    max-width: 100px; /* Taille maximale de l'image */
+    max-height: 100px; /* Hauteur maximale de l'image */
+    opacity: 0; /* Rendre l'image invisible par défaut */
+    transition: opacity 0.3s ease; /* Transition douce pour l'opacité */
+}
+
+.corner-image-bottom-right:hover, .corner-image-bottom-left:hover,.corner-image-top-right:hover, .corner-image-top-left:hover {
+    opacity: 1; /* Afficher l'image au survol */
+}
+
 </style>
 
 <div class="d-flex justify-content-between">
@@ -554,7 +613,7 @@ textarea {
                         <div class="drop-zone" onmouseover="changeImage('mouseover')" onmouseout="changeImage('mouseout')">
                             <div class="file-info-container">
                                 <p class="file-info">Formats de fichiers acceptés : JPG, PNG, MP4, MOV, WebM, TXT, DOCX, PDF</p>
-                                <p class="file-info">Jusqu'à 50 Mo gratuits</p>
+                                <p class="file-info">Jusqu'à 50 Mo</p>
                             </div>
                             <div class="zone d-flex flex-column">
                                 <div class="bottle" >
@@ -575,8 +634,11 @@ textarea {
                             </div> 
                         </div>
                     </div>
+                    <div class="d-flex justify-content-between p-1">
+                        <button type="button" class="buttons-step btn btn-light waves-effect waves-light" id="restartThrow"><i class="p-2 mdi mdi-refresh"></i> Recommencer</button>
+                        <button type="button" class="buttons-step btn btn-light waves-effect waves-light" id="nextThrow" >Suivant <i class="p-2 mdi mdi-arrow-right-bold-outline"></i></button>
+                    </div>
                     <div class="d-flex justify-content-end p-1">
-                        <button type="button" class="buttons-step btn btn-light waves-effect waves-light" id="nextThrow" >Etape suivante <i class="p-2 mdi mdi-arrow-right-bold-outline"></i></button>
                     </div>    
                 </div> 
                 <div id="secondStepThrow">
@@ -605,9 +667,36 @@ textarea {
                         </div>
                     </div>
                     <div class="d-flex justify-content-between p-1">
-                        <button type="button" class="buttons-step btn btn-light waves-effect waves-light" id="previousThrow"><i class="p-2 mdi mdi-arrow-left-bold-outline"></i> Etape précédente</button>
+                        <button type="button" class="buttons-step btn btn-light waves-effect waves-light" id="previousThrow"><i class="p-2 mdi mdi-arrow-left-bold-outline"></i> Retour</button>
                         <button type="button" class="buttons-step btn btn-light waves-effect waves-light" id="validThrow">Jeter <i class="p-2 mdi mdi-email-send-outline"></i></button>
-                    </div>    
+                    </div>
+                </div> 
+
+                <div id="delayStepThrow">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8 col-lg-6 col-xl-5">
+                            <div class="content-success m-auto">
+                                <div class=""> 
+                                    <div class="p-2">
+                                        <div class="text-center">
+                                            <div class="bottle mb-4" >
+                                                <img id="bottle-image" src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/bottle_delay.gif';?>" alt="Bottle">
+                                            </div>
+                                            <div class="mb-4">
+                                                <hr>
+                                                <p class="text-muted"><em>"Dans le ballet infini des vagues, une bouteille, abandonnée à son sort, danse au gré des courants, voguant vers l'inconnu. Elle est le messager muet des hommes, porteur d'un secret enfoui dans son ventre de verre. Lancée à la mer, elle entame un voyage poétique, une odyssée solitaire à travers les océans."</em></p>
+                                            </div>
+                                            <div class="m-4">
+                                                <div class="progress progress-xl">
+                                                    <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div> 
                 <div id="endStepThrow">
                     <div class="row justify-content-center">
@@ -616,51 +705,63 @@ textarea {
                                 <div class=""> 
                                     <div class="p-2">
                                         <div class="text-center">
-                                            <div class="avatar-md mx-auto">
-                                                <div class="avatar-title rounded-circle bg-light">
-                                                    <i class="bx bx-mail-send h1 mb-0 text-primary"></i>
-                                                </div>
-                                            </div>
+                                        <div class="bottle mb-4" >
+                                            <img id="bottle-image" src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/bottle_parchemin.png';?>" alt="Bottle">
+                                        </div>
                                             <div class=" mt-2 pr-1" >
-                                                <h4>Partager le avec vos amis ! </h4>
-                                                <h4 class="pb-2">Scanner le QrCode ! </h4>
+                                                <h4 class="pb-2">Partagez votre geste !</h4>
+                                                <h5 class="pb-2">Scannez ce QrCode :</h5>
                                                 <img  class="my-image p-2" src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/qrcode1.png';?>" alt="qrcode">
-                                                <h4 class="pt-2">Ou bien copier ce lien ! </h4>
-                                                <input type="text" value="http://otot/1254545454g54dgqsddsfdsf" disabled />
+                                                <h5 class="pt-2">Ou copiez ce lien :</h5>
+                                                <input type="text" class="text-center" value="http://otot/1254545454g54dgqsddsfdsf" disabled />
                                             </div>
-                                            
                                             <div class="mt-2">
                                             <hr>
-                                                <p class="text-muted">Dans le ballet infini des vagues, une bouteille, abandonnée à son sort, danse au gré des courants, voguant vers l'inconnu. Elle est le messager muet des hommes, porteur d'un secret enfoui dans son ventre de verre. Lancée à la mer, elle entame un voyage poétique, une odyssée solitaire à travers les océans.</p>
+                                            <div class="p-2">
+                                                <i class="bx bxl-twitter"></i>
+                                                <i class="bx bxl-discord"></i>
+                                                <i class="bx bxl-facebook-circle"></i>
+                                                <i class="bx bxl-whatsapp"></i>
+                                                </div>
+                                                <p class="text-muted"><em>"Dans le ballet infini des vagues, une bouteille, abandonnée à son sort, danse au gré des courants, voguant vers l'inconnu. Elle est le messager muet des hommes, porteur d'un secret enfoui dans son ventre de verre. Lancée à la mer, elle entame un voyage poétique, une odyssée solitaire à travers les océans."</em></p>
                                                 <div class="d-flex justify-content-center mt-2">
-                                                    <button type="button" class="buttons-step btn btn-light waves-effect waves-light" >Recommencer</button>
+                                                    <button type="button" id="resetThrow" class="buttons-step btn btn-light waves-effect waves-light" >Lancer une nouvelle bouteille</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div> 
             </div>
             <div class="content-zone-text m-auto"><h2 key="t-sea">&Agrave; la mer.</h2></div>
+            <img class="corner-image-bottom-right" src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/throw.jpg';?>" alt="Bottle" />
         </div>
-        
         <div id="zone2" class="zone-top-right col-6 d-flex" style="background-color: lightgreen;" onclick="expandZone('zone2')">
             <button class="close-btn" onclick="closeZone(event, 'zone2')">✖</button>
-            
+            <div class="dig-message text-center">
+                <h1> Bientôt disponible. </h1>
+            </div>
             <div class="content-zone-text m-auto"><h2 key="t-hole">Dans un trou.</h2></div>
+            <img class="corner-image-bottom-left" src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/dig.jpg';?>" alt="Bottle">
         </div>
-        <div id="zone3" class="zone-bottom-left  col-6 d-flex" style="background-color: lightcoral;" onclick="expandZone('zone3')">
+        <div id="zone3" class="zone-bottom-left col-6 d-flex" style="background-color: lightcoral;" onclick="expandZone('zone3')">
             <button class="close-btn" onclick="closeZone(event, 'zone3')">✖</button>
+            <div class="space-message text-center">
+                <h1> Bientôt disponible. </h1>
+            </div>
             <div class="content-zone-text m-auto"><h2 key="t-space">Dans l'espace.</h2></div>
+            <img class="corner-image-top-right" src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/space.jpg';?>" alt="Bottle">
         </div>
         <div id="zone4" class="zone-bottom-right  col-6 d-flex" style="background-color: lightgoldenrodyellow;" onclick="expandZone('zone4')">
             <button class="close-btn" onclick="closeZone(event, 'zone4')">✖</button>
+            <div class="time-message text-center">
+                <h1> Bientôt disponible. </h1>
+            </div>
             <div class="content-zone-text m-auto"><h2 key="t-time">Dans le temps.</h2></div>
+            <img class="corner-image-top-left" src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/time.jpg';?>" alt="Bottle">
         </div>
     </div>
 </div>
