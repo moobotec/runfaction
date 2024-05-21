@@ -268,6 +268,7 @@ textarea {
     display: flex;
     flex-direction: column;
     height: 95%;
+    font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
 }
 
 .weather-header {
