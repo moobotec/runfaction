@@ -77,22 +77,6 @@ function jitterCorrectionClock(gap)
     }
 }
 
-function updateCurrentClock() 
-{
-    const now = new Date();
-    let gap = (jsDateToEpoch(now) - gCurrentDate.epoch);
-    gCurrentDate.epoch = jsDateToEpoch(now);
-    if (gap > 60)
-    {
-        if(gIsSync == "sync") 
-            jitterCorrectionClock(gap);
-        gap = 0;
-    }
-    managingOverrunClock(gap);
-
-    updateContentClock('clock',gCurrentDate,false);
-}
-
 function updateContentClock(id,date,isGmt) 
 {
     document.getElementById(id).innerHTML = formatDateTime(date) + ((isGmt == true) ? displayTimezoneOffset() : '');

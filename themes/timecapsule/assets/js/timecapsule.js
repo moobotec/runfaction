@@ -598,6 +598,45 @@ function setupClickButtonConfiModify()
     });
 }
 
+function updateCurrentClock() 
+{
+    const now = new Date();
+    let gap = (jsDateToEpoch(now) - gCurrentDate.epoch);
+    gCurrentDate.epoch = jsDateToEpoch(now);
+    if (gap > 60)
+    {
+        if(gIsSync == "sync") 
+            jitterCorrectionClock(gap);
+        gap = 0;
+    }
+    managingOverrunClock(gap);
+
+    updateContentClock('clock',gCurrentDate,false);
+}
+
+function updateCurrentPosition() 
+{
+    if ( ( gCurrentPosition != null && gCurrentPosition.valid == false ) || gCurrentPosition == null  )
+    {
+        showCurrentPosition(null,null,null,null);
+    }
+    else
+    {
+        const hasCarto = hasCartoPlanetByLangById(gCurrentPosition.planet);
+        if (hasCarto == 'true')
+        {
+            let ret = axiosFindJsonStreetMapById(gCurrentPosition.id,updateSuccess,updateError);
+            if ( ret == false) updateError();
+        }
+        else
+        {
+            
+            showCurrentPosition(gCurrentPosition.latitude,gCurrentPosition.longitude,gCurrentPosition.country,gCurrentPosition.planet);
+        }
+    }
+}
+
+
 (function ($) {
 
     'use strict';

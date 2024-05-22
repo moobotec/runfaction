@@ -548,6 +548,19 @@ textarea {
     opacity: 1; /* Afficher l'image au survol */
 }
 
+.flex-container {
+    display: flex;
+    align-items: center; /* Aligner verticalement au centre */
+}
+
+.flex-container p {
+    margin: 0;
+}
+
+.flex-container p + p {
+    margin-left: 10px; /* Ajoutez un espace de 10px entre les paragraphes */
+}
+
 </style>
 
 <div class="d-flex justify-content-between">
@@ -585,11 +598,11 @@ textarea {
                         <div class="left-side">
                             <form>
                                 <div class="message-header">
-                                <h3 for="title">Titre</h3><p class="pt-3"> 100 / 100 caractères </p>
+                                    <h3 for="title" key="t-title-message">Titre</h3><div class="flex-container"><p class="pt-3">100 / 100</p><p class="pt-3" key="t-character">caractères</p></div>
                                 </div>
                                 <input type="text" id="title" name="title" maxlength="100">
                                 <div class="message-header">
-                                <h3 for="message">Message</h3><p class="pt-3"> 250 / 250 caractères </p>
+                                    <h3 for="message" key="t-body-message">Message</h3><div class="flex-container"><p class="pt-3 ml-1">250 / 250</p><p class="ml-1 pt-3" key="t-character">caractères</p></div>
                                 </div>
                                 <textarea id="message" name="message" maxlength="250"></textarea>
                             </form>
@@ -602,9 +615,9 @@ textarea {
                                 </div>
                                 <div class="weather-info">
                                     <div class="d-flex flex-column p-1">
-                                        <p>Ciel dégagé mais quelques pluies sont à prévoir en fin d'après midi</p>
-                                        <p>Vitesse du vent : 5m/s</p>
-                                        <p>Coefficient de marée : 90</p>
+                                        <p key="t-weather-info-1">Ciel dégagé mais quelques pluies sont à prévoir en fin d'après midi</p>
+                                        <p key="t-weather-info-2">Vitesse du vent : 5m/s</p>
+                                        <p key="t-weather-info-3">Coefficient de marée : 90</p>
                                     </div>
                                 </div>
                             </div>
@@ -613,31 +626,31 @@ textarea {
                     <div class="file-upload pb-3">
                         <div class="drop-zone" onmouseover="changeImage('mouseover')" onmouseout="changeImage('mouseout')">
                             <div class="file-info-container">
-                                <p class="file-info">Formats de fichiers acceptés : JPG, PNG, MP4, MOV, WebM, TXT, DOCX, PDF</p>
-                                <p class="file-info">Jusqu'à 50 Mo</p>
+                                <p class="file-info" key="t-format-message">Formats de fichiers acceptés : JPG, PNG, MP4, MOV, WebM, TXT, DOCX, PDF</p>
+                                <p class="file-info" key="t-size-message">Jusqu'à 50 Mo</p>
                             </div>
                             <div class="zone d-flex flex-column">
                                 <div class="bottle" >
                                     <img id="bottle-image" src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/empty-bottle.png';?>" alt="Bottle">
                                 </div>
                                 <div>
-                                    <h2>Glissez-déposez</h2>
+                                    <h2 key="t-action-message">Glissez-déposez</h2>
                                 </div>
                                 <div>
-                                    <h5>votre fichier ici</h5>
+                                    <h5 key="t-file-message-1">votre fichier ici</h5>
                                 </div>
                                 <div>
-                                    <h5>ou</h5>
+                                    <h5 key="t-file-message-2">ou</h5>
                                 </div>
                                 <div>
-                                    <button  type="button" class="buttons-drop-zone btn btn-light waves-effect waves-light">Choisissez un fichier</button>
+                                    <button  type="button" class="buttons-drop-zone btn btn-light waves-effect waves-light" key="t-choose-file-message">Choisissez un fichier</button>
                                 </div>
                             </div> 
                         </div>
                     </div>
                     <div class="d-flex justify-content-between p-1">
-                        <button type="button" class="buttons-step btn btn-light waves-effect waves-light" id="restartThrow"><i class="p-2 mdi mdi-refresh"></i> Recommencer</button>
-                        <button type="button" class="buttons-step btn btn-light waves-effect waves-light" id="nextThrow" >Suivant <i class="p-2 mdi mdi-arrow-right-bold-outline"></i></button>
+                        <button type="button" class="buttons-step btn btn-light waves-effect waves-light" id="restartThrow" key="t-btn-restart-message"><i class="p-2 mdi mdi-refresh"></i> Recommencer</button>
+                        <button type="button" class="buttons-step btn btn-light waves-effect waves-light" id="nextThrow" key="t-btn-next-message">Suivant <i class="p-2 mdi mdi-arrow-right-bold-outline"></i></button>
                     </div>
                     <div class="d-flex justify-content-end p-1">
                     </div>    
@@ -646,9 +659,9 @@ textarea {
                     <div class="content m-auto">
                         <div class="left-side">
                             <form>
-                                <h3>Date</h3> <input type="text" value="2024 / 15 mai / 09:20:56" disabled/> 
-                                <h3>Titre</h3> <input type="text" value="Mon premier message à la mer" disabled/>
-                                <h3>Message</h3> <textarea id="message" name="message" maxlength="250" disabled>Je suis heureux dans la vie, je n'ai rien à dire.</textarea>
+                                <h3 key="t-date-message">Date</h3> <input type="text" value="2024 / 15 mai / 09:20:56" disabled/> 
+                                <h3 key="t-title-message">Titre</h3> <input type="text" value="Mon premier message à la mer" disabled/>
+                                <h3 key="t-body-message">Message</h3> <textarea id="message" name="message" maxlength="250" disabled>Je suis heureux dans la vie, je n'ai rien à dire.</textarea>
                             </form>
                         </div>
                         <div class="right-side-second">
@@ -659,17 +672,17 @@ textarea {
                         <div class="drop-zone-2">
                             <div class="p-4 form-group row">
                                 <div class="col-sm-12">
-                                <ul class="mailbox-attachments" id="listFile_1" style="display:block">   
-                                    <li id="indexFile_1_1"><span class="mailbox-attachment-icon" style="background-color:#F8F9FA;"><i class="far fa-file-pdf"></i></span><div class="mailbox-attachment-info"><span class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> 2024-OJS063-00185709-fr-ts.pdf</span><span class="mailbox-attachment-size clearfix mt-1"><span>99.82 KiB</span></div></li>    
-                                    <li id="indexFile_1_1"><span class="mailbox-attachment-icon" style="background-color:#F8F9FA;"><i class="far fa-file-pdf"></i></span><div class="mailbox-attachment-info"><span class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> 2024-OJS063-00185709-fr-ts.pdf</span><span class="mailbox-attachment-size clearfix mt-1"><span>99.82 KiB</span></div></li>    
+                                <ul class="mailbox-attachments" id="listFile" style="display:block">   
+                                    <li id="indexFile_1"><span class="mailbox-attachment-icon" style="background-color:#F8F9FA;"><i class="far fa-file-pdf"></i></span><div class="mailbox-attachment-info"><span class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> 2024-OJS063-00185709-fr-ts.pdf</span><span class="mailbox-attachment-size clearfix mt-1"><span>99.82 KiB</span></div></li>    
+                                    <li id="indexFile_2"><span class="mailbox-attachment-icon" style="background-color:#F8F9FA;"><i class="far fa-file-pdf"></i></span><div class="mailbox-attachment-info"><span class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> 2024-OJS063-00185709-fr-ts.pdf</span><span class="mailbox-attachment-size clearfix mt-1"><span>99.82 KiB</span></div></li>    
                                 </ul>
                                 </div>
                             </div>    
                         </div>
                     </div>
                     <div class="d-flex justify-content-between p-1">
-                        <button type="button" class="buttons-step btn btn-light waves-effect waves-light" id="previousThrow"><i class="p-2 mdi mdi-arrow-left-bold-outline"></i> Retour</button>
-                        <button type="button" class="buttons-step btn btn-light waves-effect waves-light" id="validThrow">Jeter <i class="p-2 mdi mdi-email-send-outline"></i></button>
+                        <button type="button" class="buttons-step btn btn-light waves-effect waves-light" id="previousThrow" key="t-btn-previous-message"><i class="p-2 mdi mdi-arrow-left-bold-outline"></i> Retour</button>
+                        <button type="button" class="buttons-step btn btn-light waves-effect waves-light" id="validThrow" key="t-btn-throw-message">Jeter <i class="p-2 mdi mdi-email-send-outline"></i></button>
                     </div>
                 </div> 
 
@@ -685,7 +698,7 @@ textarea {
                                             </div>
                                             <div class="mb-4">
                                                 <hr>
-                                                <p class="text-muted"><em>"Dans le ballet infini des vagues, une bouteille, abandonnée à son sort, danse au gré des courants, voguant vers l'inconnu. Elle est le messager muet des hommes, porteur d'un secret enfoui dans son ventre de verre. Lancée à la mer, elle entame un voyage poétique, une odyssée solitaire à travers les océans."</em></p>
+                                                <p class="text-muted" key="t-quote-message"><em>"Dans le ballet infini des vagues, une bouteille, abandonnée à son sort, danse au gré des courants, voguant vers l'inconnu. Elle est le messager muet des hommes, porteur d'un secret enfoui dans son ventre de verre. Lancée à la mer, elle entame un voyage poétique, une odyssée solitaire à travers les océans."</em></p>
                                             </div>
                                             <div class="m-4">
                                                 <div class="progress progress-xl">
@@ -710,10 +723,10 @@ textarea {
                                             <img id="bottle-image" src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/bottle_parchemin.png';?>" alt="Bottle">
                                         </div>
                                             <div class=" mt-2 pr-1" >
-                                                <h4 class="pb-2">Partagez votre geste !</h4>
-                                                <h5 class="pb-2">Scannez ce QrCode :</h5>
+                                                <h4 class="pb-2" key="t-endstep-message-1">Partagez votre geste !</h4>
+                                                <h5 class="pb-2" key="t-endstep-message-2">Scannez ce QrCode :</h5>
                                                 <img  class="my-image p-2" src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/qrcode1.png';?>" alt="qrcode">
-                                                <h5 class="pt-2">Ou copiez ce lien :</h5>
+                                                <h5 class="pt-2" key="t-endstep-message-3">Ou copiez ce lien :</h5>
                                                 <input type="text" class="text-center" value="http://otot/1254545454g54dgqsddsfdsf" disabled />
                                             </div>
                                             <div class="mt-2">
@@ -724,9 +737,9 @@ textarea {
                                                 <i class="bx bxl-facebook-circle"></i>
                                                 <i class="bx bxl-whatsapp"></i>
                                                 </div>
-                                                <p class="text-muted"><em>"Dans le ballet infini des vagues, une bouteille, abandonnée à son sort, danse au gré des courants, voguant vers l'inconnu. Elle est le messager muet des hommes, porteur d'un secret enfoui dans son ventre de verre. Lancée à la mer, elle entame un voyage poétique, une odyssée solitaire à travers les océans."</em></p>
+                                                <p class="text-muted" key="t-quote-message"><em>"Dans le ballet infini des vagues, une bouteille, abandonnée à son sort, danse au gré des courants, voguant vers l'inconnu. Elle est le messager muet des hommes, porteur d'un secret enfoui dans son ventre de verre. Lancée à la mer, elle entame un voyage poétique, une odyssée solitaire à travers les océans."</em></p>
                                                 <div class="d-flex justify-content-center mt-2">
-                                                    <button type="button" id="resetThrow" class="buttons-step btn btn-light waves-effect waves-light" >Lancer une nouvelle bouteille</button>
+                                                    <button type="button" id="resetThrow" class="buttons-step btn btn-light waves-effect waves-light" key="t-btn-reset-throw-message">Lancer une nouvelle bouteille</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -743,7 +756,7 @@ textarea {
         <div id="zone2" class="zone-top-right col-6 d-flex" style="background-color: lightgreen;" onclick="expandZone('zone2')">
             <button class="close-btn" onclick="closeZone(event, 'zone2')">✖</button>
             <div class="dig-message text-center">
-                <h1> Bientôt disponible. </h1>
+                <h1 key="t-coming-soon"> Bientôt disponible. </h1>
             </div>
             <div class="content-zone-text m-auto"><h2 key="t-hole">Dans un trou.</h2></div>
             <img class="corner-image-bottom-left" src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/dig.jpg';?>" alt="Bottle">
@@ -751,7 +764,7 @@ textarea {
         <div id="zone3" class="zone-bottom-left col-6 d-flex" style="background-color: lightcoral;" onclick="expandZone('zone3')">
             <button class="close-btn" onclick="closeZone(event, 'zone3')">✖</button>
             <div class="space-message text-center">
-                <h1> Bientôt disponible. </h1>
+                <h1 key="t-coming-soon"> Bientôt disponible. </h1>
             </div>
             <div class="content-zone-text m-auto"><h2 key="t-space">Dans l'espace.</h2></div>
             <img class="corner-image-top-right" src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/space.jpg';?>" alt="Bottle">
@@ -759,7 +772,7 @@ textarea {
         <div id="zone4" class="zone-bottom-right  col-6 d-flex" style="background-color: lightgoldenrodyellow;" onclick="expandZone('zone4')">
             <button class="close-btn" onclick="closeZone(event, 'zone4')">✖</button>
             <div class="time-message text-center">
-                <h1> Bientôt disponible. </h1>
+                <h1 key="t-coming-soon"> Bientôt disponible. </h1>
             </div>
             <div class="content-zone-text m-auto"><h2 key="t-time">Dans le temps.</h2></div>
             <img class="corner-image-top-left" src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/time.jpg';?>" alt="Bottle">

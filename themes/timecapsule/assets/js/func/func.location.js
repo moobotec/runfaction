@@ -111,7 +111,7 @@ function convertPositionToString(latitude,longitude,country,planet)
     const west = getCPLRByLangBySign("-",gLanguage); // E ou W
 
     let strLatitude = (latitude == null) ? "000.0000° N" : convertCoordonateFloatToString(latitude,north,south,false);
-    let strLongitude = (longitude == null) ? "000.0000° N" : convertCoordonateFloatToString(longitude,east,west,false);
+    let strLongitude = (longitude == null) ? "000.0000° E" : convertCoordonateFloatToString(longitude,east,west,false);
     let strCountry = (country == null) ? gConfig.default_suspension_points : country;
     let strPlanet = (planet == null) ? gConfig.default_suspension_points : getPlanetByLangById(planet,gLanguage);
 
@@ -131,28 +131,6 @@ function showModalCurrentPosition(latitude,longitude,country,planet)
 function showNavigatorPosition(latitude,longitude,country,planet) 
 {
     document.getElementById('posNavigator').innerHTML = convertPositionToString(latitude,longitude,country,planet);
-}
-
-function updateCurrentPosition() 
-{
-    if ( ( gCurrentPosition != null && gCurrentPosition.valid == false ) || gCurrentPosition == null  )
-    {
-        showCurrentPosition(null,null,null,null);
-    }
-    else
-    {
-        const hasCarto = hasCartoPlanetByLangById(gCurrentPosition.planet);
-        if (hasCarto == 'true')
-        {
-            let ret = axiosFindJsonStreetMapById(gCurrentPosition.id,updateSuccess,updateError);
-            if ( ret == false) updateError();
-        }
-        else
-        {
-            
-            showCurrentPosition(gCurrentPosition.latitude,gCurrentPosition.longitude,gCurrentPosition.country,gCurrentPosition.planet);
-        }
-    }
 }
 
 function updateSuccess(dataObject)
@@ -514,8 +492,12 @@ function updateMarkerToMap(coord,title)
 {
     if (coord != null)
     {
+        if ( coord[0] == null ) coord[0] = 0.0;
+        if ( coord[1] == null ) coord[1] = 0.0;
+
         const lat = coord[0].toFixed(4);
         const lng = coord[1].toFixed(4);
+        
 
         if ( gMarker != null ) {
             gMap.removeLayer(gMarker);
@@ -532,6 +514,9 @@ function updateThrowMarkerToMap(coord,title)
 {
     if (coord != null)
     {
+        if ( coord[0] == null ) coord[0] = 0.0;
+        if ( coord[1] == null ) coord[1] = 0.0;
+
         const lat = coord[0].toFixed(4);
         const lng = coord[1].toFixed(4);
 
@@ -552,9 +537,9 @@ function fillDigitsCoordinate(number, prefixCode,prefixSign)
         return;
     }
 
+    const sign = ((number < 0) || Object.is(number, -0)) ? "-" : "+";
+
     // Gérer les nombres négatifs en convertissant le nombre en valeur absolue
-    const sign = (number < 0) ? "-" : "+";
-    
     let absNumber = Math.abs(number);
     if(absNumber >= 180.0) absNumber = 180.0;
 
@@ -579,10 +564,12 @@ function fillDigitsCoordinate(number, prefixCode,prefixSign)
 
 function convertCoordonateFloatToString(distance,dirA,dirB,encapsulated = true)
 {
+    if (distance == null) distance = 0.0;
     if (distance > 180.0) distance = 180.0;
     if (distance < -180.0) distance = -180.0;
 
-    const dir = ((distance >= 0)? dirA : dirB ); 
+    const dir = (!Object.is(distance, -0) &&(distance >= 0.0)? dirA : dirB ); 
+
     const [integerPart, decimalPart] = Math.abs(distance).toFixed(4).split('.'); // Séparation en partie entière et décimale
     const formattedIntegerPart = integerPart.padStart(3, '0'); // Padding pour la partie entière
     const formatted = `${formattedIntegerPart}.${decimalPart}`; // Reconstitution du nombre avec la partie décimale

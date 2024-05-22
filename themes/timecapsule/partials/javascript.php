@@ -62,8 +62,21 @@ if (str_contains($pages,"index") || str_contains($pages,"find") )
      echo '<!-- Timecapsule js -->
      <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/timecapsule.js?='.time().'"></script>';
 }
+else
+{
+     echo '<!-- func.global js -->
+     <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/func/func.global.js?='.time().'"></script>
+     <!-- func.lang js -->
+     <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/func/func.lang.js?='.time().'"></script>
+     <!-- func.cookie js -->
+     <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/func/func.cookie.js?='.time().'"></script>
+     <!-- func.theme js -->
+     <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/func/func.theme.js?='.time().'"></script>
+     ';
 
-
+     echo '<!-- Timecapsule js -->
+     <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/timecapsule-about.js?='.time().'"></script>';
+}
 
 echo '<!-- App js -->
 <script src="'.BASEPATH.'themes/'.THEME.'/assets/js/app.js"></script>';
