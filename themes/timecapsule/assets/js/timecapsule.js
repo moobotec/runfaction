@@ -287,6 +287,14 @@ function setupClickButtonModalInfoCoordinate()
     });
 }
 
+function setupClickButtonModalInfoFileFormat()
+{
+    $('button[id^="btn-modal-info-file-format"]').click(function() 
+    {
+        $('#modal-info-file-format').modal('show');
+    });
+}
+
 function setupClickButtonLocation()
 {
     $('button[id^="btLocation"]').click(function() 
@@ -793,10 +801,43 @@ function updateCurrentPosition()
         });
 
         $('#resetThrow').click(function() {
-           $('#firstStepThrow').css("display", "block");
+            $('#firstStepThrow').css("display", "block");
             $('#secondStepThrow').css("display", "none");
             $('#endStepThrow').css("display", "none");
         });
+
+        $('#throw-title').on('input', function () {
+            changeNbCarac('titleCharacterCount','throw-title', $gdi('throw-title').value,100);
+        });
+
+        $('#throw-message').on('input', function () {
+            changeNbCarac('bodyCharacterCount','throw-message', $gdi('throw-message').value,250);
+        });
+
+        // Gestionnaire de changement pour la sélection de fichier
+        $('#throw-file-message').change(function () {
+            addFilepload(gFileCount, $(this)[0]);
+        });
+        
+        $('#restartThrow').click(function () {
+            $gdi('throw-title').value = "";
+            $gdi('throw-message').value = "";
+            changeNbCarac('titleCharacterCount','throw-title', $gdi('throw-title').value,100);
+            changeNbCarac('bodyCharacterCount','throw-message', $gdi('throw-message').value,250);
+            removeFiles();
+        });
+
+        $('.drop-zone').each(function() {
+            $(this).off('dragenter dragover dragleave drop');
+    
+            $(this).on('dragenter', dragenter);
+            $(this).on('dragover', dragover);
+            $(this).on('dragleave', dragleave);
+            $(this).on('drop', drop);
+        });
+
+        setupClickButtonModalInfoFileFormat();
+
     }
 
     init();

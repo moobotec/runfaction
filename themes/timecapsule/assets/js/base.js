@@ -400,18 +400,20 @@ function $axios_delete_timed(url, functionCallbackInit, functionCallbackSuccess,
  * @param {string} id_nb L'identifiant de l'élément HTML où afficher le nombre de caractères restants.
  * @param {string} id_value L'identifiant de l'élément HTML où se trouve le texte.
  * @param {string} text Le texte à évaluer et à limiter en caractères.
+ * @param {int} nbMaxCaract Nombre de caractère maximum.
  * @returns {void}
  */
-function changeNbCarac(id_nb, id_value, text) {
+function changeNbCarac(id_nb, id_value, text,nbMaxCaract) {
+
     if (text != null && text.length >= 0) {
         // Vérification 1 : Détermination du nombre de lignes
         let lines = (text.length > 0) ? (text.split(/\n/).length - 1) : 0;
-        $gdi(id_nb).value = nbMaxCaract - text.length - lines;
+        $gdi(id_nb).innerHTML = nbMaxCaract - text.length - lines;
 
         // Vérification si le nombre de caractères dépasse la limite
-        if ($gdi(id_nb).value < 0) {
+        if (parseInt($gdi(id_nb).innerHTML) < 0) {
             $gdi(id_value).value = text.slice(0, -1);
-            $gdi(id_nb).value = 0;
+            $gdi(id_nb).innerHTML = 0;
         }
 
         // Vérification 2 : Limiter le texte à la longueur maximale
@@ -421,11 +423,14 @@ function changeNbCarac(id_nb, id_value, text) {
         if (inputText.length > (nbMaxCaract - lines)) {
             $gdi(id_value).value = inputText.slice(0, nbMaxCaract - lines);
         }
+
     } else {
         // Réinitialisation des valeurs si le texte est nul ou vide
-        $gdi(id_nb).value = nbMaxCaract;
+        $gdi(id_nb).innerHTML = nbMaxCaract;
         $gdi(id_value).value = "";
     }
+
+    $gdi(id_nb).innerHTML += ' / ' + nbMaxCaract;
 }
 
 /**
@@ -635,6 +640,418 @@ function timeConverter(UNIX_timestamp){
 
 function padDigits(number, digits) {
     return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
+}
+
+/**
+ * @brief Ajoute les fichiers téléchargés à la liste des fichiers.
+ *
+ * La fonction addFilepload() ajoute les fichiers téléchargés à la liste des fichiers.
+ * Elle vérifie la taille et le type de chaque fichier, gère l'affichage des éléments, 
+ * et appelle la fonction appropriée pour l'ajout du fichier dans la liste des fichiers.
+ *
+ * @param {number} numFile - Le numéro du fichier.
+ * @param {object} fileInput - L'élément input de type "file" contenant les fichiers à téléchargés.
+ * @returns {void}
+ */
+async function addFilepload(numFile, fileInput) {
+
+    // Vérifier si des fichiers ont été sélectionnés
+    if (!fileInput.files) return;
+
+    let makeFiles = fileInput.files;
+    let currentNumFile = numFile;
+    let sizeFile = 0;
+
+    /* Vérification de la taille déjà utlisé */
+    // Parcourir chaque fichier à télécharger
+    for (var i = 0; i < gFileCount; i++) {
+        sizeFile += gFiles[i].size;
+    }
+
+    // Parcourir chaque fichier à télécharger
+    for (var i = 0; i < makeFiles.length; i++) 
+    {
+        /* Vérification du nombre de fichier utilisé*/
+        const extFile = makeFiles[i].type;
+        let typeFile = "";
+
+        // Assigner un icône en fonction du type de fichier
+        if (extFile.toLowerCase() == "application/pdf") {
+            typeFile = "fa-file-pdf";
+        }
+        else if (extFile.toLowerCase() == "text/plain") {
+            typeFile = "fa-file";
+        }
+        else if (extFile.toLowerCase() == "application/x-zip-compressed" || extFile.toLowerCase() == "application/zip" || extFile.toLowerCase() == "application/x-7z-compressed") {
+            typeFile = "fa-file-archive";
+        }
+        else if (extFile.toLowerCase() == "application/vnd.openxmlformats-officedocument.presentationml.presentation" || extFile.toLowerCase() == "application/vnd.ms-powerpoint") {
+            typeFile = "fa-file-powerpoint";
+        }
+        else if (extFile.toLowerCase() == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || extFile.toLowerCase() == "application/msword") {
+            typeFile = "fa-file-word";
+        }
+        else if (extFile.toLowerCase() == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || extFile.toLowerCase() == "application/vnd.ms-excel" || extFile.toLowerCase() == "text/csv") {
+            typeFile = "fa-file-excel";
+        }
+        else if (extFile.toLowerCase() == "video/mp4" || extFile.toLowerCase() == "video/x-msvideo" || extFile.toLowerCase() == "video/x-ms-wmv" || extFile.toLowerCase() == "video/mpeg" || extFile.toLowerCase() == "video/ogg") {
+            typeFile = "fa-file-video";
+        }
+        else if (extFile.toLowerCase() == "audio/mp3" || extFile.toLowerCase() == "audio/mp4" || extFile.toLowerCase() == "audio/mpeg" || extFile.toLowerCase() == "audio/x-wav" || extFile.toLowerCase() == "audio/ogg") {
+            typeFile = "fa-file-audio";
+        }
+        else if (extFile.toLowerCase() == "image/tiff" || extFile.toLowerCase() == "image/tif") {
+            typeFile = "fa-file-image";
+        }
+        else if (extFile.toLowerCase() == "image/bmp" || extFile.toLowerCase() == "image/png" || extFile.toLowerCase() == "image/svg+xml" || extFile.toLowerCase() == "image/jpg" || extFile.toLowerCase() == "image/jpeg" || extFile.toLowerCase() == "image/gif") {
+            typeFile = "";
+        }
+        else {
+
+            if (gLanguage == 'fr') {
+                toastr.error('Ce type de fichier ' + makeFiles[i].name + ' n\'est pas pris en charge.');
+            } 
+            else if (gLanguage == 'sp') {
+                toastr.error('Este tipo de archivo ' + makeFiles[i].name + ' no es compatible.');
+            }
+            else if (gLanguage == 'gr') {
+                toastr.error('Dieser Dateityp ' + makeFiles[i].name + ' wird nicht unterstützt.');
+            }
+            else if (gLanguage == 'it') {
+                toastr.error('Questo tipo di file ' + makeFiles[i].name + ' non è supportato.');
+            }
+            else if (gLanguage == 'ru') {
+                toastr.error('Этот тип файла ' + makeFiles[i].name + ' не поддерживается.');
+            }
+            else{
+                toastr.error('This file type ' + makeFiles[i].name + ' is not supported.');
+            }
+            
+            $('[data-toggle="tooltip"]').tooltip(); 
+            return;
+        }
+
+        sizeFile += makeFiles[i].size;
+        // Vérifier si le nombre maximum de fichiers est atteint pour ce défaut
+        if (gFileCount > (cntMaxFile - 1)) {
+
+            if (gLanguage == 'fr') {
+                toastr.error('Le nombre maximum de fichiers a été atteint.');
+            } 
+            else if (gLanguage == 'sp') {
+                toastr.error('Se ha alcanzado el número máximo de archivos.');
+            }
+            else if (gLanguage == 'gr') {
+                toastr.error('Die maximale Anzahl an Dateien wurde erreicht.');
+            }
+            else if (gLanguage == 'it') {
+                toastr.error('È stato raggiunto il numero massimo di file.');
+            }
+            else if (gLanguage == 'ru') {
+                toastr.error('Достигнуто максимальное количество файлов.');
+            }
+            else{
+                toastr.error('The maximum number of files has been reached.');
+            }
+
+            $('[data-toggle="tooltip"]').tooltip(); 
+            return;
+        }
+
+        /* Vérification des noms de fichiers existants */
+        for (var d = 0; d < gFileCount; d++) {
+            if (makeFiles[i].name == gFiles[d].name) {
+
+                if (gLanguage == 'fr') {
+                    toastr.error('Vous avez déjà téléversé ce fichier '+ makeFiles[i].name +'.');
+                } 
+                else if (gLanguage == 'sp') {
+                    toastr.error('Ya has subido este archivo '+makeFiles[i].name+'.');
+                }
+                else if (gLanguage == 'gr') {
+                    toastr.error('Sie haben diese Datei '+makeFiles[i].name+' bereits hochgeladen.');
+                }
+                else if (gLanguage == 'it') {
+                    toastr.error('Hai già caricato questo file '+makeFiles[i].name+'.');
+                }
+                else if (gLanguage == 'ru') {
+                    toastr.error('Вы уже загрузили этот файл '+makeFiles[i].name+'.');
+                }
+                else{
+                    toastr.error('You have already uploaded this file '+makeFiles[i].name+'.');
+                }
+
+                $('[data-toggle="tooltip"]').tooltip(); 
+                return;
+            }
+        }
+        
+        // Vérifier la taille du fichier par rapport à la limite autorisée
+        if (sizeFile > limitSizeFiles) {
+
+            if (gLanguage == 'fr') {
+                toastr.error('La taille totale des fichiers est limitée à ' + getSymbolByQuantity(limitSizeFiles) );
+            } 
+            else if (gLanguage == 'sp') {
+                toastr.error('El tamaño total del archivo está limitado a ' + getSymbolByQuantity(limitSizeFiles));
+            }
+            else if (gLanguage == 'gr') {
+                toastr.error('Die Gesamtdateigröße ist begrenzt auf ' + getSymbolByQuantity(limitSizeFiles));
+            }
+            else if (gLanguage == 'it') {
+                toastr.error('La dimensione totale del file è limitata a ' + getSymbolByQuantity(limitSizeFiles));
+            }
+            else if (gLanguage == 'ru') {
+                toastr.error('Общий размер файла ограничен ' + getSymbolByQuantity(limitSizeFiles));
+            }
+            else{
+                toastr.error('Total file size is limited to ' + getSymbolByQuantity(limitSizeFiles));
+            }
+
+            $('[data-toggle="tooltip"]').tooltip(); 
+            return;
+        }
+
+        // Gérer l'affichage des éléments en fonction du nombre de fichiers ajoutés
+        if (currentNumFile == 0) {
+            $("#msgInfo").attr("style", "display:none");
+            $("#listFile").attr("style", "display:block");
+        }
+        gFileCount += 1;
+        if (gFileCount > (cntMaxFile - 1)) {
+            $('#btn-throw-file-message').prop('disabled', true);
+        }
+
+        await addImgUpload(typeFile,currentNumFile, makeFiles[i]);
+        currentNumFile += 1;
+    }
+
+    $('#throw-file-message').val("");
+    $('[data-toggle="tooltip"]').tooltip(); 
+}
+
+/**
+ * @brief Ajoute un fichier téléchargé à la liste des fichiers pour un défaut donné.
+ *
+ * La fonction _addFileUpload() ajoute un fichier téléchargé à la liste des fichiers pour un défaut donné. Elle génère le HTML nécessaire pour afficher les détails du fichier,
+ * attribue l'icône en fonction du type de fichier, puis lit et stocke le contenu du fichier dans la liste des fichiers.
+ * 
+ * @brief Ajoute une image téléchargée à la liste des fichiers images pour un défaut donné.
+ *
+ * La fonction addImgUpload() ajoute une image téléchargée à la liste des fichiers images pour un défaut donné.
+ * Elle crée le contenu HTML pour l'élément de la liste des fichiers, affiche un aperçu de l'image, et enregistre les données de l'image dans la structure de données files.
+
+ * @param {string} typeFile - Le type de fichier pour attribuer l'icône.
+ * @param {number} numFile - Le numéro du fichier.
+ * @param {object} fileInput - L'élément input de type "file" contenant le fichier téléchargé.
+ * @returns {void}
+ */
+async function addImgUpload(typeFile, numFile, fileInput) {
+    // Récupération du nom et de la taille du fichier
+    var nameFile = fileInput.name;
+    var sizeFile = fileInput.size;
+    var htmlFile = "";
+    if (typeFile != null && typeFile != "")
+    {
+        // Génération du HTML pour afficher les détails du fichier
+        htmlFile = '<li id="indexFile_' + numFile + '">' +
+            '<span class="mailbox-attachment-icon" style="background-color:#F8F9FA;"><i class="far ' + typeFile + '"></i></span>' +
+            '<div class="mailbox-attachment-info">' +
+            '<span class="mailbox-attachment-name" data-toggle="tooltip" title="' + nameFile + '"><i class="fas fa-paperclip"></i> ' + nameFile + '</span>' +
+            '<span class="mailbox-attachment-size clearfix mt-1">' +
+            '<span>' + getSymbolByQuantity(sizeFile) + '</span>' +
+            '<a href="#" id="btnRemoveFile_' + numFile + '" class="btn btn-default btn-sm float-right"><i class="fas fa-trash-alt"></i></a>' +
+            '</span>' +
+            '</div>' +
+            '</li>';
+    }
+    else
+    {
+        htmlFile = '<li id="indexFile_' + numFile + '">' +
+            '<span class="mailbox-attachment-icon has-img" style="background-color:#F8F9FA;"><img class="imgPreview" id="imagePreview_' + numFile + '"/></span>' +
+            '<div class="mailbox-attachment-info">' +
+            '<span class="mailbox-attachment-name" data-toggle="tooltip" title="' + nameFile + '"><i class="fas fa-camera"></i> ' + nameFile + '</span>' +
+            '<span class="mailbox-attachment-size clearfix mt-1">' +
+            '<span>' + getSymbolByQuantity(sizeFile) + '</span>' +
+            '<a href="#" id="btnRemoveFile_' + numFile + '" class="btn btn-default btn-sm float-right"><i class="fas fa-trash-alt"></i></a>' +
+            '</span>' +
+            '</div>' +
+            '</li>';
+    }
+
+    // Ajout du HTML généré à la liste des fichiers
+    $("#listFile").append(htmlFile);
+
+    $('#btnRemoveFile_' + numFile ).click(function(event) {
+        event.preventDefault(); // Empêche le comportement par défaut du lien
+        removeFile(numFile);
+    });
+
+    await handleFileUpload(fileInput, numFile, typeFile, nameFile, sizeFile);
+}
+
+// Fonction pour recalculer les IDs
+function recalibrateIds() {
+    $('#listFile li').each(function(index) {
+        // Mettre à jour l'ID du <li>
+        $(this).attr('id', 'indexFile_' + index);
+
+        // Mettre à jour l'ID de l'image preview
+        $(this).find('.imgPreview').attr('id', 'imagePreview_' + index);
+
+        // Mettre à jour l'ID du bouton remove
+        $(this).find('.btn-default').attr('id', 'btnRemoveFile_' + index);
+
+        $('#btnRemoveFile_' + index ).click(function(event) {
+            event.preventDefault(); // Empêche le comportement par défaut du lien
+            removeFile(index);
+        });
+
+    });
+}
+
+async function handleFileUpload(fileInput, numFile, typeFile, nameFile, sizeFile) {
+    try {
+        await readFileAsync(fileInput, numFile, typeFile, nameFile, sizeFile);
+        // Code à exécuter après le chargement du fichier
+    } catch (error) {
+        if (gLanguage == 'fr') {
+            toastr.error('Une erreur s\'est produit lors du chargement d\'un des fichiers.' );
+        } 
+        else if (gLanguage == 'sp') {
+            toastr.error('Se produjo un error al cargar uno de los archivos.');
+        }
+        else if (gLanguage == 'gr') {
+            toastr.error('Beim Laden einer der Dateien ist ein Fehler aufgetreten.');
+        }
+        else if (gLanguage == 'it') {
+            toastr.error('Si è verificato un errore durante il caricamento di uno dei file.');
+        }
+        else if (gLanguage == 'ru') {
+            toastr.error('Произошла ошибка при загрузке одного из файлов.');
+        }
+        else{
+            toastr.error('An error occurred while loading one of the files.');
+        }
+    }
+}
+
+function readFileAsync(fileInput, numFile, typeFile, nameFile, sizeFile) {
+    return new Promise((resolve, reject) => {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            if (typeFile == null || typeFile == "") {
+                $('#imagePreview_' + numFile).attr('src', e.target.result);
+            }
+            const obj = { name: nameFile, size: sizeFile, data: e.target.result };
+            gFiles[numFile] = obj;
+            resolve(); // Résoudre la promesse après le chargement
+        };
+        reader.onerror = function(error) {
+            reject(error); // Rejeter la promesse en cas d'erreur
+        };
+        reader.readAsDataURL(fileInput);
+    });
+}
+
+
+/**
+ * @brief Supprime un fichier associé à un défaut.
+ *
+ * La fonction removeFile() permet de supprimer un fichier. Elle effectue les actions suivantes : affiche un message de succès, supprime l'élément de la liste des fichiers,
+ * réinitialise le champ de nom de fichier, marque le fichier comme supprimé dans la liste des fichiers, décrémente le compteur de fichiers,
+ *
+ * @param {number} numFile - Le numéro du fichier à supprimer.
+ * @returns {void}
+ */
+function removeFile(numFile) {
+
+    //All removeFile buttons have been reset
+    $('[id^="btnRemoveFile_"]').off('click');
+
+    // Supprime l'élément de la liste des fichiers associés au défaut
+    $('#listFile').find('#indexFile_' + numFile).remove();
+
+    // Supprime le fichier en le définissant à null
+    // Marque le fichier comme étant supprimé dans la liste des fichiers
+    gFiles[numFile] = null;
+
+    // Filtre les fichiers non nuls et les réaffecte à gFiles
+    gFiles = gFiles.filter(file => file !== null);
+
+    // Décrémente le compteur de fichiers
+    gFileCount = gFiles.length;
+
+    // Réinitialise gFiles avec cntMaxFile, ajoutant null pour les indices non utilisés
+    while (gFiles.length < cntMaxFile) {
+        gFiles.push(null);
+    }
+
+    recalibrateIds();
+
+    $('#btn-throw-file-message').prop('disabled', false);
+
+    if (gFileCount == 0) {
+        $("#msgInfo").attr("style", "display:block");
+        $("#listFile").attr("style", "display:none");
+    }
+}
+
+function removeFiles() {
+
+    gFiles = [];
+    gFileCount = 0;
+
+    $('#listFile').find('li[id^="indexFile_"]').remove();
+
+    $('[id^="btnRemoveFile_"]').off('click');
+
+    $('#btn-throw-file-message').prop('disabled', false);
+
+    $("#msgInfo").attr("style", "display:block");
+    $("#listFile").attr("style", "display:none");
+}
+
+function dragenter(e) {
+    // Empêche les actions par défaut associées à l'événement de survol
+    e.preventDefault();
+
+    gCountDrop++;
+
+    if (gCountDrop === 1) {
+        this.classList.add('zone-hover');
+    }
+}
+
+function dragover(e) {
+    // Empêche le comportement par défaut de l'événement dragover
+    e.preventDefault(); 
+}
+
+function dragleave(e) {
+    // Empêche les actions par défaut associées à l'événement de sortie de la zone de dépôt
+    e.preventDefault();
+
+    gCountDrop--;
+
+    // Supprimez la classe CSS indiquant que la zone est survolée, uniquement lorsque le curseur a quitté complètement la zone
+    if (gCountDrop === 0) {
+        this.classList.remove('zone-hover');
+    }
+}
+
+function drop(e) {
+    // Empêche le comportement par défaut de l'événement de dépose
+    e.preventDefault();
+
+    // Réinitialise le compteur de survol pour le défaut actuel
+    gCountDrop = 0;
+
+    // Appelez la fonction pour ajouter le fichier déposé à la liste des fichiers
+    addFilepload(gFileCount, e.originalEvent.dataTransfer);
+
+    // Supprimez la classe CSS indiquant que la zone est survolée, une fois le fichier déposé
+    this.classList.remove('zone-hover');
 }
 
 $(document).ready(function () {

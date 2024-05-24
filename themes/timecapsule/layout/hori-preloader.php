@@ -53,6 +53,7 @@ $name = "";
   <body data-topbar="dark" data-layout="horizontal">
 
     <?=Component::create('content/objet/modal-info-coordonate')?>
+    <?=Component::create('content/objet/modal-info-file-format')?>
     <?=Component::create('content/objet/modal-cookies')?>
     <?=Component::create('content/objet/modal-configuration')?>
     <?=Component::create('content/objet/modal-datetime')?>

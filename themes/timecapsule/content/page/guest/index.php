@@ -429,8 +429,15 @@ textarea {
 }
 
 .mailbox-attachment-name {
-  color: #666;
-  font-weight: 700;
+    color: #666;
+    font-weight: 700;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    margin: 0;
+    padding: 5px 0;
 }
 
 .mailbox-attachment-icon,
@@ -440,7 +447,7 @@ textarea {
 }
 
 .mailbox-attachment-info {
-  background-color: #A9D3E0;
+  background-color: #F8F9FA;
   padding: 10px;
 }
 
@@ -561,6 +568,30 @@ textarea {
     margin-left: 10px; /* Ajoutez un espace de 10px entre les paragraphes */
 }
 
+.imgPreview {
+    width: auto !important; /*Keep the aspect ratio of the image*/
+    height: 140px !important;
+    margin: 0 auto 1em auto; /*Center the image*/
+}
+
+#drop-zone-file {
+    max-height: 450px; /* Définir la hauteur maximale */
+    overflow-y: auto; /* Activer le défilement vertical */
+}
+
+.zone-hover {
+    outline: solid 5px #FC5185;
+    transition: outline 0.1s linear;
+}
+
+.table-info {
+    font-size: 0.9em;
+    font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
+}
+.table-info th, .table-info td {
+    padding: 0.4rem;
+}
+
 </style>
 
 <div class="d-flex justify-content-between">
@@ -598,13 +629,13 @@ textarea {
                         <div class="left-side">
                             <form>
                                 <div class="message-header">
-                                    <h3 for="title" key="t-title-message">Titre</h3><div class="flex-container"><p class="pt-3">100 / 100</p><p class="pt-3" key="t-character">caractères</p></div>
+                                    <h3 for="title" key="t-title-message">Titre</h3><div class="flex-container"><p class="pt-3" id="titleCharacterCount" >100 / 100</p><p class="pt-3" key="t-character">caractères</p></div>
                                 </div>
-                                <input type="text" id="title" name="title" maxlength="100">
+                                <input type="text" id="throw-title" name="title" maxlength="100">
                                 <div class="message-header">
-                                    <h3 for="message" key="t-body-message">Message</h3><div class="flex-container"><p class="pt-3 ml-1">250 / 250</p><p class="ml-1 pt-3" key="t-character">caractères</p></div>
+                                    <h3 for="message" key="t-body-message">Message</h3><div class="flex-container"><p class="pt-3 ml-1" id="bodyCharacterCount">250 / 250</p><p class="ml-1 pt-3" key="t-character">caractères</p></div>
                                 </div>
-                                <textarea id="message" name="message" maxlength="250"></textarea>
+                                <textarea id="throw-message" name="message" maxlength="250"></textarea>
                             </form>
                         </div>
                         <div class="right-side">
@@ -623,27 +654,42 @@ textarea {
                             </div>
                         </div>
                     </div>
+                   
                     <div class="file-upload pb-3">
-                        <div class="drop-zone" onmouseover="changeImage('mouseover')" onmouseout="changeImage('mouseout')">
+                        <div class="drop-zone" onmouseover="changeImage('mouseover')" onmouseout="changeImage('mouseout')" id="drop-zone-file">
                             <div class="file-info-container">
-                                <p class="file-info" key="t-format-message">Formats de fichiers acceptés : JPG, PNG, MP4, MOV, WebM, TXT, DOCX, PDF</p>
-                                <p class="file-info" key="t-size-message">Jusqu'à 50 Mo</p>
+                                <div class="d-flex justify-content-between ">
+                                    <div class="m-0 p-0">
+                                        <p class="file-info" key="t-format-message">Formats de fichiers acceptés : ZIP, TXT, PDF, etc.</p> 
+                                    </div>
+                                    <div class="m-0 p-0">
+                                        <p class="file-info"><button type="button" class="btn btn-tool auto" id="btn-modal-info-file-format"><i class="fas fa-info-circle"></i></button> </p> 
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                <div class="m-0 p-0">
+                                <p class="file-info" key="t-size-message">Jusqu'à 50 Mo pour un maximum de 5 fichiers</p>
+                            </div>
+                                </div>
                             </div>
                             <div class="zone d-flex flex-column">
-                                <div class="bottle" >
-                                    <img id="bottle-image" src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/empty-bottle.png';?>" alt="Bottle">
+                                <ul class="mailbox-attachments" id="listFile" style="display: none;"></ul>
+                                <div id="msgInfo">
+                                    <div class="bottle">
+                                        <img id="bottle-image" src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/empty-bottle.png';?>" alt="Bottle">
+                                    </div>
+                                    <div>
+                                        <h2 key="t-action-message">Glissez-déposez</h2>
+                                    </div>
+                                    <div>
+                                        <h5 key="t-file-message-1">votre fichier ici</h5>
+                                    </div>
+                                    <div>
+                                        <h5 key="t-file-message-2">ou</h5>
+                                    </div>
                                 </div>
                                 <div>
-                                    <h2 key="t-action-message">Glissez-déposez</h2>
-                                </div>
-                                <div>
-                                    <h5 key="t-file-message-1">votre fichier ici</h5>
-                                </div>
-                                <div>
-                                    <h5 key="t-file-message-2">ou</h5>
-                                </div>
-                                <div>
-                                    <button  type="button" class="buttons-drop-zone btn btn-light waves-effect waves-light" key="t-choose-file-message">Choisissez un fichier</button>
+                                    <button  type="button" id="btn-throw-file-message" class="buttons-drop-zone btn btn-light waves-effect waves-light" onclick="document.getElementById('throw-file-message').click();"><div key="t-choose-file-message">Choisissez un ou plusieurs fichiers</div><input type="file" name="throw-file-message" id="throw-file-message" style="display: none;" multiple></button>
                                 </div>
                             </div> 
                         </div>
@@ -672,7 +718,7 @@ textarea {
                         <div class="drop-zone-2">
                             <div class="p-4 form-group row">
                                 <div class="col-sm-12">
-                                <ul class="mailbox-attachments" id="listFile" style="display:block">   
+                                <ul class="mailbox-attachments" id="listFile-other" style="display:block">   
                                     <li id="indexFile_1"><span class="mailbox-attachment-icon" style="background-color:#F8F9FA;"><i class="far fa-file-pdf"></i></span><div class="mailbox-attachment-info"><span class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> 2024-OJS063-00185709-fr-ts.pdf</span><span class="mailbox-attachment-size clearfix mt-1"><span>99.82 KiB</span></div></li>    
                                     <li id="indexFile_2"><span class="mailbox-attachment-icon" style="background-color:#F8F9FA;"><i class="far fa-file-pdf"></i></span><div class="mailbox-attachment-info"><span class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> 2024-OJS063-00185709-fr-ts.pdf</span><span class="mailbox-attachment-size clearfix mt-1"><span>99.82 KiB</span></div></li>    
                                 </ul>

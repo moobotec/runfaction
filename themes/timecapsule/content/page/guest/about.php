@@ -81,12 +81,12 @@ html, body {
             <div class="d-flex justify-content-center">
                 <div class="col-md-4">
                     <div class="card">
-                        <img src="https://france3-regions.francetvinfo.fr/image/qakLUyK0trW2F3ogx3dSGmVD01Y/4032x3024/regions/2024/01/07/lettre-sable-659a7a9e28aaf493161226.jpg" class="card-img-top" alt="Image de la vignette">
+                        <img src="https://france3-regions.francetvinfo.fr/image/qakLUyK0trW2F3ogx3dSGmVD01Y/4032x3024/regions/2024/01/07/lettre-sable-659a7a9e28aaf493161226.jpg" class="card-img-top" alt="Vignette témoignage : Bouteille à la mer">
                         <div class="card-body">
                             <h5 class="card-title" key="t-card-title">Témoignage : Bouteille à la mer</h5>
                             <p class="card-text" key="t-card-body">C'est incroyable ! L'émotion de l'Américaine qui a écrit la lettre retrouvée en Gironde.</p>
                             <div class="text-center">
-                            <a href="https://france3-regions.francetvinfo.fr/nouvelle-aquitaine/gironde/bordeaux/temoignage-bouteille-a-la-mer-c-est-incroyable-l-emotion-de-l-americaine-qui-a-ecrit-la-lettre-retrouvee-en-gironde-2901794.html" class="btn btn-primary" key="t-card-read-topic">Lire l'article</a>
+                            <a href="https://france3-regions.francetvinfo.fr/nouvelle-aquitaine/gironde/bordeaux/temoignage-bouteille-a-la-mer-c-est-incroyable-l-emotion-de-l-americaine-qui-a-ecrit-la-lettre-retrouvee-en-gironde-2901794.html" class="btn btn-primary" target="_blank" key="t-card-read-topic">Lire l'article</a>
                             </div>
                         </div>
                     </div>

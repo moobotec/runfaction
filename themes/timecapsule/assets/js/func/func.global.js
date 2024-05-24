@@ -61,6 +61,13 @@ var gThrowMarker = null;
 var gInputAuto = null;
 var gCurrentZoom = null;
 var gTimerUpdateCountry = null;
+var gFiles = [];
+var gFileCount = 0;
+var gCountDrop = 0;
+
+//! Nombre maximal de fichiers par défaut
+var cntMaxFile = 5;
+var limitSizeFiles = 52428800; //50mo
 
 const gConfig = {
     mapLeaflet : {
@@ -79,3 +86,4 @@ const gConfig = {
     theme : 'timecapsule',
     default_suspension_points : '...'
 };
+
