@@ -855,10 +855,10 @@ async function addImgUpload(typeFile, numFile, fileInput) {
     {
         // Génération du HTML pour afficher les détails du fichier
         htmlFile = '<li id="indexFile_' + numFile + '">' +
-            '<span class="mailbox-attachment-icon" style="background-color:#F8F9FA;"><i class="far ' + typeFile + '"></i></span>' +
-            '<div class="mailbox-attachment-info">' +
-            '<span class="mailbox-attachment-name" data-toggle="tooltip" title="' + nameFile + '"><i class="fas fa-paperclip"></i> ' + nameFile + '</span>' +
-            '<span class="mailbox-attachment-size clearfix mt-1">' +
+            '<span class="cla-file-attachment-icon" style="background-color:#F8F9FA;"><i class="far ' + typeFile + '"></i></span>' +
+            '<div class="cla-file-attachment-info">' +
+            '<span class="cla-file-attachment-name" data-toggle="tooltip" title="' + nameFile + '"><i class="fas fa-paperclip"></i> ' + nameFile + '</span>' +
+            '<span class="cla-file-attachment-size clearfix mt-1">' +
             '<span>' + getSymbolByQuantity(sizeFile) + '</span>' +
             '<a href="#" id="btnRemoveFile_' + numFile + '" class="btn btn-default btn-sm float-right"><i class="fas fa-trash-alt"></i></a>' +
             '</span>' +
@@ -868,10 +868,10 @@ async function addImgUpload(typeFile, numFile, fileInput) {
     else
     {
         htmlFile = '<li id="indexFile_' + numFile + '">' +
-            '<span class="mailbox-attachment-icon has-img" style="background-color:#F8F9FA;"><img class="imgPreview" id="imagePreview_' + numFile + '"/></span>' +
-            '<div class="mailbox-attachment-info">' +
-            '<span class="mailbox-attachment-name" data-toggle="tooltip" title="' + nameFile + '"><i class="fas fa-camera"></i> ' + nameFile + '</span>' +
-            '<span class="mailbox-attachment-size clearfix mt-1">' +
+            '<span class="cla-file-attachment-icon has-img" style="background-color:#F8F9FA;"><img class="cla-image-preview" id="imagePreview_' + numFile + '"/></span>' +
+            '<div class="cla-file-attachment-info">' +
+            '<span class="cla-file-attachment-name" data-toggle="tooltip" title="' + nameFile + '"><i class="fas fa-camera"></i> ' + nameFile + '</span>' +
+            '<span class="cla-file-attachment-size clearfix mt-1">' +
             '<span>' + getSymbolByQuantity(sizeFile) + '</span>' +
             '<a href="#" id="btnRemoveFile_' + numFile + '" class="btn btn-default btn-sm float-right"><i class="fas fa-trash-alt"></i></a>' +
             '</span>' +
@@ -897,7 +897,7 @@ function recalibrateIds() {
         $(this).attr('id', 'indexFile_' + index);
 
         // Mettre à jour l'ID de l'image preview
-        $(this).find('.imgPreview').attr('id', 'imagePreview_' + index);
+        $(this).find('.cla-image-preview').attr('id', 'imagePreview_' + index);
 
         // Mettre à jour l'ID du bouton remove
         $(this).find('.btn-default').attr('id', 'btnRemoveFile_' + index);
@@ -1019,7 +1019,7 @@ function dragenter(e) {
     gCountDrop++;
 
     if (gCountDrop === 1) {
-        this.classList.add('zone-hover');
+        this.classList.add('cla-zone-hover');
     }
 }
 
@@ -1036,7 +1036,7 @@ function dragleave(e) {
 
     // Supprimez la classe CSS indiquant que la zone est survolée, uniquement lorsque le curseur a quitté complètement la zone
     if (gCountDrop === 0) {
-        this.classList.remove('zone-hover');
+        this.classList.remove('cla-zone-hover');
     }
 }
 
@@ -1051,7 +1051,7 @@ function drop(e) {
     addFilepload(gFileCount, e.originalEvent.dataTransfer);
 
     // Supprimez la classe CSS indiquant que la zone est survolée, une fois le fichier déposé
-    this.classList.remove('zone-hover');
+    this.classList.remove('cla-zone-hover');
 }
 
 $(document).ready(function () {

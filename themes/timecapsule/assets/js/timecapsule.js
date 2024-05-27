@@ -1,18 +1,20 @@
 function expandZone(selectedZoneId) {
     document.getElementById('zoneTitle').style.display = "none";
     const zones = ['zone1', 'zone2', 'zone3', 'zone4'];
+
+    if (selectedZoneId == 'zone') // zone ocean 
+    {
+        
+    }
+
     zones.forEach(zone => {
         const element = document.getElementById(zone);
-        const throwMessage = element.querySelector('.throw-message');
-        const digMessage = element.querySelector('.dig-message');
-        const spaceMessage = element.querySelector('.space-message');
-        const timeMessage = element.querySelector('.time-message');
-        const closeButton = element.querySelector('.close-btn');
-        const content = element.querySelector('.content-zone-text');
-
-        element.querySelectorAll('.corner-image-bottom-right, .corner-image-bottom-left, .corner-image-top-right, .corner-image-top-left').forEach(function(element) {
-            $(element).css('display', 'none');
-        });
+        const throwMessage = element.querySelector('.cla-throw-message');
+        const digMessage = element.querySelector('.cla-dig-message');
+        const spaceMessage = element.querySelector('.cla-space-message');
+        const timeMessage = element.querySelector('.cla-time-message');
+        const closeButton = element.querySelector('.cla-close-btn');
+        const content = element.querySelector('.cla-content-zone-text');
 
         const h2 = element.querySelector('h2');
         if (zone === selectedZoneId) {
@@ -45,16 +47,12 @@ function closeZone(event, zoneId) {
     zoneTitle.style.display = "block";
     zones.forEach(zone => {
         const element = document.getElementById(zone);
-        const throwMessage = element.querySelector('.throw-message');
-        const digMessage = element.querySelector('.dig-message');
-        const spaceMessage = element.querySelector('.space-message');
-        const timeMessage = element.querySelector('.time-message');
-        const closeButton = element.querySelector('.close-btn');
-        const content = element.querySelector('.content-zone-text');
-
-        element.querySelectorAll('.corner-image-bottom-right, .corner-image-bottom-left, .corner-image-top-right, .corner-image-top-left').forEach(function(element) {
-            $(element).css('display', 'block');
-        });
+        const throwMessage = element.querySelector('.cla-throw-message');
+        const digMessage = element.querySelector('.cla-dig-message');
+        const spaceMessage = element.querySelector('.cla-space-message');
+        const timeMessage = element.querySelector('.cla-time-message');
+        const closeButton = element.querySelector('.cla-close-btn');
+        const content = element.querySelector('.cla-content-zone-text');
 
         if (zone === zoneId) {
             document.getElementById('zoneTitle-'+zone).style.display = "none";
@@ -94,7 +92,7 @@ function setupClickButtonClock()
 {
     $('button[id^="btClock"]').click(function() 
     {
-        $('h2[id^="clock"]').removeClass('active');
+        $('h2[id^="clock"]').removeClass('cla-active');
         $('div[id^="modifClock"]').css("display", "none");
 
         if ( $(this).attr('id') == "btClockErase" )
@@ -115,7 +113,7 @@ function setupClickButtonClock()
         }
         else
         {
-            $('#clock'+ $(this).attr('id').replace('btClock', '')).addClass('active');
+            $('#clock'+ $(this).attr('id').replace('btClock', '')).addClass('cla-active');
             $('#modifClock'+ $(this).attr('id').replace('btClock', '')).css("display", "block");
         }
     });
@@ -299,7 +297,7 @@ function setupClickButtonLocation()
 {
     $('button[id^="btLocation"]').click(function() 
     {
-        $('h3[id^="location"]').removeClass('active');
+        $('h3[id^="location"]').removeClass('cla-active');
         $('div[id^="modifLocation"]').css("display", "none");
 
         if ( $(this).attr('id') == "btLocationNavigatorReset" )
@@ -340,7 +338,7 @@ function setupClickButtonLocation()
                 const hasCarto = hasCartoPlanetByLangById(gCurrentModalPosition.planet);
                 if (hasCarto == 'true')
                 {
-                    $('#location'+ mode).addClass('active');
+                    $('#location'+ mode).addClass('cla-active');
                     $('#modifLocation'+ mode).css("display", "block");
                     gMap.invalidateSize(true);
                 }
@@ -368,7 +366,7 @@ function setupClickButtonLocation()
             }
             else
             {
-                $('#location'+ mode).addClass('active');
+                $('#location'+ mode).addClass('cla-active');
                 $('#modifLocation'+ mode).css("display", "block");
             }
                 
@@ -827,7 +825,7 @@ function updateCurrentPosition()
             removeFiles();
         });
 
-        $('.drop-zone').each(function() {
+        $('.cla-drop-zone').each(function() {
             $(this).off('dragenter dragover dragleave drop');
     
             $(this).on('dragenter', dragenter);

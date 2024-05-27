@@ -78,16 +78,16 @@
         <div class="modal-footer">
             <div class="d-flex justify-content-end">
             <div class="">
-            <button type="button" id="bccs-buttonDoNotAgree" class="buttons-position btn btn-light header-item waves-effect waves-light" ><h4 key="modal-cookie-btn-refuse">Refuser</h4></button>
+            <button type="button" id="bccs-buttonDoNotAgree" class="cla-button-position btn btn-light header-item waves-effect waves-light" ><h4 key="modal-cookie-btn-refuse">Refuser</h4></button>
             </div>
             <div class="">
-            <button type="button" id="bccs-buttonAgree" class="buttons-position btn btn-light header-item waves-effect waves-light" ><h4 key="modal-cookie-btn-accept">Accepter</h4></button>
+            <button type="button" id="bccs-buttonAgree" class="cla-button-position btn btn-light header-item waves-effect waves-light" ><h4 key="modal-cookie-btn-accept">Accepter</h4></button>
             </div>
             <div class="">
-            <button type="button" id="bccs-buttonSave" class="buttons-position btn btn-light header-item waves-effect waves-light" style="display: none;" ><h4 key="modal-cookie-btn-save-pref">Enregistrer les préférences</h4></button>
+            <button type="button" id="bccs-buttonSave" class="cla-button-position btn btn-light header-item waves-effect waves-light" style="display: none;" ><h4 key="modal-cookie-btn-save-pref">Enregistrer les préférences</h4></button>
             </div>
             <div class="">
-            <button type="button" id="bccs-buttonAgreeAll" class="buttons-position btn btn-light header-item waves-effect waves-light" style="display: none;" ><h4  key="modal-cookie-btn-accept-all">Accepter tout</h4></button>
+            <button type="button" id="bccs-buttonAgreeAll" class="cla-button-position btn btn-light header-item waves-effect waves-light" style="display: none;" ><h4  key="modal-cookie-btn-accept-all">Accepter tout</h4></button>
             </div>    
         </div>
         </div>

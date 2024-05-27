@@ -23,45 +23,9 @@
 /** @file  */
 
 ?>
-<style>
 
-html, body {
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-}
-
-.margin-header {
-    margin-top: 100px;
-}
-
-.touch-mmo {
-    font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
-}
-
-.buttons-position  {
-    display: flex; /* Permet l'alignement interne du texte */
-    align-items: center; /* Centre le texte verticalement */
-    justify-content: right; /* Centre le texte horizontalement */
-    background-color: transparent; /* Fond transparent */
-    color: white; /* Texte en blanc pour le contraste */
-    font-size: 20px; /* Taille de texte grande */
-    width: 100%; /* Prendre toute la largeur du conteneur */
-    border: none; /* Suppression de la bordure par défaut des boutons si utilisé */
-    text-decoration: none; /* Pas de soulignement du texte */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre subtile pour un effet 3D */
-    transition: all 0.3s ease; /* Transition douce pour les interactions */
-    font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
-}
-
-.buttons-position:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Ombre plus prononcée au survol */
-    transform: translateY(-2px); /* Léger effet de soulèvement au survol */
-}
-
-</style>
-<div class="container touch-mmo">
-<div class="row margin-header">
+<div class="container cla-touch-mmo">
+<div class="row cla-margin-header">
     <div class="col-lg-8 offset-lg-2">
         <p class="lead" key="t-lead">Bienvenue sur ce site, votre espace dédié aux messages dans des bouteilles virtuelles.</p>
         
@@ -117,8 +81,8 @@ html, body {
             Développer et maintenir cette plateforme demande du temps et des ressources. Si vous appréciez ce service et souhaitez soutenir mon travail, vous pouvez m'offrir un café virtuel ! C'est une manière simple et agréable de contribuer à l'amélioration continue du site. Chaque contribution m'aide à continuer de développer des fonctionnalités et à maintenir le site en ligne. Merci pour votre soutien !
         </p>
         <p class="text-center">
-            <a href="https://www.buymeacoffee.com/votreprofil" class="btn btn-primary" key="t-btn-buycoffee">Offrez-moi un café</a>
-            <a href="https://www.donationalerts.com/votreprofil" class="btn btn-primary" key="t-btn-donation">Donation</a>
+            <a href="https://www.buymeacoffee.com/votreprofil" class="btn btn-primary" target="_blank" key="t-btn-buycoffee">Offrez-moi un café</a>
+            <a href="https://www.donationalerts.com/votreprofil" class="btn btn-primary" target="_blank" key="t-btn-donation">Donation</a>
         </p>
         <hr>
         <p class="text-center" key="t-part-content-8">

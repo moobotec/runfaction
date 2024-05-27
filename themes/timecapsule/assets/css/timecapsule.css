@@ -1,0 +1,599 @@
+html, body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+h1,h2,h3
+{
+    font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
+}
+
+.h2:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Ombre plus prononcée au survol */
+    transform: translateY(-2px); /* Léger effet de soulèvement au survol */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+head {
+    display: flex;
+    flex-direction: column;
+}
+
+.head h3
+{
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #88ff88;
+    border-radius: 4px;
+    background-color: #A9D3E0;
+}
+
+.d-flex { 
+    display: flex; 
+    align-items: center; /* Centre les éléments verticalement */
+    justify-content: center; /* Centre les éléments horizontalement */
+}
+
+#zone1, #zone2, #zone3, #zone4  {
+    transition: all 0.5s ease-in-out;
+    overflow: hidden;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #88ff88;
+    border-radius: 4px;
+    background-color: #A9D3E0;
+    font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
+}
+
+textarea {
+    resize: none;
+    height: 100px;
+}
+
+.col-6 {
+    width: calc(50%); /* Ajuster la hauteur pour éviter les débordements */
+    height: calc(50%); /* Ajuster la hauteur pour éviter les débordements */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform .2s ease-in-out;
+}
+
+.col-6:first-child { background-color: lightblue; }
+.col-6:nth-child(2) { background-color: lightgreen; }
+.col-6:nth-child(3) { background-color: lightcoral; }
+.col-6:last-child { background-color: lightgoldenrodyellow; }
+
+.col-6:hover {
+    transform: scale(0.95);
+}
+
+.col-6:hover {
+    text-decoration: underline #88ff88;
+}
+
+.col-12 {
+    width: calc(50%); /* Ajuster la hauteur pour éviter les débordements */
+    height: calc(50%); /* Ajuster la hauteur pour éviter les débordements */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform .2s ease-in-out;
+}
+
+.col-6 { height: 38vh; } /* Définit une hauteur de 40% de la hauteur de la fenêtre pour chaque zone */
+.col-12 { height: 75vh; } /* Définit une hauteur de 40% de la hauteur de la fenêtre pour chaque zone */
+
+.leaflet-map .leaflet-container {
+    z-index: 99; 
+}
+
+.cla-zone-top-left {
+    border-top:    2px solid black; /* Bordure pour chaque zone */
+    border-right:  1px solid black; /* Bordure pour chaque zone */
+    border-bottom: 1px solid black; /* Bordure pour chaque zone */
+    border-left:   2px solid black; /* Bordure pour chaque zone */
+    padding: 0px;
+}
+
+.cla-zone-top-right {
+    border-top:    2px solid black; /* Bordure pour chaque zone */
+    border-right:  2px solid black; /* Bordure pour chaque zone */
+    border-bottom: 1px solid black; /* Bordure pour chaque zone */
+    border-left:   1px solid black; /* Bordure pour chaque zone */
+    padding: 0px;
+}
+
+.cla-zone-bottom-left {
+    border-top:    1px solid black; /* Bordure pour chaque zone */
+    border-right:  1px solid black; /* Bordure pour chaque zone */
+    border-bottom: 2px solid black; /* Bordure pour chaque zone */
+    border-left:   2px solid black; /* Bordure pour chaque zone */
+    padding: 0px;
+}
+
+.cla-zone-bottom-right {
+    border-top:    1px solid black; /* Bordure pour chaque zone */
+    border-right:  2px solid black; /* Bordure pour chaque zone */
+    border-bottom: 2px solid black; /* Bordure pour chaque zone */
+    border-left:   1px solid black; /* Bordure pour chaque zone */
+    padding: 0px;
+}
+
+.cla-page-content {
+    margin-top: 80px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.cla-vertical-center-container {
+    display: flex; /* Utilise Flexbox */
+    align-items: center; /* Centre verticalement le contenu */
+    height: 100%; /* Hauteur complète de la fenêtre de visualisation */
+}
+
+.cla-button-date, .cla-button-position  {
+    display: flex; /* Permet l'alignement interne du texte */
+    align-items: center; /* Centre le texte verticalement */
+    justify-content: right; /* Centre le texte horizontalement */
+    background-color: transparent; /* Fond transparent */
+    color: white; /* Texte en blanc pour le contraste */
+    font-size: 20px; /* Taille de texte grande */
+    width: 100%; /* Prendre toute la largeur du conteneur */
+    border: none; /* Suppression de la bordure par défaut des boutons si utilisé */
+    text-decoration: none; /* Pas de soulignement du texte */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre subtile pour un effet 3D */
+    transition: all 0.3s ease; /* Transition douce pour les interactions */
+    font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
+}
+
+.cla-button-date:hover,.cla-button-position:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Ombre plus prononcée au survol */
+    transform: translateY(-2px); /* Léger effet de soulèvement au survol */
+}
+
+.cla-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: black; /* Change as needed */
+    font-size: 24px;
+    cursor: pointer;
+    display: none; /* Initially hidden */
+}
+
+.cla-content-zone-text {
+    transition: opacity 3s ease-in-out;
+    opacity: 1; /* Fully visible initially */
+}
+
+.modal-content {
+    border: 2px solid black; /* Ajoute une bordure noire de 10px */
+    border-radius: 0; /* Supprime les bordures arrondies */
+}
+
+.cla-throw-message {
+    display: none; /* Initially hidden */
+    /* border: 2px dashed #000; */
+    width: 90%;
+    padding-top: 20px;
+    height: auto;
+}
+
+.cla-dig-message,
+.cla-space-message,
+.cla-time-message
+{
+    display: none; /* Initially hidden */
+}
+
+.cla-content-message {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cla-left-side-message{
+    flex: 1.5;
+    padding: 10px;
+     /*border: 2px dashed #000; */
+}
+
+.cla-right-side-message {
+    flex: 1;
+    padding-top: 30px;
+    padding-left: 30px;
+    /*border: 2px dashed #000; */
+}
+
+.cla-right-side-message-2 {
+    flex: 1;
+    /*border: 2px dashed #000; */
+}
+
+.cla-left-side-message h3 {
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+.cla-content-message  input[type="text"]{
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #88ff88;
+    border-radius: 4px;
+    background-color: #A9D3E0;
+    font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
+}
+
+.cla-header-message {
+    display: flex;
+    justify-content: space-between;
+    align-items: l;
+}
+
+.cla-weather {
+    background-color: #A9D3E0;
+    border: 5px solid #88ff88;
+    border-radius: 4px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 95%;
+    font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
+}
+
+.cla-weather-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: l;
+    border-bottom: 1px solid #88ff88;
+}
+
+.cla-weather-info {
+    margin-top: 10px;
+}
+
+.cla-weather-info p {
+    text-align :center;
+}
+
+.cla-weather-header h2 {
+    font-size: 40px;
+    margin-right: 10px;
+}
+
+.cla-weather-header i {
+    font-size: 50px;
+    margin-left: auto;
+}
+
+.cla-file-upload {
+    margin-top: 10px;
+}
+
+.cla-drop-zone-2 {
+    height: auto;
+    border-top: 2px dashed #000;
+    text-align: center;
+    margin-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 4px;
+}
+
+.cla-drop-zone {
+    height: auto;
+    border: 2px dashed #000;
+    text-align: center;
+    margin-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #A9D3E0;
+    border-radius: 4px;
+}
+
+.cla-drop-zone .cla-file-info-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0px;
+    padding-top: 10px;
+    font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
+}
+
+.cla-drop-zone .cla-zone {
+    height: 100%;
+    padding-bottom: 40px;
+}
+
+.cla-drop-zone .bottle {
+    padding-top: 40px;
+    padding-bottom: 20px;
+}
+
+.cla-button-drop-zone  {
+    display: flex; /* Permet l'alignement interne du texte */
+    align-items: center; /* Centre le texte verticalement */
+    justify-content: right; /* Centre le texte horizontalement */
+    background-color: transparent; /* Fond transparent */
+    color: white; /* Texte en blanc pour le contraste */
+    font-size: 20px; /* Taille de texte grande */
+    width: 100%; /* Prendre toute la largeur du conteneur */
+    border: none; /* Suppression de la bordure par défaut des boutons si utilisé */
+    text-decoration: none; /* Pas de soulignement du texte */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre subtile pour un effet 3D */
+    transition: all 0.3s ease; /* Transition douce pour les interactions */
+    font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
+}
+
+.cla-button-step  {
+    display: flex; /* Permet l'alignement interne du texte */
+    align-items: center; /* Centre le texte verticalement */
+    justify-content: right; /* Centre le texte horizontalement */
+    background-color: transparent; /* Fond transparent */
+    color: white; /* Texte en blanc pour le contraste */
+    font-size: 20px; /* Taille de texte grande */
+    border: none; /* Suppression de la bordure par défaut des boutons si utilisé */
+    text-decoration: none; /* Pas de soulignement du texte */
+    transition: all 0.3s ease; /* Transition douce pour les interactions */
+    font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
+    margin-top: 5px;
+    border-radius: 4px;
+}
+
+.cla-leaflet-map-custom {
+    margin : 0;
+    padding : 0;
+    border: 5px solid #88ff88;
+    border-radius: 4px;
+    height: 335px;
+    width: 100%; 
+}
+
+.cla-file-messages > .table {
+  margin: 0;
+}
+
+.cla-file-controls {
+  padding: 5px;
+}
+
+.cla-file-controls.with-border {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.cla-file-read-info {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  padding: 10px;
+}
+
+.cla-file-read-info h3 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.cla-file-read-info h5 {
+  margin: 0;
+  padding: 5px 0 0;
+}
+
+.cla-file-read-time {
+  color: #999;
+  font-size: 13px;
+}
+
+.cla-file-read-message {
+  padding: 10px;
+}
+
+.cla-file-attachments {
+  padding-left: 0;
+  list-style: none;
+}
+
+.cla-file-attachments li {
+  border: 1px solid #88ff88;
+  float: left;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  width: 200px;
+}
+
+.cla-file-attachment-name {
+    color: #666;
+    font-weight: 700;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    margin: 0;
+    padding: 5px 0;
+}
+
+.cla-file-attachment-icon,
+.cla-file-attachment-info,
+.cla-file-attachment-size {
+  display: block;
+}
+
+.cla-file-attachment-info {
+  background-color: #F8F9FA;
+  padding: 10px;
+}
+
+.cla-file-attachment-size {
+  color: #999;
+  font-size: 12px;
+}
+
+.cla-file-attachment-size > span {
+  display: inline-block;
+  padding-top: .75rem;
+}
+
+.cla-file-attachment-icon {
+  color: #666;
+  font-size: 65px;
+  max-height: 132.5px;
+  padding: 20px 10px;
+  text-align: center;
+}
+
+.cla-file-attachment-icon.has-img {
+  padding: 0;
+}
+
+.cla-file-attachment-icon.has-img > img {
+  height: auto;
+  max-width: 100%;
+}
+
+.cla-qrcode-image {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.cla-content-success {
+    padding: 10px;
+    margin-top: 5px;
+    border: 2px solid #88ff88;
+    border-radius: 4px;
+    background-color: #A9D3E0;
+    font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
+}
+
+.cla-content-success input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #88ff88;
+    border-radius: 4px;
+    background-color: #A9D3E0;
+    font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
+}
+
+.cla-count-text-container {
+    display: flex;
+    align-items: center; /* Aligner verticalement au centre */
+}
+
+.cla-count-text-container p {
+    margin: 0;
+}
+
+.cla-count-text-container p + p {
+    margin-left: 10px; /* Ajoutez un espace de 10px entre les paragraphes */
+}
+
+.cla-image-preview {
+    width: auto !important; /*Keep the aspect ratio of the image*/
+    height: 140px !important;
+    margin: 0 auto 1em auto; /*Center the image*/
+}
+
+.cla-zone-hover {
+    outline: solid 5px #FC5185;
+    transition: outline 0.1s linear;
+}
+
+.cla-modal-table-info {
+    font-size: 0.9em;
+    font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
+}
+
+.cla-modal-table-info th, .cla-modal-table-info td {
+    padding: 0.4rem;
+}
+
+#drop-zone-file {
+    max-height: 450px; /* Définir la hauteur maximale */
+    overflow-y: auto; /* Activer le défilement vertical */
+}
+
+.cla-close-btn-pre {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: black; /* Change as needed */
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.cla-button-change:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Ombre plus prononcée au survol */
+    transform: translateY(-2px); /* Léger effet de soulèvement au survol */
+}
+
+.cla-button-change:hover > h2 {
+text-decoration: underline #88ff88;
+}
+.cla-button-change:hover > h3 {
+text-decoration: underline #88ff88;
+}
+
+.cla-active {
+    text-decoration: underline #88ff88;
+}
+
+.cla-h2-like {
+    font-size: 1.5rem; /* Taille de police similaire à celle de <h2> dans Bootstrap */
+    font-weight: bold; /* Gras comme un titre <h2> */
+    /* Ajouter d\'autres styles de <h2> si nécessaire */
+}
+
+.cla-hover-text {
+    font-size: 1.3rem; /* Taille de police similaire à celle de <h2> dans Bootstrap */
+    color: lightgrey; /* Gris */
+    font-weight: bold; /* Gras comme un titre <h2> */
+    /* Ajouter d\'autres styles de <h2> si nécessaire */
+    pointer-events: none; /* Empêche le texte d\'interférer avec les événements de la souris */
+}
+
+[class*="top-text"]
+{
+    width: 100%; 
+    text-align: center; 
+    display: block;
+    bottom: 100%; /* Position par rapport au haut de l\'input */
+    transform: translateY(-10px); /* Ajustez cette valeur pour décaler le texte vers le haut */
+    transition: visibility 0.2s, opacity 0.2s ease-in-out; /* Ajout d\'une transition pour le changement visuel */
+    opacity: 0; /* Rend le texte transparent initialement */
+    visibility: hidden; /* Rend le texte non visible initialement */
+}
+
+[class*="bottom-text"]
+{
+    width: 100%; 
+    text-align: center; 
+    display: block;
+    top: 100%; /* Position par rapport au bas de l\'input */
+    transform: translateY(10px); /* Ajustez cette valeur pour décaler le texte vers le bas */
+    transition: visibility 0.2s, opacity 0.2s ease-in-out; /* Ajout d\'une transition pour le changement visuel */
+    opacity: 0; /* Rend le texte transparent initialement */
+    visibility: hidden; /* Rend le texte non visible initialement */
+}
+
+.cla-input-wrapper
+{
+    position: relative;
+    padding-top: 10px; /* Ajuster selon besoin pour plus d\'espace au-dessus */
+    padding-bottom: 10px; /* Ajuster selon besoin pour plus d\'espace en dessous */
+    display: inline-block; /* Assurez-vous que le wrapper ne prend que l\'espace nécessaire */
+}
+
+.form-control .form-control-lg {
+    height: 60px; /* Hauteur plus grande de l\'input pour augmenter la zone cliquable */
+}

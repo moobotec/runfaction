@@ -1,0 +1,33 @@
+html, body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.cla-margin-header {
+    margin-top: 100px;
+}
+
+.cla-touch-mmo {
+    font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
+}
+
+.cla-button-position  {
+    display: flex; /* Permet l'alignement interne du texte */
+    align-items: center; /* Centre le texte verticalement */
+    justify-content: right; /* Centre le texte horizontalement */
+    background-color: transparent; /* Fond transparent */
+    color: white; /* Texte en blanc pour le contraste */
+    font-size: 20px; /* Taille de texte grande */
+    width: 100%; /* Prendre toute la largeur du conteneur */
+    border: none; /* Suppression de la bordure par défaut des boutons si utilisé */
+    text-decoration: none; /* Pas de soulignement du texte */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre subtile pour un effet 3D */
+    transition: all 0.3s ease; /* Transition douce pour les interactions */
+    font-family: 'Franklin Gothic Heavy', sans-serif; /* Utilisation de la police */
+}
+
+.cla-button-position:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Ombre plus prononcée au survol */
+    transform: translateY(-2px); /* Léger effet de soulèvement au survol */
+}

@@ -67,7 +67,7 @@ $name = "";
       <?=Component::create('partials/navigation')->assign(['pages'=>$pages]) ?>
 
       <div class="main-content">
-          <div class="page-content-1">
+          <div class="cla-page-content">
 
                 <?=Component::create('partials/content') ?>
 

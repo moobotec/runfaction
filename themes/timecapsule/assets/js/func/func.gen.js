@@ -110,22 +110,22 @@ function setValueInputPrefix(inputElement,value)
     possible en haut et en bas */
 function updatePeripheralDigit(type,id,showTop,showBottom,valueTop,valueBottom) {
 
-    $('.input-wrapper .top-text-'+type+'-'+id).css("visibility","hidden");
-    $('.input-wrapper .bottom-text-'+type+'-'+id).css("visibility","hidden");
-    $('.input-wrapper .top-text-'+type+'-'+id).css("opacity","0"); 
-    $('.input-wrapper .bottom-text-'+type+'-'+id).css("opacity","0"); 
+    $('.cla-input-wrapper .top-text-'+type+'-'+id).css("visibility","hidden");
+    $('.cla-input-wrapper .bottom-text-'+type+'-'+id).css("visibility","hidden");
+    $('.cla-input-wrapper .top-text-'+type+'-'+id).css("opacity","0"); 
+    $('.cla-input-wrapper .bottom-text-'+type+'-'+id).css("opacity","0"); 
 
     if (showTop)
     {
-        $('.input-wrapper .top-text-'+type+'-'+id).css("visibility","visible");
-        $('.input-wrapper .top-text-'+type+'-'+id).html(valueTop);
-        $('.input-wrapper .top-text-'+type+'-'+id).css("opacity","1"); 
+        $('.cla-input-wrapper .top-text-'+type+'-'+id).css("visibility","visible");
+        $('.cla-input-wrapper .top-text-'+type+'-'+id).html(valueTop);
+        $('.cla-input-wrapper .top-text-'+type+'-'+id).css("opacity","1"); 
     }
     if (showBottom)
     {
-        $('.input-wrapper .bottom-text-'+type+'-'+id).css("visibility","visible");
-        $('.input-wrapper .bottom-text-'+type+'-'+id).html(valueBottom);
-        $('.input-wrapper .bottom-text-'+type+'-'+id).css("opacity","1");
+        $('.cla-input-wrapper .bottom-text-'+type+'-'+id).css("visibility","visible");
+        $('.cla-input-wrapper .bottom-text-'+type+'-'+id).html(valueBottom);
+        $('.cla-input-wrapper .bottom-text-'+type+'-'+id).css("opacity","1");
     }
 }
 

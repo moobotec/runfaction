@@ -28,7 +28,7 @@
             <div class="modal-header">
                 <h3 class="modal-title" id="myModalLabel" key="modal-configuration-title">Configuration</h3>
                 <small class="px-5">Build_1b9f6a5e_04_05_2024_16_01_v_1_0_0</small>
-                <button type="button" class="close-btn-pre" data-bs-dismiss="modal" >✖</button>
+                <button type="button" class="cla-close-btn-pre" data-bs-dismiss="modal" >✖</button>
             </div>
             <div class="modal-body">
             <p class="card-title-desc" key="modal-datetime-utc" >Vous pouvez changer le notation de l'heure.</p>
@@ -86,7 +86,7 @@
             </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="btConfigModify" class="buttons-position btn btn-light header-item waves-effect waves-light"><h4 key="modal-apply">Appliquer les changements</h4></button>
+                <button type="button" id="btConfigModify" class="cla-button-position btn btn-light header-item waves-effect waves-light"><h4 key="modal-apply">Appliquer les changements</h4></button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

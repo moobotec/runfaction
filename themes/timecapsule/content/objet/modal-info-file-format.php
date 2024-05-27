@@ -27,10 +27,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title" key="modal-info-file-format-title">Informations concernant les types de fichiers pris en charge</h3>
-                <button type="button" class="close-btn-pre" data-bs-dismiss="modal" >✖</button>
+                <button type="button" class="cla-close-btn-pre" data-bs-dismiss="modal" >✖</button>
             </div>
             <div class="modal-body" id="modal-info-file-format-body">
-            <table class="table table-striped table-info">
+            <table class="table table-striped cla-modal-table-info">
             <thead>
                 <tr>
                     <th key="t-header-info-type">Type de Fichier</th>
@@ -93,7 +93,7 @@
         </table>
             </div>
             <div class="modal-footer">
-            <button type="button" class="buttons-position btn btn-light header-item btn waves-effect waves-light" data-bs-dismiss="modal" ><h4 key="modal-close">Fermer</h4></button>
+            <button type="button" class="cla-button-position btn btn-light header-item btn waves-effect waves-light" data-bs-dismiss="modal" ><h4 key="modal-close">Fermer</h4></button>
             </div>
         </div>
     </div>

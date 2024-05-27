@@ -27,7 +27,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title" key="modal-info-coord-title">Informations sur les coordonnées cartographiques</h3>
-                <button type="button" class="close-btn-pre" data-bs-dismiss="modal" >✖</button>
+                <button type="button" class="cla-close-btn-pre" data-bs-dismiss="modal" >✖</button>
             </div>
             <div class="modal-body" key="modal-info-coord-body">
                 <i class="fa fa-search-plus" aria-hidden="true"></i> Le système cartographique choisi pour représenter les coordonnées est le <a target="_blank" href="https://fr.wikipedia.org/wiki/WGS_84">WGS84</a>.
@@ -35,7 +35,7 @@
                 <i class="fa fa-search-plus" aria-hidden="true"></i> Les limites imposées par le système <a target="_blank" href="https://fr.wikipedia.org/wiki/WGS_84">WGS84</a> sont de [-180.0° à 180.0°].
             </div>
             <div class="modal-footer">
-            <button type="button" class="buttons-position btn btn-light header-item btn waves-effect waves-light" data-bs-dismiss="modal" ><h4 key="modal-close">Fermer</h4></button>
+            <button type="button" class="cla-button-position btn btn-light header-item btn waves-effect waves-light" data-bs-dismiss="modal" ><h4 key="modal-close">Fermer</h4></button>
             </div>
         </div>
     </div>
