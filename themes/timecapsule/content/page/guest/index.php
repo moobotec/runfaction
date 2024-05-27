@@ -37,12 +37,12 @@
     <div class="col-lg-7">
         <div class="w-100">
             <div class="row">
-            <button type="button" class="cla-button-date btn header-item waves-effect" data-bs-toggle="modal" data-bs-target="#datetimeModal">
+            <button type="button" id="btnDatetimeModal" class="cla-button-date btn header-item waves-effect" data-bs-toggle="modal" data-bs-target="#datetimeModal">
             <h1 class="pt-3"> <i class="bx bx-time-five"></i></h1><h1 class="p-1 my-2" id="clock"> [ xxx ][ xx xxxx ][ xx : xx : xx ]</h1>
             </button>
             </div>
             <div class="row">
-            <button type="button" class="cla-button-position btn header-item waves-effect" data-bs-toggle="modal" data-bs-target="#positionModal">
+            <button type="button" id="btnPositionModal" class="cla-button-position btn header-item waves-effect" data-bs-toggle="modal" data-bs-target="#positionModal">
             <h3 class="pt-3"><i class="bx bx-street-view"></i></h3><h3 class="p-1 my-2 "id="position" ></i></h3>
             </button>
             </div>

@@ -1,11 +1,37 @@
 function expandZone(selectedZoneId) {
-    document.getElementById('zoneTitle').style.display = "none";
+    
     const zones = ['zone1', 'zone2', 'zone3', 'zone4'];
 
-    if (selectedZoneId == 'zone') // zone ocean 
+    if (selectedZoneId == 'zone1') // zone ocean 
     {
-        
+        const hasCarto = hasCartoPlanetByLangById(gCurrentPosition.planet);
+        if (hasCarto == "false")
+        {
+            let strPlanet = (gCurrentPosition.planet == null) ? gConfig.default_suspension_points : getPlanetByLangById(gCurrentPosition.planet,gLanguage);
+            if (gLanguage == 'fr') {
+                toastr.info('On ne peut pas jeter de bouteille à la mer sur la planète ' + strPlanet +'.');
+            } 
+            else if (gLanguage == 'sp') {
+                toastr.info('No podemos tirar una botella al mar en el planeta' + strPlanet +'.');
+            }
+            else if (gLanguage == 'gr') {
+                toastr.info('Wir können auf dem Planeten keine Flasche ins Meer werfen' + strPlanet +'.');
+            }
+            else if (gLanguage == 'it') {
+                toastr.info('Non possiamo gettare una bottiglia nel mare del pianeta' + strPlanet +'.');
+            }
+            else if (gLanguage == 'ru') {
+                toastr.info('Мы не можем бросить бутылку в море на планете' + strPlanet +'.');
+            }
+            else{
+                toastr.info('We cannot throw a bottle into the sea on the planet ' + strPlanet +'.');
+            }
+
+            return;
+        }
     }
+
+    document.getElementById('zoneTitle').style.display = "none";
 
     zones.forEach(zone => {
         const element = document.getElementById(zone);
@@ -73,9 +99,11 @@ function closeZone(event, zoneId) {
         }
         content.style.display = 'block';
     });
-
-    event.stopPropagation(); // Prevent the expandZone event
-
+    if (event != null)
+    {
+        event.stopPropagation(); // Prevent the expandZone event
+    }
+    
 }
 
 function setupShowBsModalDatetime()
@@ -328,6 +356,10 @@ function setupClickButtonLocation()
             if ( hasCarto == 'false' || ret == false )
             {
                 updateCountryError();
+                if (document.getElementById('zoneTitle-zone1').style.display == "block")
+                {
+                    closeZone(null, 'zone1');
+                }
             }
         }
         else
@@ -780,6 +812,9 @@ function updateCurrentPosition()
             $('#secondStepThrow').css("display", "none");
             $('#delayStepThrow').css("display", "block");
 
+            $("#btnDatetimeModal").attr('disabled', 'disabled');
+            $("#btnPositionModal").attr('disabled', 'disabled');
+            
             let progress = 0;
             $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress).text(progress + '%');
 
@@ -792,6 +827,10 @@ function updateCurrentPosition()
                     setTimeout(function() {
                         $('#delayStepThrow').css("display", "none");
                         $('#endStepThrow').css("display", "block");
+
+                        $("#btnDatetimeModal").removeAttr('disabled');
+                        $("#btnPositionModal").removeAttr('disabled');
+
                     }, 800);
                    
                 }
