@@ -943,7 +943,7 @@ function readFileAsync(fileInput, numFile, typeFile, nameFile, sizeFile) {
             if (typeFile == null || typeFile == "") {
                 $('#imagePreview_' + numFile).attr('src', e.target.result);
             }
-            const obj = { name: nameFile, size: sizeFile, data: e.target.result };
+            const obj = { name: nameFile, size: sizeFile, data: e.target.result,type: typeFile };
             gFiles[numFile] = obj;
             resolve(); // Résoudre la promesse après le chargement
         };

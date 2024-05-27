@@ -77,9 +77,14 @@ function jitterCorrectionClock(gap)
     }
 }
 
+function makeContentClock(date,isGmt) 
+{
+    return formatDateTime(date) + ((isGmt == true) ? displayTimezoneOffset() : '');
+}
+
 function updateContentClock(id,date,isGmt) 
 {
-    document.getElementById(id).innerHTML = formatDateTime(date) + ((isGmt == true) ? displayTimezoneOffset() : '');
+    document.getElementById(id).innerHTML = makeContentClock(date,isGmt);
 }
 
 function formatDateTime(date) 

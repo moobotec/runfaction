@@ -796,10 +796,92 @@ function updateCurrentPosition()
         $('#delayStepThrow').css("display", "none");
 
         $('#nextThrow').click(function() {
-            $('#firstStepThrow').css("display", "none");
-            $('#secondStepThrow').css("display", "block");
-            updateThrowMarkerToMap([gCurrentPosition.latitude, gCurrentPosition.longitude],null);
-            gThrowMap.invalidateSize(true);
+
+            gTitle = $("#throw-title").val();
+            gMessage = $("#throw-message").val();
+
+            if (gTitle != null && gMessage != null && gTitle.length > 0 && gMessage.length > 0)
+            {
+                $("#check-throw-date").val(makeContentClock(gCurrentDate));
+                $("#check-throw-title").val(gTitle);
+                $("#check-throw-message").text(gMessage);
+                $('#firstStepThrow').css("display", "none");
+                $('#secondStepThrow').css("display", "block");
+
+                $('#checkListFile').find('li[id^="indexFile_"]').remove();
+
+                if ( gFileCount > 0)
+                {
+                    $("#checkMsgInfo").attr("style", "display:none");
+                    $("#checkListFile").attr("style", "display:block");
+
+                    for (var v = 0; v < gFileCount; v++) 
+                    {    
+                        let numFile = v;
+                        let typeFile = gFiles[v].type;
+                        let nameFile = gFiles[v].name;
+                        let sizeFile = gFiles[v].size;
+                        let htmlFile = "";
+                        if (typeFile != null && typeFile != "")
+                        {
+                            // Génération du HTML pour afficher les détails du fichier
+                            htmlFile = '<li id="indexFile_' + numFile + '">' +
+                                '<span class="cla-file-attachment-icon" style="background-color:#F8F9FA;"><i class="far ' + typeFile + '"></i></span>' +
+                                '<div class="cla-file-attachment-info">' +
+                                '<span class="cla-file-attachment-name" data-toggle="tooltip" title="' + nameFile + '"><i class="fas fa-paperclip"></i> ' + nameFile + '</span>' +
+                                '<span class="cla-file-attachment-size clearfix mt-1">' +
+                                '<span>' + getSymbolByQuantity(sizeFile) + '</span>' +
+                                '</span>' +
+                                '</div>' +
+                                '</li>';
+                            $("#checkListFile").append(htmlFile);
+                        }
+                        else
+                        {
+                            htmlFile = '<li id="indexFile_' + numFile + '">' +
+                                '<span class="cla-file-attachment-icon has-img" style="background-color:#F8F9FA;"><img class="cla-image-preview" id="checkImagePreview_' + numFile + '"/></span>' +
+                                '<div class="cla-file-attachment-info">' +
+                                '<span class="cla-file-attachment-name" data-toggle="tooltip" title="' + nameFile + '"><i class="fas fa-camera"></i> ' + nameFile + '</span>' +
+                                '<span class="cla-file-attachment-size clearfix mt-1">' +
+                                '<span>' + getSymbolByQuantity(sizeFile) + '</span>' +
+                                '</span>' +
+                                '</div>' +
+                                '</li>';
+                            $("#checkListFile").append(htmlFile);
+                            $('#checkImagePreview_' + numFile).attr('src', '' + gFiles[v].data + '');
+                        }
+                    }
+                }
+                else
+                {
+                    $("#checkMsgInfo").attr("style", "display:block");
+                    $("#checkListFile").attr("style", "display:none");
+                }
+                
+                updateThrowMarkerToMap([gCurrentPosition.latitude, gCurrentPosition.longitude],null);
+                gThrowMap.invalidateSize(true);
+            }
+            else
+            {
+                if (gLanguage == 'fr') {
+                    toastr.error('Veuillez ajouter un titre et un message avant de continuer.');
+                } 
+                else if (gLanguage == 'sp') {
+                    toastr.error('Por favor agregue un título y un mensaje antes de continuar.');
+                }
+                else if (gLanguage == 'gr') {
+                    toastr.error('Bitte fügen Sie einen Titel und eine Nachricht hinzu, bevor Sie fortfahren.');
+                }
+                else if (gLanguage == 'it') {
+                    toastr.error('Aggiungi un titolo e un messaggio prima di continuare.');
+                }
+                else if (gLanguage == 'ru') {
+                    toastr.error('Прежде чем продолжить, добавьте заголовок и сообщение.');
+                }
+                else{
+                    toastr.error('Please add a title and message before continuing.');
+                }
+            }
         });
 
         $('#previousThrow').click(function() {

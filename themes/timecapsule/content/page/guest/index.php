@@ -61,11 +61,11 @@
                                 <div class="cla-header-message">
                                     <h3 for="title" key="t-title-message">Titre</h3><div class="cla-count-text-container"><p class="pt-3" id="titleCharacterCount" >100 / 100</p><p class="pt-3" key="t-character">caractères</p></div>
                                 </div>
-                                <input type="text" id="throw-title" name="title" maxlength="100">
+                                <input type="text" id="throw-title" name="title" maxlength="100" value="Le bonheur est dans le près.">
                                 <div class="cla-header-message">
                                     <h3 for="message" key="t-body-message">Message</h3><div class="cla-count-text-container"><p class="pt-3 ml-1" id="bodyCharacterCount">250 / 250</p><p class="ml-1 pt-3" key="t-character">caractères</p></div>
                                 </div>
-                                <textarea id="throw-message" name="message" maxlength="250"></textarea>
+                                <textarea id="throw-message" name="message" maxlength="250">La vérité si je mens, le bonheur est dans le près.</textarea>
                             </form>
                         </div>
                         <div class="cla-right-side-message">
@@ -97,9 +97,9 @@
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                <div class="m-0 p-0">
-                                <p class="file-info" key="t-size-message">Jusqu'à 50 Mo pour un maximum de 5 fichiers</p>
-                            </div>
+                                    <div class="m-0 p-0">
+                                        <p class="file-info" key="t-size-message">Jusqu'à 50 Mo pour un maximum de 5 fichiers</p>
+                                    </div>
                                 </div>
                             </div>
                             <div class="cla-zone d-flex flex-column">
@@ -135,9 +135,9 @@
                     <div class="cla-content-message m-auto">
                         <div class="cla-left-side-message">
                             <form>
-                                <h3 key="t-date-message">Date</h3> <input type="text" value="2024 / 15 mai / 09:20:56" disabled/> 
-                                <h3 key="t-title-message">Titre</h3> <input type="text" value="Mon premier message à la mer" disabled/>
-                                <h3 key="t-body-message">Message</h3> <textarea id="message" name="message" maxlength="250" disabled>Je suis heureux dans la vie, je n'ai rien à dire.</textarea>
+                                <h3 key="t-date-message">Date</h3> <input type="text" id="check-throw-date"  value="" disabled/> 
+                                <h3 key="t-title-message">Titre</h3> <input type="text" id="check-throw-title" value="" disabled/>
+                                <h3 key="t-body-message">Message</h3> <textarea  id="check-throw-message" name="message" disabled></textarea>
                             </form>
                         </div>
                         <div class="cla-right-side-message-2">
@@ -145,16 +145,19 @@
                         </div>
                     </div>
                     <div class="cla-file-upload pb-3">
-                        <div class="cla-drop-zone-2">
-                            <div class="p-4 form-group row">
-                                <div class="col-sm-12">
-                                <ul class="cla-file-attachments" id="listFile-other" style="display:block">   
-                                    <li id="indexFile_1"><span class="cla-file-attachment-icon" style="background-color:#F8F9FA;"><i class="far fa-file-pdf"></i></span><div class="cla-file-attachment-info"><span class="cla-file-attachment-name"><i class="fas fa-paperclip"></i> 2024-OJS063-00185709-fr-ts.pdf</span><span class="cla-file-attachment-size clearfix mt-1"><span>99.82 KiB</span></div></li>    
-                                    <li id="indexFile_2"><span class="cla-file-attachment-icon" style="background-color:#F8F9FA;"><i class="far fa-file-pdf"></i></span><div class="cla-file-attachment-info"><span class="cla-file-attachment-name"><i class="fas fa-paperclip"></i> 2024-OJS063-00185709-fr-ts.pdf</span><span class="cla-file-attachment-size clearfix mt-1"><span>99.82 KiB</span></div></li>    
-                                </ul>
+                        <div class="cla-drop-zone" id="drop-zone-file">
+                            <div class="cla-zone d-flex flex-column pt-4">
+                                <ul class="cla-file-attachments" id="checkListFile" style="display: none;"></ul>
+                                <div id="checkMsgInfo">
+                                    <div class="cla-bottle pb-4">
+                                        <img id="bottle-image" src="<?php echo ''.BASEPATH.'themes/'.THEME.'/assets/images/empty-bottle.png';?>" alt="Bottle">
+                                    </div>
+                                    <div>
+                                        <h5 key="t-none-file">Aucun fichier n'a été téléversé.</h5>
+                                    </div>
                                 </div>
-                            </div>    
-                        </div>
+                            </div> 
+                        </div> 
                     </div>
                     <div class="d-flex justify-content-between p-1">
                         <button type="button" class="cla-button-step btn btn-light waves-effect waves-light" id="previousThrow" key="t-btn-previous-message"><i class="p-2 mdi mdi-arrow-left-bold-outline"></i> Retour</button>
