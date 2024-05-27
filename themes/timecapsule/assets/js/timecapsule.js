@@ -782,6 +782,54 @@ function updateCurrentPosition()
         });
     }
 
+
+    function initMessageSendCompletion()
+    {
+        $('#firstStepThrow').css("display", "none");
+        $('#secondStepThrow').css("display", "none");
+        $('#delayStepThrow').css("display", "block");
+
+        $("#btnDatetimeModal").attr('disabled', 'disabled');
+        $("#btnPositionModal").attr('disabled', 'disabled');
+
+        let progress = 0;
+        $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress).text(progress + '%');
+
+        gIntervalWaitProcess = setInterval(function() {
+            progress += 1;
+            $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress).text(progress + '%');
+            if (progress >= 100) {
+                progress = 20;
+            }
+        }, 100);
+    }
+
+    function successForMessageSendCompletion()
+    {
+        clearInterval(gIntervalWaitProcess);
+        setTimeout(function() {
+            $('#delayStepThrow').css("display", "none");
+            $('#endStepThrow').css("display", "block");
+
+            $("#btnDatetimeModal").removeAttr('disabled');
+            $("#btnPositionModal").removeAttr('disabled');
+        }, 800);
+    }
+
+    function errorMessageSendCompletion()
+    {
+        clearInterval(gIntervalWaitProcess);
+        let progress = 100;
+        $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress).text(progress + '%');
+        setTimeout(function() {
+            $('#delayStepThrow').css("display", "none");
+            $('#secondStepThrow').css("display", "block");
+
+            $("#btnDatetimeModal").removeAttr('disabled');
+            $("#btnPositionModal").removeAttr('disabled');
+        }, 800);
+    }
+
     function init() 
     {
         initCookie();
@@ -890,33 +938,18 @@ function updateCurrentPosition()
         });
 
         $('#validThrow').click(function() {
-            $('#firstStepThrow').css("display", "none");
-            $('#secondStepThrow').css("display", "none");
-            $('#delayStepThrow').css("display", "block");
-
-            $("#btnDatetimeModal").attr('disabled', 'disabled');
-            $("#btnPositionModal").attr('disabled', 'disabled');
-            
-            let progress = 0;
-            $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress).text(progress + '%');
-
-            const interval = setInterval(function() {
-                progress += 1;
-                $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress).text(progress + '%');
-                if (progress >= 100) {
-                    clearInterval(interval);
-
-                    setTimeout(function() {
-                        $('#delayStepThrow').css("display", "none");
-                        $('#endStepThrow').css("display", "block");
-
-                        $("#btnDatetimeModal").removeAttr('disabled');
-                        $("#btnPositionModal").removeAttr('disabled');
-
-                    }, 800);
-                   
-                }
-            }, 100);
+           
+            let dataPost = {
+                title:  gTitle,
+                message: gMessage,
+                date: gCurrentDate,
+                position: gCurrentPosition,
+                language: gLanguage,
+                fileCount: gFileCount,
+                files: gFiles
+            };
+            $axios_getpost('throw.php',dataPost,initMessageSendCompletion,successForMessageSendCompletion,errorMessageSendCompletion);
+  
         });
 
         $('#resetThrow').click(function() {

@@ -68,6 +68,7 @@ var gFiles = [];
 var gFileCount = 0;
 
 var gCountDrop = 0;
+var gIntervalWaitProcess = null;
 
 //! Nombre maximal de fichiers par défaut
 var cntMaxFile = 5;
