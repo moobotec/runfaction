@@ -65,30 +65,6 @@ Route::add('/throw.php', function() {
       }
   }
 
-  #sleep(1);
-
-  /*$post['title'];
-  $post['message'];
-  $post['date'];
-  $post['position'];
-  $post['language'];
-  $post['fileCount'];
-  $post['files'];*/
-
-  /*
-  gCurrentPosition.valid = false;
-  gCurrentPosition.latitude = null;
-  gCurrentPosition.longitude = null;
-  gCurrentPosition.country = null;
-  gCurrentPosition.planet = null;
-  gCurrentPosition.galaxy = null;
-  gCurrentPosition.id = null;
-  */
-
-  #ob_start();
-  #passthru('/usr/bin/python3 '.$param_root.'script/timecapsule/throw.py '.$post['position']['latitude'].' '.$post['position']['longitude'].' '.$param_root.'script/timecapsule');
-  #$output = ob_get_clean(); 
-
   $latitude = $post['position']['latitude'];
   $longitude = $post['position']['longitude'];
   $cmd = "/usr/bin/python3 " . $param_root . "script/timecapsule/throw.py " . $latitude . " " . $longitude . " " . $param_root . "script/timecapsule";
@@ -115,6 +91,45 @@ Route::add('/throw.php', function() {
   $response["message"] = json_encode(array('status' => 'running', 'pid' => $pid));
   return_json_http_response(true,$response);
 
+}, 'post');
+
+
+//partie connection
+
+Route::add('/signin.php', function() 
+{ 
+  $controller = new UserController();
+  $controller->checkAndSessionUserToJson();
+}, 'post');
+
+/*Route::add('/signup.php', function() 
+{ 
+  $controller = new UserController();
+  $controller->addUserToJson();
+}, 'post');*/
+
+/*Route::add('/askresendvalidation.php/(.+)/(.+)', function($matches,$codefirst) 
+{
+  $controller = new UserController();
+  $controller->askResendValidationUserToJson($matches,$codefirst);
+}, 'get');
+
+Route::add('/check.php/(.+)/(.+)', function($matches,$codefirst) 
+{
+  $controller = new UserController();
+  $controller->checkValidationUserToJson($matches,$codefirst);
+}, 'post');*/
+
+Route::add('/askresetpassword.php', function() 
+{ 
+  $controller = new UserController();
+  $controller->askResetPasswordUserToJson();
+}, 'post');
+
+Route::add('/reset.php/(.+)/(.+)', function($matches,$codereset) 
+{
+  $controller = new UserController();
+  $controller->checkResetPasswordUserToJson($matches,$codereset);
 }, 'post');
 
 
