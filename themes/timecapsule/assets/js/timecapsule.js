@@ -807,10 +807,11 @@ function updateCurrentPosition()
     function successForMessageSendCompletion()
     {
         clearInterval(gIntervalWaitProcess);
+        let progress = 100;
+        $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress).text(progress + '%');
         setTimeout(function() {
             $('#delayStepThrow').css("display", "none");
             $('#endStepThrow').css("display", "block");
-
             $("#btnDatetimeModal").removeAttr('disabled');
             $("#btnPositionModal").removeAttr('disabled');
         }, 800);
@@ -824,7 +825,6 @@ function updateCurrentPosition()
         setTimeout(function() {
             $('#delayStepThrow').css("display", "none");
             $('#secondStepThrow').css("display", "block");
-
             $("#btnDatetimeModal").removeAttr('disabled');
             $("#btnPositionModal").removeAttr('disabled');
         }, 800);

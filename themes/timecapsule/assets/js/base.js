@@ -231,10 +231,11 @@ function $axios_getpost_timed(url, data, functionCallbackInit, functionCallbackS
  * @param {object} data Les données à envoyer dans la requête.
  * @param {function} functionCallbackInit Fonction à exécuter avant l'envoi de la requête.
  * @param {function} functionCallbackSuccess Fonction à exécuter en cas de réussite de la requête.
+ * @param {function} functionCallbackError Fonction à exécuter en cas d'erreur de la requête.
  * @param {function} functionCallbackFinally Fonction à exécuter une fois la requête terminée, quel que soit son résultat.
  * @returns {void}
  */
-function $axios_getpost(url, data, functionCallbackInit, functionCallbackSuccess, functionCallbackFinally) {
+function $axios_getpost(url, data, functionCallbackInit, functionCallbackSuccess, functionCallbackError, functionCallbackFinally = null) {
     
     if (functionCallbackInit != null) functionCallbackInit();
 
@@ -242,6 +243,7 @@ function $axios_getpost(url, data, functionCallbackInit, functionCallbackSuccess
     // Envoi de la requête HTTP POST avec les données spécifiées
     axios.post(path, data).then((response) => {
 
+        console.log(response);
         // Si la requête a retourné une erreur
         if (response.data.error) {
             // Affiche un message d'erreur
@@ -251,6 +253,7 @@ function $axios_getpost(url, data, functionCallbackInit, functionCallbackSuccess
                 message += '['+ response.data.message[i].id + '] ' +response.data.message[i].texte;
             }
             toastr.error(message);
+            if (functionCallbackError != null) functionCallbackError(response.data); 
         } // Si la requête a réussi
         else {
             // Si une fonction de callback "avant envoi de la requête" a été spécifiée, la exécute
@@ -260,9 +263,7 @@ function $axios_getpost(url, data, functionCallbackInit, functionCallbackSuccess
         // Affiche un message d'erreur en cas d'erreur interne
         toastr.error("[Erreur interne] "+ error + " (" + path + ")");
     }).finally(() => {
-        // Si une fonction de callback "une fois la requête terminée" a été spécifiée, la exécute
-        if (functionCallbackFinally != null) functionCallbackFinally();
-        if (typeof startTime != 'undefined') showExecutionTime();
+        if (functionCallbackFinally != null) functionCallbackFinally(); 
     });
 }
 
