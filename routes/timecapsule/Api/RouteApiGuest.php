@@ -32,6 +32,23 @@ function filter_string_polyfill(string $string): string
     return str_replace(["'", '"'], ['&#39;', '&#34;'], $str);
 }
 
+function runInBackground($cmd, &$pid) {
+  // Préparez la commande pour être exécutée en arrière-plan
+  $fullCmd = $cmd . " > /dev/null 2>&1 & echo $!";
+  // Exécutez la commande et récupérez le PID
+  $pid = shell_exec($fullCmd);
+}
+
+function isProcessRunning($pid) {
+  // Vérifiez si le processus avec le PID donné est toujours en cours d'exécution
+  $result = shell_exec(sprintf("ps %d", $pid));
+  // Si le PID n'est pas trouvé dans la liste des processus actifs, renvoyez false
+  if (count(preg_split("/\n/", $result)) > 2) {
+      return true;
+  }
+  return false;
+}
+
 Route::add('/throw.php', function() {
 
   global $param_root;
@@ -48,15 +65,15 @@ Route::add('/throw.php', function() {
       }
   }
 
-  sleep(1);
+  #sleep(1);
 
-  $post['title'];
+  /*$post['title'];
   $post['message'];
   $post['date'];
   $post['position'];
   $post['language'];
   $post['fileCount'];
-  $post['files'];
+  $post['files'];*/
 
   /*
   gCurrentPosition.valid = false;
@@ -68,20 +85,34 @@ Route::add('/throw.php', function() {
   gCurrentPosition.id = null;
   */
 
-  ob_start();
-  passthru('/usr/bin/python3 '.$param_root.'script/timecapsule/throw.py '.$post['position']['latitude'].' '.$post['position']['longitude'].' '.$param_root.'script/timecapsule');
-  $output = ob_get_clean(); 
+  #ob_start();
+  #passthru('/usr/bin/python3 '.$param_root.'script/timecapsule/throw.py '.$post['position']['latitude'].' '.$post['position']['longitude'].' '.$param_root.'script/timecapsule');
+  #$output = ob_get_clean(); 
 
-  $messages = array();
-  array_push($messages,array(
-    'id' => 501,
-    'type' => 'msg',
-    'level' => 'warning',
-    'texte' => $output
-  ));
-  $response["error"] = true;
-  $response["message"] = $messages;
+  $latitude = $post['position']['latitude'];
+  $longitude = $post['position']['longitude'];
+  $cmd = "/usr/bin/python3 " . $param_root . "script/timecapsule/throw.py " . $latitude . " " . $longitude . " " . $param_root . "script/timecapsule";
+  
+  runInBackground($cmd, $pid);
 
+  // Boucle d'attente pour vérifier si le processus est toujours en cours d'exécution
+  $max_wait_time = 60; // Maximum wait time in seconds
+  $interval = 5; // Interval to check in seconds
+  $elapsed_time = 0;
+
+  while ($elapsed_time < $max_wait_time) {
+      if (!isProcessRunning($pid)) {
+          $response["error"] = false;
+          $response["message"] = json_encode(array('status' => 'completed'));
+          return_json_http_response(true,$response);
+          exit;
+      }
+      sleep($interval);
+      $elapsed_time += $interval;
+  }
+
+  $response["error"] = false;
+  $response["message"] = json_encode(array('status' => 'running', 'pid' => $pid));
   return_json_http_response(true,$response);
 
 }, 'post');
